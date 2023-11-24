@@ -1,32 +1,18 @@
-import { useRef, useEffect, useState } from 'react'
-import mapboxgl, { Map } from 'mapbox-gl'
-
-// mapboxgl.accessToken =
-//   'pk.eyJ1IjoieW95bzIwMjMiLCJhIjoiY2xvd2dnNWR0MDR5dDJxcGl3cjAwczUwbiJ9.HPB6vtrEbhCQILNbIDqktA'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Weather from './pages/weather'
+import Air from './pages/air'
+import Layout from './components/layout'
 
 const App = () => {
-  const mapContainer = useRef<HTMLDivElement | null>(null)
-  const map = useRef<null | Map>(null)
-  const [lng, setLng] = useState(-70.9)
-  const [lat, setLat] = useState(42.35)
-  const [zoom, setZoom] = useState(9)
-
-  useEffect(() => {
-    if (map.current) return // 僅初始化地圖一次
-
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current as HTMLElement,
-      style: 'mapbox://styles/yoyo2023/clp0uor9i00c601r6cyl8g78b',
-      center: [lng, lat],
-      zoom: zoom,
-    })
-  })
-
   return (
     <>
-      <div>
-        <div ref={mapContainer} className="map-container" />
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="weather" />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="weather" element={<Weather />} />
+          <Route path="air" element={<Air />} />
+        </Route>
+      </Routes>
     </>
   )
 }

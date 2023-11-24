@@ -1,0 +1,7 @@
+body {
+  @apply w-screen h-screen overflow-hidden bg-slate-50;
+
+  #root {
+    @apply w-full h-full;
+  }
+}
