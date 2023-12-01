@@ -6,7 +6,7 @@ const air = status.APIStatus.air
 const weather = status.APIStatus.weather
 
 export default {
-  async getWeatherNow(): Promise<type.IWeatherNowResponse[]> {
+  async getWeatherNow(): Promise<type.IWeatherNowResponse> {
     const config: type.IRequestConfig = {
       url: 'O-A0003-001',
       type: weather,
@@ -16,6 +16,6 @@ export default {
       },
     }
     const result = await APIhandler(config)
-    return <type.IWeatherNowResponse[]>result.data
+    return <type.IWeatherNowResponse>result.data
   },
 }

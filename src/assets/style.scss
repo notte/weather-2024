@@ -1,7 +1,40 @@
+@import url('https://fonts.googleapis.com/earlyaccess/notosanstc.css');
+
 body {
-  @apply w-screen h-screen overflow-hidden bg-slate-50;
+  @apply w-screen h-screen overflow-hidden;
+
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #111719;
 
   #root {
     @apply w-full h-full;
+
+    .layout {
+      @apply w-full h-full flex justify-center items-center flex-col;
+
+      .switch {
+        a {
+          @apply text-sm font-semibold px-2 py-1 mx-2 rounded-md;
+
+          border: 2px solid #0089a7;
+          color: #0089a7;
+        }
+
+        a.active {
+          background: #0089a7;
+          color: #111719;
+        }
+      }
+
+      .map-container {
+        @apply w-5/6 h-5/6;
+
+        .marker {
+          background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/pin.svg');
+          background-size: cover;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

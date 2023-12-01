@@ -6,24 +6,25 @@ export interface IAllCity {
   coordinates: number[]
 }
 
-export interface INowData {
-  COUNTYNAME: string
-  coordinates: number[]
-  Weather: string
-  AirTemperature: number
-  status: string
-  aqi: number
-}
-
 export interface IRequestConfig {
   url: string
   type: status.APIStatus
   params: AxiosRequestConfig['params']
 }
 
-// API Response
+export interface INowData {
+  COUNTYNAME: string
+  coordinates: number[]
+  Weather?: string
+  AirTemperature?: number
+  status?: string
+  aqi?: number
+}
 
-// 目前天氣
+/*
+目前天氣
+*/
+
 export interface IWeatherNowResponse {
   success: string
   result: Result

@@ -24,6 +24,6 @@ export enum CityName {
 }
 
 export enum APIStatus {
-  weather,
-  air,
+  weather = 'weather',
+  air = 'air',
 }
