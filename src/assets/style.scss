@@ -10,31 +10,121 @@ body {
     @apply w-full h-full;
 
     .layout {
-      @apply w-full h-full flex justify-center items-center flex-col;
+      @apply w-full h-full flex items-center flex-col;
 
-      .switch {
-        a {
-          @apply text-sm font-semibold px-2 py-1 mx-2 rounded-md;
+      header {
+        @apply w-full z-10 flex justify-center items-center absolute;
 
-          border: 2px solid #0089a7;
-          color: #0089a7;
-        }
+        height: 8%;
+        background: linear-gradient(to bottom, #1117198c 0%, #11171936 100%);
 
-        a.active {
-          background: #0089a7;
-          color: #111719;
+        .container {
+          @apply w-3/4 flex justify-between;
+
+          .warn {
+            button {
+              @apply font-black;
+
+              color: #a10c0c;
+            }
+          }
+
+          .opitions {
+            button,
+            select,
+            option,
+            select:focus-visible {
+              @apply text-sm font-semibold px-2 py-1 mx-2 rounded-md cursor-pointer w-max;
+
+              outline: none;
+              color: #111719;
+              background: #e8edee;
+            }
+          }
         }
       }
 
-      .map-container {
-        @apply w-5/6 h-5/6;
+      main {
+        @apply w-full h-full;
 
-        .marker {
-          background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/pin.svg');
-          background-size: cover;
-          cursor: pointer;
+        .map-container {
+          @apply w-full h-full;
         }
       }
     }
   }
+}
+
+/* icon 設定 */
+
+.mapboxgl-marker {
+  background-color: #fffffff2;
+  box-shadow: 0 0 5px 5px #11171954;
+  border-radius: 100%;
+}
+
+.clouds-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url('/weather_icon/clouds.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.cloudy-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/cloudy.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.fog-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/fog.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.hail-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/hail.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.rain-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/rain.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.snow-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/snow.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.sun-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/sun.png');
+  background-size: cover;
+  cursor: pointer;
+}
+
+.storm-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('/weather_icon/storm.png');
+  background-size: cover;
+  cursor: pointer;
 }
