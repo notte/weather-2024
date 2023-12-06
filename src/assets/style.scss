@@ -58,73 +58,45 @@ body {
 /* icon 設定 */
 
 .mapboxgl-marker {
-  background-color: #fffffff2;
+  background-color: #f5f5f5e3;
   box-shadow: 0 0 5px 5px #11171954;
   border-radius: 100%;
-}
-
-.clouds-icon {
+  background-size: 60%;
   width: 50px;
   height: 50px;
-  background-image: url('/weather_icon/clouds.png');
-  background-size: 60%;
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
 }
 
+.clouds-icon {
+  background-image: url('/weather_icon/clouds.png');
+}
+
 .cloudy-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/cloudy.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .fog-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/fog.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .hail-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/hail.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .rain-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/rain.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .snow-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/snow.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .sun-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/sun.png');
-  background-size: cover;
-  cursor: pointer;
 }
 
 .storm-icon {
-  width: 30px;
-  height: 30px;
   background-image: url('/weather_icon/storm.png');
-  background-size: cover;
-  cursor: pointer;
 }

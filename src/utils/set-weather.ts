@@ -9,10 +9,12 @@ function setWeather() {
       const weatherArr = weather.match(regExp)
       if (weatherArr!.length > 1 && weather.includes('雨')) {
         checkWeather = '雨'
+      } else {
+        checkWeather = weatherArr![0]
       }
     }
 
-    switch (weather) {
+    switch (checkWeather) {
       case '雨':
         className = 'rain-icon'
         break
