@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Weather from './pages/weather'
-import Air from './pages/air'
 import Layout from './components/layout'
 
 const App = () => {
@@ -10,7 +9,6 @@ const App = () => {
         <Route path="/" element={<Navigate to="weather" />} />
         <Route path="/" element={<Layout />}>
           <Route path="weather" element={<Weather />} />
-          <Route path="air" element={<Air />} />
         </Route>
       </Routes>
     </>

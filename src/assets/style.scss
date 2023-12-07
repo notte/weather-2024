@@ -57,16 +57,22 @@ body {
 
 /* icon 設定 */
 
+.marker-city-popup {
+  @apply w-28 text-center;
+
+  h3 {
+    @apply text-lg font-bold;
+
+    color: #0089a7;
+  }
+}
+
 .mapboxgl-marker {
-  background-color: #f5f5f5e3;
+  @apply w-11 h-11 bg-no-repeat bg-center cursor-pointer rounded-full;
+
+  background-color: #f5f5f5f1;
   box-shadow: 0 0 5px 5px #11171954;
-  border-radius: 100%;
   background-size: 60%;
-  width: 50px;
-  height: 50px;
-  background-repeat: no-repeat;
-  background-position: center;
-  cursor: pointer;
 }
 
 .clouds-icon {
