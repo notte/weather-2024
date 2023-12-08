@@ -6,8 +6,8 @@ export const GetWeatherNowRequest = (updateData: type.INowData) => ({
   payload: updateData,
 })
 // map all 空氣
-export const GetAirNowRequest = (updateData: type.INowData) => ({
-  type: 'GET_AIR_NOW_REQUEST',
+export const GetWeather36hrsRequest = (updateData: type.Records36hr) => ({
+  type: 'GET_WEATHER_36HRS_REQUEST',
   payload: updateData,
 })
 // map detail 天氣

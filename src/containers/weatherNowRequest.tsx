@@ -1,5 +1,3 @@
-import Map from '../components/map'
-import City from '../components/city'
 import api from '../services/api'
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -47,28 +45,8 @@ const weather = () => {
     }
   }
 
-  const Weather36hrsRequest = async () => {
-    try {
-      const res = await api.getWeather36hrs()
-      console.log(res)
-      // const filter_data = filter(res.records.Station, (item: type.Station) => {
-      //   return includes(stations, item.StationName)
-      // })
-
-      // dispatch(
-      //   GetWeatherNowRequest(
-      //     map(filter_data, (item) => {
-      //       return setWeatherData(weather, item)
-      //     }) as unknown as type.INowData[]
-      //   )
-      // )
-    } finally {
-    }
-  }
-
   useEffect(() => {
     WeatherNowRequest()
-    Weather36hrsRequest()
     const intervalId = setInterval(
       () => {
         WeatherNowRequest()
@@ -78,12 +56,7 @@ const weather = () => {
     return () => clearInterval(intervalId)
   }, [])
 
-  return (
-    <>
-      <Map {...weather} />
-      <City />
-    </>
-  )
+  return <></>
 }
 
 export default weather

@@ -1,3 +1,5 @@
+import { replace } from 'lodash'
+
 const weatherMap: { [key: string]: string } = {
   雨: 'rain-icon',
   霧: 'fog-icon',
@@ -26,6 +28,13 @@ function setWeather() {
   }
 }
 
-const getWeatherIcon = setWeather()
+function setCityName() {
+  return (city: string): string => {
+    city = replace(city, '台', '臺')
+    if (city === '桃園縣') city = '桃園市'
+    return city
+  }
+}
 
-export default getWeatherIcon
+export const getWeatherIcon = setWeather()
+export const getCityName = setCityName()
