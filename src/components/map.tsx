@@ -30,7 +30,6 @@ const map = (_props: type.INowData[]) => {
 
   useEffect(() => {
     if (!Object.keys(_props[0]).includes('Weather')) return
-
     const resource = { ..._props }
 
     map.current!.on('load', () => {

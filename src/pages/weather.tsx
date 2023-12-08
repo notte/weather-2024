@@ -8,11 +8,8 @@ import * as type from '../types/interface'
 
 const weather = () => {
   const weather = useSelector(
-    (state: { weather: type.INowData[] }) => state.weather
+    (state: { weather: { now: type.INowData[] } }) => state.weather.now
   )
-  // useEffect(() => {
-  //   console.log(weather)
-  // }, [JSON.stringify(weather)])
 
   return (
     <>

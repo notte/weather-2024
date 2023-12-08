@@ -10,7 +10,7 @@ import { Station } from '../types/response/weather-now'
 const weatherNowRequest = () => {
   const dispatch = useDispatch()
   const weather = useSelector(
-    (state: { weather: type.INowData[] }) => state.weather
+    (state: { weather: { now: type.INowData[] } }) => state.weather.now
   )
   const setWeatherData = useCallback(
     (arr: type.INowData[], obj: Station): type.INowData | undefined => {

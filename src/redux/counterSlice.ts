@@ -5,9 +5,13 @@ import { allCity } from '../assets/data'
 
 const counterSlice = createSlice({
   name: 'weather',
-  initialState: concat([], allCity) as type.INowData[],
+  initialState: {
+    now: concat([], allCity) as type.INowData[],
+  },
   reducers: {
-    GetWeatherNowRequest: (_state, action) => action.payload,
+    GetWeatherNowRequest: (state, action) => {
+      return { ...state, now: action.payload }
+    },
   },
 })
 
