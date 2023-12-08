@@ -5,15 +5,15 @@ import { GetWeatherNowRequest } from '../redux/counterSlice'
 import { filter, includes, map } from 'lodash'
 import { stations } from '../assets/data'
 import * as type from '../types/interface'
+import { Station } from '../types/response/weather-now'
 
-const weather = () => {
+const weatherNowRequest = () => {
   const dispatch = useDispatch()
   const weather = useSelector(
     (state: { weather: type.INowData[] }) => state.weather
   )
-
   const setWeatherData = useCallback(
-    (arr: type.INowData[], obj: type.Station): type.INowData | undefined => {
+    (arr: type.INowData[], obj: Station): type.INowData | undefined => {
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].COUNTYNAME === obj.GeoInfo.CountyName) {
           return {
@@ -27,13 +27,12 @@ const weather = () => {
     []
   )
 
-  const WeatherNowRequest = async () => {
+  const fetchData = async () => {
     try {
       const res = await api.getWeatherNow()
-      const filter_data = filter(res.records.Station, (item: type.Station) => {
+      const filter_data = filter(res.records.Station, (item: Station) => {
         return includes(stations, item.StationName)
       })
-
       dispatch(
         GetWeatherNowRequest(
           map(filter_data, (item) => {
@@ -46,10 +45,10 @@ const weather = () => {
   }
 
   useEffect(() => {
-    WeatherNowRequest()
+    fetchData()
     const intervalId = setInterval(
       () => {
-        WeatherNowRequest()
+        fetchData()
       },
       15 * 60 * 1000
     )
@@ -59,4 +58,4 @@ const weather = () => {
   return <></>
 }
 
-export default weather
+export default weatherNowRequest

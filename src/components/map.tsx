@@ -6,8 +6,8 @@ import { getWeatherIcon, getCityName } from '../utils/set-map.ts'
 import { forEach, filter } from 'lodash'
 import EventBus from '../utils/event-bus'
 
-// mapboxgl.accessToken =
-//   'pk.eyJ1IjoieW95bzIwMjMiLCJhIjoiY2xvd2dnNWR0MDR5dDJxcGl3cjAwczUwbiJ9.HPB6vtrEbhCQILNbIDqktA'
+mapboxgl.accessToken =
+  'pk.eyJ1IjoieW95bzIwMjMiLCJhIjoiY2xvd2dnNWR0MDR5dDJxcGl3cjAwczUwbiJ9.HPB6vtrEbhCQILNbIDqktA'
 
 // 資料來源以 props 傳入
 const map = (_props: type.INowData[]) => {
@@ -18,145 +18,145 @@ const map = (_props: type.INowData[]) => {
   const [zoom] = useState<number>(6.6)
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
 
-  // useEffect(() => {
-  //   if (map.current) return
-  //   map.current = new mapboxgl.Map({
-  //     container: mapContainer.current as HTMLElement,
-  //     style: 'mapbox://styles/yoyo2023/clp0uor9i00c601r6cyl8g78b',
-  //     center: [lng, lat],
-  //     zoom: zoom,
-  //   })
-  // }, [JSON.stringify(_props)])
+  useEffect(() => {
+    if (map.current) return
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current as HTMLElement,
+      style: 'mapbox://styles/yoyo2023/clp0uor9i00c601r6cyl8g78b',
+      center: [lng, lat],
+      zoom: zoom,
+    })
+  }, [JSON.stringify(_props)])
 
-  // useEffect(() => {
-  //   if (!Object.keys(_props[0]).includes('Weather')) return
+  useEffect(() => {
+    if (!Object.keys(_props[0]).includes('Weather')) return
 
-  //   const resource = { ..._props }
+    const resource = { ..._props }
 
-  //   map.current!.on('load', () => {
-  //     if (!map.current?.getSource('countries')) {
-  //       map.current?.addSource('countries', {
-  //         type: 'geojson',
-  //         data: data as GeoJSON.FeatureCollection,
-  //       })
-  //       map.current?.addLayer({
-  //         id: 'country-fills',
-  //         type: 'fill',
-  //         source: 'countries',
-  //         paint: {
-  //           'fill-color': 'transparent',
-  //         },
-  //       })
-  //       map.current?.addLayer({
-  //         id: 'country-fills-hover',
-  //         type: 'fill',
-  //         source: 'countries',
-  //         layout: {},
-  //         paint: {
-  //           'fill-color': '#0F2D33',
-  //           'fill-opacity': 0.4,
-  //         },
-  //         filter: ['==', 'COUNTYNAME', ''],
-  //       })
+    map.current!.on('load', () => {
+      if (!map.current?.getSource('countries')) {
+        map.current?.addSource('countries', {
+          type: 'geojson',
+          data: data as GeoJSON.FeatureCollection,
+        })
+        map.current?.addLayer({
+          id: 'country-fills',
+          type: 'fill',
+          source: 'countries',
+          paint: {
+            'fill-color': 'transparent',
+          },
+        })
+        map.current?.addLayer({
+          id: 'country-fills-hover',
+          type: 'fill',
+          source: 'countries',
+          layout: {},
+          paint: {
+            'fill-color': '#0F2D33',
+            'fill-opacity': 0.4,
+          },
+          filter: ['==', 'COUNTYNAME', ''],
+        })
 
-  //       map.current?.addLayer({
-  //         id: 'country-borders',
-  //         type: 'line',
-  //         source: 'countries',
-  //         layout: {},
-  //         paint: {
-  //           'line-color': '#111719',
-  //           'line-width': 1,
-  //         },
-  //         filter: ['==', 'COUNTYNAME', ''],
-  //       })
-  //     }
+        map.current?.addLayer({
+          id: 'country-borders',
+          type: 'line',
+          source: 'countries',
+          layout: {},
+          paint: {
+            'line-color': '#111719',
+            'line-width': 1,
+          },
+          filter: ['==', 'COUNTYNAME', ''],
+        })
+      }
 
-  //     setMarkers([])
-  //     for (const key in resource) {
-  //       const className = getWeatherIcon(resource[key].Weather as string)
-  //       const customMarkerElement = document.createElement('div')
-  //       customMarkerElement.className = className
-  //       customMarkerElement.setAttribute('city', resource[key].COUNTYNAME)
+      setMarkers([])
+      for (const key in resource) {
+        const className = getWeatherIcon(resource[key].Weather as string)
+        const customMarkerElement = document.createElement('div')
+        customMarkerElement.className = className
+        customMarkerElement.setAttribute('city', resource[key].COUNTYNAME)
 
-  //       const marker = new mapboxgl.Marker({ element: customMarkerElement })
-  //         .setLngLat([
-  //           resource[key].coordinates[0],
-  //           resource[key].coordinates[1],
-  //         ])
-  //         .setPopup(
-  //           new mapboxgl.Popup({
-  //             closeOnClick: true,
-  //             closeButton: false,
-  //             closeOnMove: true,
-  //             className: 'marker-city-popup',
-  //           }).setHTML(
-  //             `<h3>${resource[key].COUNTYNAME}</h3><p>${resource[key].Weather}</p><p>${resource[key].AirTemperature}°C</p>`
-  //           )
-  //         )
+        const marker = new mapboxgl.Marker({ element: customMarkerElement })
+          .setLngLat([
+            resource[key].coordinates[0],
+            resource[key].coordinates[1],
+          ])
+          .setPopup(
+            new mapboxgl.Popup({
+              closeOnClick: true,
+              closeButton: false,
+              closeOnMove: true,
+              className: 'marker-city-popup',
+            }).setHTML(
+              `<h3>${resource[key].COUNTYNAME}</h3><p>${resource[key].Weather}</p><p>${resource[key].AirTemperature}°C</p>`
+            )
+          )
 
-  //       const fn = () => {
-  //         setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
-  //       }
-  //       fn()
-  //     }
-  //   })
-  // }, [JSON.stringify(_props)])
+        const fn = () => {
+          setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
+        }
+        fn()
+      }
+    })
+  }, [JSON.stringify(_props)])
 
-  // useEffect(() => {
-  //   map.current?.on('mousemove', (e) => {
-  //     const features = map.current?.queryRenderedFeatures(e.point, {
-  //       layers: ['country-fills'],
-  //     })
+  useEffect(() => {
+    map.current?.on('mousemove', (e) => {
+      const features = map.current?.queryRenderedFeatures(e.point, {
+        layers: ['country-fills'],
+      })
 
-  //     if (features!.length > 0) {
-  //       EventBus.emit('city-hover', features![0].properties?.COUNTYNAME)
-  //       map.current!.getCanvas().style.cursor = 'pointer'
-  //       map.current?.setFilter('country-fills-hover', [
-  //         '==',
-  //         'COUNTYNAME',
-  //         features![0].properties?.COUNTYNAME,
-  //       ])
-  //       map.current?.setFilter('country-borders', [
-  //         '==',
-  //         'COUNTYNAME',
-  //         features![0].properties?.COUNTYNAME,
-  //       ])
-  //     }
-  //   })
-  //   map.current!.on('mouseout', () => {
-  //     EventBus.emit('city-hover', '')
-  //     map.current?.setFilter('country-fills-hover', ['==', 'COUNTYNAME', ''])
-  //     map.current?.setFilter('country-borders', ['==', 'COUNTYNAME', ''])
-  //   })
-  // }, [])
+      if (features!.length > 0) {
+        EventBus.emit('city-hover', features![0].properties?.COUNTYNAME)
+        map.current!.getCanvas().style.cursor = 'pointer'
+        map.current?.setFilter('country-fills-hover', [
+          '==',
+          'COUNTYNAME',
+          features![0].properties?.COUNTYNAME,
+        ])
+        map.current?.setFilter('country-borders', [
+          '==',
+          'COUNTYNAME',
+          features![0].properties?.COUNTYNAME,
+        ])
+      }
+    })
+    map.current!.on('mouseout', () => {
+      EventBus.emit('city-hover', '')
+      map.current?.setFilter('country-fills-hover', ['==', 'COUNTYNAME', ''])
+      map.current?.setFilter('country-borders', ['==', 'COUNTYNAME', ''])
+    })
+  }, [])
 
-  // useEffect(() => {
-  //   if (markers.length > 0) {
-  //     forEach(markers, (mark) => {
-  //       mark.addTo(map.current as Map)
-  //     })
-  //   }
+  useEffect(() => {
+    if (markers.length > 0) {
+      forEach(markers, (mark) => {
+        mark.addTo(map.current as Map)
+      })
+    }
 
-  //   map.current!.on('click', (e) => {
-  //     const features = map.current?.queryRenderedFeatures(e.point, {
-  //       layers: ['country-fills'],
-  //     })
-  //     if (features!.length > 0) {
-  //       const clickedFeature = features![0].properties
-  //       let selectCity = clickedFeature!.COUNTYNAME
-  //       selectCity = getCityName(selectCity)
+    map.current!.on('click', (e) => {
+      const features = map.current?.queryRenderedFeatures(e.point, {
+        layers: ['country-fills'],
+      })
+      if (features!.length > 0) {
+        const clickedFeature = features![0].properties
+        let selectCity = clickedFeature!.COUNTYNAME
+        selectCity = getCityName(selectCity)
 
-  //       const mark = filter(markers, (marker) => {
-  //         marker.getElement().style.backgroundColor = '#f5f5f5f1'
-  //         return marker.getElement().getAttribute('city') === selectCity
-  //       })
-  //       // if (mark.length > 0) {
-  //       //   mark[0].getElement().style.backgroundColor = '#ff0000'
-  //       // }
-  //     }
-  //   })
-  // }, [markers])
+        const mark = filter(markers, (marker) => {
+          marker.getElement().style.backgroundColor = '#f5f5f5f1'
+          return marker.getElement().getAttribute('city') === selectCity
+        })
+        // if (mark.length > 0) {
+        //   mark[0].getElement().style.backgroundColor = '#ff0000'
+        // }
+      }
+    })
+  }, [markers])
 
   return (
     <>

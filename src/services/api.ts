@@ -1,4 +1,6 @@
 import APIhandler from '../utils/api-handler'
+import { IWeatherNowResponse } from '../types/response/weather-now'
+import { IWeather36hrsResponse } from '../types/response/weather-36hrs'
 import * as type from '../types/interface'
 import * as status from '../types/enum'
 
@@ -6,7 +8,7 @@ const air = status.APIStatus.air
 const weather = status.APIStatus.weather
 
 export default {
-  async getWeatherNow(): Promise<type.IWeatherNowResponse> {
+  async getWeatherNow(): Promise<IWeatherNowResponse> {
     const config: type.IRequestConfig = {
       url: 'O-A0003-001',
       type: weather,
@@ -16,9 +18,9 @@ export default {
       },
     }
     const result = await APIhandler(config)
-    return <type.IWeatherNowResponse>result.data
+    return <IWeatherNowResponse>result.data
   },
-  async getWeather36hrs(): Promise<type.IWeather36hrsResponse> {
+  async getWeather36hrs(): Promise<IWeather36hrsResponse> {
     const config: type.IRequestConfig = {
       url: 'F-C0032-001',
       type: weather,
@@ -27,6 +29,6 @@ export default {
       },
     }
     const result = await APIhandler(config)
-    return <type.IWeather36hrsResponse>result.data
+    return <IWeather36hrsResponse>result.data
   },
 }
