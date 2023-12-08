@@ -4,7 +4,7 @@ import App from './App.tsx'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { store } from './redux/store.ts'
+import { store } from './redux/counterSlice.ts'
 import './assets/index.css'
 import './assets/style.scss'
 

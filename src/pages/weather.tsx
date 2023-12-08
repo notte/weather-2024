@@ -7,15 +7,12 @@ import { useEffect } from 'react'
 import * as type from '../types/interface'
 
 const weather = () => {
-  const weather = useSelector(
-    (state: { weather: { now: type.INowData[] } }) => state.weather.now
-  )
+  const weatherNow = useSelector((state: { now: type.INowData[] }) => state.now)
 
   return (
     <>
       <WeatherNowRequest />
-      <Weather36hrsRequest />
-      <Map {...weather} />
+      <Map {...weatherNow} />
       <City />
     </>
   )

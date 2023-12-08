@@ -1,25 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, configureStore } from '@reduxjs/toolkit'
 import * as type from '../types/interface'
 import { Location } from '../types/response/weather-36hrs'
 import { concat } from 'lodash'
 import { allCity } from '../assets/data'
 
-const counterSlice = createSlice({
-  name: 'weather',
-  initialState: {
-    now: concat([], allCity) as type.INowData[],
-    hours: [] as Location[],
-  },
+const nowSlice = createSlice({
+  name: 'now',
+  initialState: concat([], allCity) as type.INowData[],
   reducers: {
-    SetWeatherNowResponse: (state, action) => {
-      return { ...state, now: action.payload }
-    },
-    SetWeather36hrsResponse: (state, action) => {
-      return { ...state, hours: action.payload }
+    setWeatherNowResponse: (state, action) => {
+      return action.payload
     },
   },
 })
 
-export const { SetWeatherNowResponse, SetWeather36hrsResponse } =
-  counterSlice.actions
-export default counterSlice.reducer
+const hoursSlice = createSlice({
+  name: 'hours',
+  initialState: [] as Location[],
+  reducers: {
+    setWeather36hrsResponse: (state, action) => {
+      return action.payload
+    },
+  },
+})
+
+export const { setWeatherNowResponse } = nowSlice.actions
+export const { setWeather36hrsResponse } = hoursSlice.actions
+
+export const store = configureStore({
+  reducer: {
+    now: nowSlice.reducer,
+    hours: hoursSlice.reducer,
+  },
+})

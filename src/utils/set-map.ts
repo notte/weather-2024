@@ -1,11 +1,11 @@
-import { replace } from 'lodash'
+import { replace, reduce, indexOf } from 'lodash'
 
 const weatherMap: { [key: string]: string } = {
+  多雲: 'clouds-icon',
   雨: 'rain-icon',
   霧: 'fog-icon',
   靄: 'fog-icon',
   陰: 'cloudy-icon',
-  多雲: 'clouds-icon',
   晴: 'sun-icon',
   雪: 'snow-icon',
   雷: 'storm-icon',
@@ -14,14 +14,37 @@ const weatherMap: { [key: string]: string } = {
 
 function setWeather() {
   return (weather: string): string => {
-    const regExp = new RegExp(/(雨|陰|晴|雪|雷|霧|靄|多雲|冰雹)/, 'g')
+    const priorityWeather = [
+      '晴',
+      '雨',
+      '陰',
+      '雪',
+      '雷',
+      '霧',
+      '靄',
+      '冰雹',
+      '多雲',
+    ]
+
+    const regExp = new RegExp(`(${priorityWeather.join('|')})`, 'g')
     const weatherArr = weather.match(regExp)
 
     let checkWeather = ''
     if (weatherArr) {
       weatherArr!.length > 1 && weather.includes('雨')
         ? (checkWeather = '雨')
-        : (checkWeather = weatherArr![0])
+        : (checkWeather =
+            priorityWeather[
+              reduce(
+                weatherArr,
+                (prev, work) => {
+                  const index = indexOf(priorityWeather, work)
+                  if (index > prev) return index
+                  return prev
+                },
+                0
+              )
+            ])
     }
 
     return weatherMap[checkWeather]

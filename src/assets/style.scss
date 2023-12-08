@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/earlyaccess/notosanstc.css');
 
+.marker-city-popup {
+  @apply w-28 text-center;
+
+  h3 {
+    @apply text-lg font-bold;
+
+    color: #0089a7;
+  }
+}
+
 body {
   @apply w-screen h-screen overflow-hidden;
 
@@ -82,7 +92,50 @@ body {
 
           /* 36 小時預報 */
           .hours36 {
-            padding: 10px;
+            @apply p-3 text-center;
+
+            h3 {
+              @apply font-bold text-lg;
+
+              color: #111719;
+            }
+
+            .weather-hours {
+              @apply flex font-bold;
+
+              .first,
+              .sec,
+              .third {
+                @apply text-sm flex-1 p-5 text-center flex justify-center items-center flex-col;
+
+                color: #111719;
+
+                .weather-icon {
+                  @apply w-20 h-20 bg-no-repeat bg-cover bg-center my-5;
+                }
+
+                .rain {
+                  color: #0089a7;
+                }
+
+                .feel {
+                  @apply text-xs;
+
+                  color: #525151;
+                }
+              }
+
+              .third {
+                @apply border-b-0;
+              }
+            }
+
+            button {
+              @apply font-bold text-sm px-6 py-1 rounded-2xl;
+
+              background: #0089a7;
+              color: #fff;
+            }
           }
         }
       }
@@ -91,16 +144,6 @@ body {
 }
 
 /* icon 設定 */
-
-.marker-city-popup {
-  @apply w-28 text-center;
-
-  h3 {
-    @apply text-lg font-bold;
-
-    color: #0089a7;
-  }
-}
 
 .mapboxgl-marker {
   @apply w-11 h-11 bg-no-repeat bg-center cursor-pointer rounded-full;
