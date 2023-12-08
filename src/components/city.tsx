@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import City36hrs from '../containers/weather36hrsRequest.tsx'
 import EventBus from '../utils/event-bus'
 import { getCityName } from '../utils/set-map.ts'
 
@@ -22,6 +23,9 @@ const city = () => {
           <p>點擊城市看詳細</p>
         </div>
       )}
+      <div className="city-container">
+        <City36hrs />
+      </div>
     </>
   )
 }

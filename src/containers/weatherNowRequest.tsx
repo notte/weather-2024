@@ -1,7 +1,7 @@
 import api from '../services/api'
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetWeatherNowRequest } from '../redux/counterSlice'
+import { SetWeatherNowResponse } from '../redux/counterSlice'
 import { filter, includes, map } from 'lodash'
 import { stations } from '../assets/data'
 import * as type from '../types/interface'
@@ -34,7 +34,7 @@ const weatherNowRequest = () => {
         return includes(stations, item.StationName)
       })
       dispatch(
-        GetWeatherNowRequest(
+        SetWeatherNowResponse(
           map(filter_data, (item) => {
             return setWeatherData(weather, item)
           }) as unknown as type.INowData[]
