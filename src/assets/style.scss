@@ -3,6 +3,8 @@
 .marker-city-popup {
   @apply w-28 text-center;
 
+  z-index: 2;
+
   h3 {
     @apply text-lg font-bold;
 
@@ -23,8 +25,9 @@ body {
       @apply w-full h-full flex items-center flex-col;
 
       header {
-        @apply w-full z-10 flex justify-center items-center absolute;
+        @apply w-full flex justify-center items-center absolute;
 
+        z-index: 1;
         height: 8%;
         background: linear-gradient(to bottom, #1117198c 0%, #11171936 100%);
 
@@ -62,7 +65,7 @@ body {
         }
 
         .city-container {
-          @apply absolute w-2/4 p-5 right-0 overflow-y-auto;
+          @apply absolute w-2/4 p-5 right-0 overflow-y-auto overflow-hidden;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;

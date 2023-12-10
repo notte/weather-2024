@@ -4,28 +4,27 @@ import EventBus from '../utils/event-bus'
 import { getCityName } from '../utils/set-map.ts'
 
 const city = () => {
-  const [city, setCity] = useState<string>('')
+  const [cityhover, setCityHover] = useState<string>('')
 
   useEffect(() => {
-    const subscription = EventBus.on('city-hover', (data) => {
-      setCity(data)
+    const subscriptionHover = EventBus.on('city-hover', (data) => {
+      setCityHover(data)
     })
 
     return () => {
-      subscription.off('city-hover')
+      subscriptionHover.off('city-hover')
     }
   }, [])
   return (
     <>
-      {city && (
+      {cityhover && (
         <div className="city-container">
-          <h1>{getCityName(city)}</h1>
+          <h1>{getCityName(cityhover)}</h1>
           <p>點擊城市看詳細</p>
         </div>
       )}
-      <div className="city-container">
-        <City36hrs />
-      </div>
+
+      <City36hrs />
     </>
   )
 }

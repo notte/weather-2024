@@ -51,16 +51,16 @@ const weatherNowRequest = () => {
     map,
   ])
 
-  // useEffect(() => {
-  //   fetchData()
-  //   const intervalId = setInterval(
-  //     () => {
-  //       fetchData()
-  //     },
-  //     15 * 60 * 1000
-  //   )
-  //   return () => clearInterval(intervalId)
-  // }, [])
+  useEffect(() => {
+    fetchData()
+    const intervalId = setInterval(
+      () => {
+        fetchData()
+      },
+      15 * 60 * 1000
+    )
+    return () => clearInterval(intervalId)
+  }, [])
 
   return <></>
 }
