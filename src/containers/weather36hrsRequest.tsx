@@ -1,13 +1,11 @@
-import api from '../services/api'
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setWeather36hrsResponse } from '../redux/counterSlice'
 import { filter } from 'lodash'
 import { getWeatherIcon } from '../utils/set-map.ts'
-import { stations } from '../assets/data'
 import { Location } from '../types/response/weather-36hrs'
 import {} from '../types/response/weather-36hrs'
 import EventBus from '../utils/event-bus'
+import { fetchWeather36hrs } from '../redux/thunks'
 
 const weather36hrsRequest = () => {
   const [cityclick, setCityClick] = useState<boolean>(false)
@@ -15,22 +13,13 @@ const weather36hrsRequest = () => {
   const weatherHours = useSelector(
     (state: { hours: Location[] }) => state.hours
   )
-
   const [single_city, setSingle] = useState<Location>()
 
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await api.getWeather36hrs()
-      dispatch(setWeather36hrsResponse(res.records.location))
-    } finally {
-    }
-  }, [dispatch])
-
   useEffect(() => {
-    fetchData()
+    dispatch(fetchWeather36hrs() as never)
     const intervalId = setInterval(
       () => {
-        fetchData()
+        dispatch(fetchWeather36hrs() as never)
       },
       6 * 60 * 60 * 1000
     )
@@ -46,11 +35,10 @@ const weather36hrsRequest = () => {
 
       setSingle(() => cityData[0] as Location)
     })
-
     return () => {
       subscriptionClick.off('city-click')
     }
-  }, [weatherHours])
+  }, [weatherHours, single_city])
 
   return (
     <>
@@ -181,6 +169,14 @@ const weather36hrsRequest = () => {
               </div>
             </div>
             <button>縣市預報</button>
+            <button
+              className="close"
+              onClick={() => {
+                setCityClick(false)
+              }}
+            >
+              關閉
+            </button>
           </div>
         </div>
       )}

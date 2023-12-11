@@ -17,12 +17,12 @@ const city = () => {
   }, [])
   return (
     <>
-      {cityhover && (
+      {/* {cityhover && (
         <div className="city-container">
           <h1>{getCityName(cityhover)}</h1>
           <p>點擊城市看詳細</p>
         </div>
-      )}
+      )} */}
 
       <City36hrs />
     </>

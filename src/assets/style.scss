@@ -65,7 +65,7 @@ body {
         }
 
         .city-container {
-          @apply absolute w-2/4 p-5 right-0 overflow-y-auto overflow-hidden;
+          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
@@ -95,7 +95,7 @@ body {
 
           /* 36 小時預報 */
           .hours36 {
-            @apply p-3 text-center;
+            @apply text-center;
 
             h3 {
               @apply font-bold text-lg;
@@ -126,6 +126,10 @@ body {
 
                   color: #525151;
                 }
+
+                p {
+                  @apply whitespace-nowrap;
+                }
               }
 
               .third {
@@ -134,10 +138,14 @@ body {
             }
 
             button {
-              @apply font-bold text-sm px-6 py-1 rounded-2xl;
+              @apply font-bold text-sm px-6 py-1 rounded-2xl mx-2;
 
               background: #0089a7;
               color: #fff;
+            }
+
+            button.close {
+              background: #054d5e;
             }
           }
         }
@@ -186,4 +194,29 @@ body {
 
 .storm-icon {
   background-image: url('/weather_icon/storm.png');
+}
+
+/* 空氣品質設定 */
+.good {
+  color: #00774f;
+}
+
+.moderate {
+  color: #ffc400;
+}
+
+.sensitive {
+  color: #e07007;
+}
+
+.unhealthy {
+  color: #d80d0d;
+}
+
+.very-unhealthy {
+  color: #5500c4;
+}
+
+.hazardous {
+  color: #3b0b0b;
 }

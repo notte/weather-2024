@@ -9,7 +9,7 @@ export interface IAllCity {
 export interface IRequestConfig {
   url: string
   type: status.APIStatus
-  params: AxiosRequestConfig['params']
+  params?: AxiosRequestConfig['params']
 }
 
 // 被處理過的資料
@@ -18,4 +18,6 @@ export interface INowData {
   coordinates: number[]
   Weather?: string
   AirTemperature?: number
+  aqi?: number
+  status?: string
 }
