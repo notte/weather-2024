@@ -66,51 +66,6 @@ function handler() {
   }
 }
 
-// async function handler(type: Status.APIStatus): Promise<AxiosResponse> {
-//   if (type === air) {
-//     setConfig((config) => ({
-//       ...config,
-//       headers: { api_key: airToken },
-//       baseURL: airURL,
-//     }))
-//   }
-
-//   if (type === weather) {
-//     setConfig((config) => ({
-//       ...config,
-//       headers: { Authorization: weatherToken },
-//       baseURL: weatherURL,
-//     }))
-//   }
-//   const instance = axios.create()
-
-//   instance.interceptors.request.use(
-//     (config) => {
-//       return config
-//     },
-//     (error) => {
-//       requestFail(error)
-//     }
-//   )
-//   instance.interceptors.response.use(
-//     (response) => {
-//       return response
-//     },
-//     (error) => {
-//       responseFail(error)
-//     }
-//   )
-
-//   let result
-
-//   try {
-//     result = await instance.request(config)
-//     return Promise.resolve(result)
-//   } catch (error) {
-//     return Promise.reject(error)
-//   }
-// }
-
 const APIhandler = handler()
 
 export default APIhandler

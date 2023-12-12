@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import api from '../services/api'
 import { stations, observation } from '../assets/data'
 import { filter, includes, map } from 'lodash'
 import { Station } from '../types/response/weather-now'
 import { Record } from '../types/response/air-now'
 import { Location } from '../types/response/weather-36hrs'
-import * as type from '../types/interface'
 import { allCity } from '../assets/data'
+import * as type from '../types/interface'
+import api from '../services/api'
 
 const setWeatherData = (arr: type.INowData[], obj: Station) => {
   for (let i = 0; i < arr.length; i++) {

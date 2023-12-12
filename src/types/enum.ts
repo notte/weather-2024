@@ -27,15 +27,3 @@ export enum APIStatus {
   weather = 'weather',
   air = 'air',
 }
-
-export enum weatherStatus {
-  clouds = '多雲',
-  cloudy = '陰',
-  sun = '晴',
-  rain = '雨',
-  thunder = '雷',
-  haze = '霾',
-  fog = '霧',
-  snow = '雪',
-  hail = '冰雹',
-}

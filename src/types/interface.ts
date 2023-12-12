@@ -1,11 +1,6 @@
 import * as status from '../types/enum'
 import { AxiosRequestConfig } from 'axios'
 
-export interface IAllCity {
-  COUNTYNAME: string
-  coordinates: number[]
-}
-
 export interface IRequestConfig {
   url: string
   type: status.APIStatus

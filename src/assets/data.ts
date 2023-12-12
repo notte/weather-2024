@@ -131,4 +131,5 @@ export const observation = [
   '宜蘭',
   '馬祖',
   '馬公',
+  '金門',
 ]

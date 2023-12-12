@@ -59,5 +59,17 @@ function setCityName() {
   }
 }
 
+function setAir() {
+  return (aqi: number): string | undefined => {
+    if (aqi <= 50) return 'good'
+    if (aqi > 50 && aqi <= 100) return 'moderate'
+    if (aqi > 100 && aqi <= 150) return 'sensitive'
+    if (aqi > 150 && aqi <= 200) return 'unhealthy'
+    if (aqi > 200 && aqi <= 300) return 'very-unhealthy'
+    if (aqi > 300) return 'hazardous'
+  }
+}
+
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
+export const getAirClassName = setAir()

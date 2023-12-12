@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { filter } from 'lodash'
 import { getWeatherIcon } from '../utils/set-map.ts'
 import { Location } from '../types/response/weather-36hrs'
-import {} from '../types/response/weather-36hrs'
-import EventBus from '../utils/event-bus'
 import { fetchWeather36hrs } from '../redux/thunks'
+import EventBus from '../utils/event-bus'
 
 const weather36hrsRequest = () => {
   const [cityclick, setCityClick] = useState<boolean>(false)
@@ -173,6 +172,7 @@ const weather36hrsRequest = () => {
               className="close"
               onClick={() => {
                 setCityClick(false)
+                EventBus.emit('city-close')
               }}
             >
               關閉

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/earlyaccess/notosanstc.css');
 
 .marker-city-popup {
-  @apply w-28 text-center;
+  @apply w-36 text-center;
 
   z-index: 2;
 
@@ -65,7 +65,7 @@ body {
         }
 
         .city-container {
-          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden;
+          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
@@ -152,71 +152,4 @@ body {
       }
     }
   }
-}
-
-/* icon 設定 */
-
-.mapboxgl-marker {
-  @apply w-11 h-11 bg-no-repeat bg-center cursor-pointer rounded-full;
-
-  background-color: #f5f5f5f1;
-  box-shadow: 0 0 5px 5px #11171954;
-  background-size: 60%;
-}
-
-.clouds-icon {
-  background-image: url('/weather_icon/clouds.png');
-}
-
-.cloudy-icon {
-  background-image: url('/weather_icon/cloudy.png');
-}
-
-.fog-icon {
-  background-image: url('/weather_icon/fog.png');
-}
-
-.hail-icon {
-  background-image: url('/weather_icon/hail.png');
-}
-
-.rain-icon {
-  background-image: url('/weather_icon/rain.png');
-}
-
-.snow-icon {
-  background-image: url('/weather_icon/snow.png');
-}
-
-.sun-icon {
-  background-image: url('/weather_icon/sun.png');
-}
-
-.storm-icon {
-  background-image: url('/weather_icon/storm.png');
-}
-
-/* 空氣品質設定 */
-.good {
-  color: #00774f;
-}
-
-.moderate {
-  color: #ffc400;
-}
-
-.sensitive {
-  color: #e07007;
-}
-
-.unhealthy {
-  color: #d80d0d;
-}
-
-.very-unhealthy {
-  color: #5500c4;
-}
-
-.hazardous {
-  color: #3b0b0b;
 }
