@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { filter } from 'lodash'
+
 import { getWeatherIcon } from '../utils/set-map.ts'
 import { Location } from '../types/response/weather-36hrs'
 import { fetchWeather36hrs } from '../redux/thunks'
@@ -9,10 +10,11 @@ import EventBus from '../utils/event-bus'
 const weather36hrsRequest = () => {
   const [cityclick, setCityClick] = useState<boolean>(false)
   const dispatch = useDispatch()
+  const [single_city, setSingle] = useState<Location>()
+
   const weatherHours = useSelector(
     (state: { hours: Location[] }) => state.hours
   )
-  const [single_city, setSingle] = useState<Location>()
 
   useEffect(() => {
     dispatch(fetchWeather36hrs() as never)
@@ -29,15 +31,14 @@ const weather36hrsRequest = () => {
 
   useEffect(() => {
     const subscriptionClick = EventBus.on('city-click', (data) => {
-      setCityClick(true)
       let cityData = filter(weatherHours, (item) => item.locationName === data)
-
       setSingle(() => cityData[0] as Location)
+      setCityClick(true)
     })
     return () => {
       subscriptionClick.off('city-click')
     }
-  }, [weatherHours, single_city])
+  }, [weatherHours])
 
   return (
     <>

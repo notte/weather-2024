@@ -1,11 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import Opitions from './opitions'
-import Loading from './loading'
 
 const layout = () => {
   return (
     <>
-      {/* <Loading /> */}
       <div className="layout">
         <header>
           <div className="container">
