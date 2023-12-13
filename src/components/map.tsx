@@ -29,7 +29,7 @@ const map = (_props: type.INowData[]) => {
   //   }
   //   map.current = new mapboxgl.Map({
   //     container: mapContainer.current as HTMLElement,
-  //     style: 'mapbox://styles/yoyo2023/clp0uor9i00c601r6cyl8g78b',
+  //     style: 'mapbox://styles/yoyo2023/clq357vee000i01r4a67eaap1',
   //     center: [lng, lat],
   //     zoom: zoom,
   //   })

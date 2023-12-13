@@ -47,7 +47,7 @@ body {
             select,
             option,
             select:focus-visible {
-              @apply text-sm font-semibold px-2 py-1 mx-2 rounded-md cursor-pointer w-max;
+              @apply text-sm font-semibold px-2 py-1 rounded-md cursor-pointer w-max;
 
               outline: none;
               color: #111719;
