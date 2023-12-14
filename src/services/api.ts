@@ -40,7 +40,7 @@ export default {
       params: {
         locationName: city,
         sort: 'time',
-        elementName: 'MaxT,MinT,MaxAT,MinAT,T,Wx,PoP12h,UVI,WeatherDescription',
+        elementName: 'MaxT,MinT,MaxAT,MinAT,Wx,PoP12h,UVI,WeatherDescription',
       },
     }
     const result = await APIhandler(config)
