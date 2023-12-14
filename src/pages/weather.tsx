@@ -1,6 +1,7 @@
 import Map from '../components/map'
 import WeatherNowRequest from '../containers/weatherNowRequest'
-import City36hrs from '../containers/weather36hrsRequest.tsx'
+import Weather36hrsRequest from '../containers/weather36hrsRequest'
+import WeatherWeekRequest from '../containers/weatherWeekRequest'
 import { useSelector } from 'react-redux'
 import * as type from '../types/interface'
 
@@ -9,7 +10,8 @@ const weather = () => {
   return (
     <>
       <WeatherNowRequest />
-      <City36hrs />
+      <Weather36hrsRequest />
+      <WeatherWeekRequest />
       <Map {...weatherNow} />
     </>
   )

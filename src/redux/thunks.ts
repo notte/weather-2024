@@ -4,6 +4,7 @@ import { filter, includes, map } from 'lodash'
 import { Station } from '../types/response/weather-now'
 import { Record } from '../types/response/air-now'
 import { Location } from '../types/response/weather-36hrs'
+import { CityWeek } from '../types/response/weather-week'
 import { allCity } from '../assets/data'
 import * as type from '../types/interface'
 import api from '../services/api'
@@ -56,6 +57,19 @@ export const fetchWeather36hrs = createAsyncThunk(
     try {
       const res = await api.getWeather36hrs()
       return res.records.location as Location[]
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      throw error
+    }
+  }
+)
+
+export const fetchWeatherWeek = createAsyncThunk(
+  'fetchWeatherWeek',
+  async (city: string): Promise<CityWeek[]> => {
+    try {
+      const res = await api.getWeatherWeek(city)
+      return res.records.locations[0].location as unknown as CityWeek[]
     } catch (error) {
       console.error('Error fetching data:', error)
       throw error

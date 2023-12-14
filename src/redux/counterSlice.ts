@@ -1,7 +1,13 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 import { Location } from '../types/response/weather-36hrs'
+import { CityWeek } from '../types/response/weather-week'
 import { allCity } from '../assets/data'
-import { fetchWeatherNow, fetchAirNow, fetchWeather36hrs } from './thunks'
+import {
+  fetchWeatherNow,
+  fetchAirNow,
+  fetchWeather36hrs,
+  fetchWeatherWeek,
+} from './thunks'
 import { find } from 'lodash'
 import produce from 'immer'
 import * as type from '../types/interface'
@@ -69,11 +75,7 @@ export const hoursSlice = createSlice({
       .addCase(fetchWeather36hrs.pending, () => {
         EventBus.emit('loading-change', true)
       })
-      .addCase(fetchWeather36hrs.fulfilled, (state, action) => {
-        // const data = produce(state, (draft) => {
-        //   draft = action.payload
-        // })
-        // console.log(data)
+      .addCase(fetchWeather36hrs.fulfilled, (_state, action) => {
         EventBus.emit('loading-change', false)
         return action.payload
       })
@@ -83,9 +85,29 @@ export const hoursSlice = createSlice({
   },
 })
 
+export const cityWeekSlice = createSlice({
+  name: 'cityWeek',
+  initialState: {} as CityWeek,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWeatherWeek.pending, () => {
+        EventBus.emit('loading-change', true)
+      })
+      .addCase(fetchWeatherWeek.fulfilled, (_state, action) => {
+        EventBus.emit('loading-change', false)
+        return action.payload[0] as CityWeek
+      })
+      .addCase(fetchWeatherWeek.rejected, () => {
+        EventBus.emit('loading-change', false)
+      })
+  },
+})
+
 export const store = configureStore({
   reducer: {
     hours: hoursSlice.reducer,
     now: nowSlice.reducer,
+    cityWeek: cityWeekSlice.reducer,
   },
 })
