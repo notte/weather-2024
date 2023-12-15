@@ -1,28 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { map } from 'lodash'
-import { CityWeek } from '../types/response/weather-week.ts'
+import { CityWeek } from '../types/response/weather-week'
 import { fetchWeatherWeek } from '../redux/thunks'
-import { Line } from 'react-chartjs-2'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-} from 'chart.js'
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
+import Line from '../components/chart/line'
+import Table from '../components/chart/table'
+import * as type from '../types/interface'
 
 const weatherWeekRequest = () => {
   const dispatch = useDispatch()
   const weatherCityWeek = useSelector(
     (state: { cityWeek: CityWeek }) => state.cityWeek
   )
-  const [dataT, setDataT] = useState<{
-    label: string[]
-    datasets: { label: string; data: string[]; borderColor: string }[]
-  }>({ label: [], datasets: [] })
+  const [dataT, setDataT] = useState<type.ILineProps>({
+    labels: [],
+    datasets: [],
+  })
 
   useEffect(() => {
     dispatch(fetchWeatherWeek('桃園市') as never)
@@ -40,9 +33,19 @@ const weatherWeekRequest = () => {
   useEffect(() => {
     if (!weatherCityWeek.weatherElement) return
     setDataT(() => {
-      const labels = map(
-        weatherCityWeek.weatherElement[0].time,
-        (item) => item.startTime + ' - ' + item.endTime
+      const label = map(
+        map(
+          weatherCityWeek.weatherElement[0].time,
+          (item) => item.startTime + ' - ' + item.endTime
+        ),
+        (item) => {
+          let array = item.split(' - ')
+          if (array[0].includes('06:00:00')) {
+            return array[0].substring(5, 10) + ' 白天'
+          } else {
+            return '晚上'
+          }
+        }
       )
 
       const lowTemps = map(
@@ -56,7 +59,7 @@ const weatherWeekRequest = () => {
       )
 
       return {
-        label: labels,
+        labels: label,
         datasets: [
           {
             label: '最低溫度',
@@ -75,13 +78,11 @@ const weatherWeekRequest = () => {
 
   return (
     <>
-      <Line
-        options={{
-          responsive: true,
-          plugins: {},
-        }}
-        data={dataT}
-      />
+      <div className="city-container">
+        <h3>{weatherCityWeek.locationName}</h3>
+        <Table />
+        <Line {...dataT} />
+      </div>
     </>
   )
 }

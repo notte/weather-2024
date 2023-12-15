@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { filter } from 'lodash'
-
 import { getWeatherIcon } from '../utils/set-map.ts'
 import { Location } from '../types/response/weather-36hrs'
 import { fetchWeather36hrs } from '../redux/thunks'

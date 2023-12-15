@@ -16,3 +16,8 @@ export interface INowData {
   aqi?: number
   status?: string
 }
+
+export interface ILineProps {
+  labels: string[]
+  datasets: { label: string; data: string[]; borderColor: string }[]
+}
