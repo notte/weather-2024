@@ -80,7 +80,7 @@ const weatherWeekRequest = () => {
     <>
       <div className="city-container">
         <h3>{weatherCityWeek.locationName}</h3>
-        <Table />
+        <Table {...weatherCityWeek} />
         <Line {...dataT} />
       </div>
     </>

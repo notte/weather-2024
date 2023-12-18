@@ -7,6 +7,7 @@ import {
 import { CityWeek } from '../../types/response/weather-week'
 import * as type from '../../types/table'
 import { useEffect, useState, useReducer } from 'react'
+import { getWeatherWeek } from '../../utils/helpers'
 
 type Person = {
   firstName: string
@@ -16,7 +17,8 @@ type Person = {
   status: string
   progress: number
 }
-const table = () => {
+
+const table = (prop: any) => {
   // const columnHelper = createColumnHelper<type.ICityWeekTable>()
   const columnHelper = createColumnHelper<Person>()
 
@@ -85,36 +87,51 @@ const table = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
-  useEffect(() => {}, [])
+
+  useEffect(() => {
+    getWeatherWeek(prop)
+  }, [JSON.stringify(prop)])
+
   return (
     <div className="p-2">
       <table>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
+          {table.getHeaderGroups().map((headerGroup) => {
+            return (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
         <tfoot>
           {table.getFooterGroups().map((footerGroup) => (

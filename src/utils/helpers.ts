@@ -1,4 +1,6 @@
-import { replace, reduce, indexOf } from 'lodash'
+import { replace, reduce, indexOf, map } from 'lodash'
+import { CityWeek } from '../types/response/weather-week'
+import { ICityWeekData } from '../types/table'
 
 const weatherMap: { [key: string]: string } = {
   多雲: 'clouds-icon',
@@ -70,6 +72,24 @@ function setAir() {
   }
 }
 
+function setWeatherWeek() {
+  return (prop: CityWeek) => {
+    const data = {
+      locationName: prop.locationName,
+      lat: prop.lat,
+      lon: prop.lon,
+    }
+    const time = map(prop, (item: any) => {
+      if (item.weatherElement) {
+        console.log(item.weatherElement)
+      }
+      return +item.geocode > 3000
+    })
+    console.log(time)
+  }
+}
+
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
 export const getAirClassName = setAir()
+export const getWeatherWeek = setWeatherWeek()

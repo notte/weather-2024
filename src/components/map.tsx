@@ -6,7 +6,7 @@ import {
   getWeatherIcon,
   getCityName,
   getAirClassName,
-} from '../utils/set-map.ts'
+} from '../utils/helpers.ts'
 import { forEach } from 'lodash'
 import EventBus from '../utils/event-bus'
 
