@@ -1,5 +1,5 @@
 import { replace, reduce, indexOf, map } from 'lodash'
-import { CityWeek } from '../types/response/weather-week'
+import { CityWeek, WeatherElement, Time } from '../types/response/weather-week'
 import { ICityWeekData } from '../types/table'
 
 const weatherMap: { [key: string]: string } = {
@@ -72,22 +72,88 @@ function setAir() {
   }
 }
 
+// 每一欄位以日期為基礎，欄位名稱是動態抓取的日期
+// 資料物件陣列 [{},{}...] 在表格以橫向為一個完整物件
+// 也就是說，每個物件放的是 同一天 的資料，陣列則以日期來排序
+// 抓取的 API 是一週預報，所以最後陣列長度為 7，也就是說至少要跑七遍
+
+const week = [
+  { day: '' },
+  { day: '' },
+  { day: '' },
+  { day: '' },
+  { day: '' },
+  { day: '' },
+  { day: '' },
+]
+
 function setWeatherWeek() {
   return (prop: CityWeek) => {
-    const data = {
-      locationName: prop.locationName,
-      lat: prop.lat,
-      lon: prop.lon,
-    }
-    const time = map(prop, (item: any) => {
-      if (item.weatherElement) {
-        console.log(item.weatherElement)
-      }
-      return +item.geocode > 3000
-    })
-    console.log(time)
+    const array = prop.weatherElement
+    console.log(array)
   }
 }
+
+// function setWeatherWeek() {
+//   return (prop: CityWeek) => {
+//     const array = Object.entries(prop)
+//     let item = {}
+//     let time: string[] = []
+
+//     for (let index in array) {
+//       if (array[index][0] === 'weatherElement') {
+//         item = map(array[index][1], (item: WeatherElement) => {
+//           return {
+//             element: item.elementName,
+//             description: item.description,
+//             measures: item.time[0].elementValue[0].measures,
+//             value: map(item.time, (each) => {
+//               return each.elementValue[0].value
+//             }),
+//           }
+//         })
+
+//         time = map(array[index][1][0].time, (item: Time) => {
+//           return item.startTime
+//         })
+//       }
+//     }
+
+//     return {
+//       locationName: prop.locationName,
+//       lat: prop.lat,
+//       lon: prop.lon,
+//       weatherElement: item,
+//       time,
+//     } as ICityWeekData
+//   }
+// }
+
+// function setWeatherWeek() {
+//   return (prop: CityWeek) => {
+//     const array = Object.entries(prop)
+//     let item = {}
+
+//     for (let index in array) {
+//       if (array[index][0] === 'weatherElement') {
+//         console.log(array[index][1])
+//         item = map(array[index][1], (item: WeatherElement) => {
+//           return {
+//             description: item.description,
+//             data: item.time,
+//           }
+//         })
+//       }
+//     }
+
+//     return {
+//       locationName: prop.locationName,
+//       lat: prop.lat,
+//       lon: prop.lon,
+//       weatherElement: item,
+//     }
+//   }
+// }
 
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()

@@ -1,9 +1,7 @@
 export interface ICityWeekTable {
   PoP12h: string
-  MinAT: string
-  MaxAT: string
-  MinT: string
-  MaxT: string
+  T: string[]
+  AT: string[]
   Wx: string
   UVI: string
   WeatherDescription: string
@@ -11,6 +9,7 @@ export interface ICityWeekTable {
 
 export interface ICityWeekData {
   locationName: string
+  element: string
   lat: string
   lon: string
   time: string[]
@@ -21,4 +20,12 @@ export interface weatherElement {
   description: string
   measures: string
   value: string[]
+}
+
+export interface ICityDay {
+  day: string
+  T: string[]
+  AT: string[]
+  Wx: string[]
+  UVI: string
 }
