@@ -6,60 +6,95 @@ import {
 } from '@tanstack/react-table'
 import { CityWeek } from '../../types/response/weather-week'
 import * as type from '../../types/table'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import { getWeatherWeek } from '../../utils/helpers'
 
+type Person = {
+  firstName: string
+  lastName: string
+  age: number
+  visits: number
+  status: string
+  progress: number
+}
+
 const table = (prop: any) => {
-  const columnHelper = createColumnHelper<type.ICityWeekTable>()
-  const [data, setData] = useState<type.ICityWeekData>()
+  // const columnHelper = createColumnHelper<type.ICityWeekTable>()
+  const columnHelper = createColumnHelper<Person>()
+
+  const rerender = useReducer(() => ({}), {})[1]
+
+  const defaultData: Person[] = [
+    {
+      firstName: 'tanner',
+      lastName: 'linsley',
+      age: 24,
+      visits: 100,
+      status: 'In Relationship',
+      progress: 50,
+    },
+    {
+      firstName: 'tandy',
+      lastName: 'miller',
+      age: 40,
+      visits: 40,
+      status: 'Single',
+      progress: 80,
+    },
+    {
+      firstName: 'joe',
+      lastName: 'dirte',
+      age: 45,
+      visits: 20,
+      status: 'Complicated',
+      progress: 10,
+    },
+  ]
+  const [data, setData] = useState(() => [...defaultData])
 
   const columns = [
-    columnHelper.accessor('PoP12h', {
+    columnHelper.accessor('firstName', {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('T', {
+    columnHelper.accessor((row) => row.lastName, {
+      id: 'lastName',
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Last Name</span>,
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('AT', {
+    columnHelper.accessor('age', {
       header: () => 'Age',
       cell: (info) => info.renderValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('Wx', {
+    columnHelper.accessor('visits', {
       header: () => <span>Visits</span>,
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('UVI', {
+    columnHelper.accessor('status', {
       header: 'Status',
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('WeatherDescription', {
+    columnHelper.accessor('progress', {
       header: 'Profile Progress',
       footer: (info) => info.column.id,
     }),
   ]
 
-  // const table = useReactTable({
-  //   data,
-  //   columns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // })
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
 
   useEffect(() => {
-    const data = getWeatherWeek(prop)
-    setData(() => data)
-  }, [JSON.stringify(data)])
-
-  useEffect(() => {
-    console.log(data)
-  }, [JSON.stringify(data)])
+    console.log(getWeatherWeek(prop))
+  }, [JSON.stringify(prop)])
 
   return (
-    <>
-      {/* <table>
+    <div className="p-2">
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {
             return (
@@ -98,8 +133,28 @@ const table = (prop: any) => {
             )
           })}
         </tbody>
-      </table> */}
-    </>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
+      </table>
+      <div className="h-4" />
+      <button onClick={() => rerender()} className="border p-2">
+        Rerender
+      </button>
+    </div>
   )
 }
 

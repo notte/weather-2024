@@ -24,8 +24,16 @@ export interface weatherElement {
 
 export interface ICityDay {
   day: string
-  T: string[]
-  AT: string[]
+  MaxT: string[]
+  MaxAT: string[]
+  MinT: string[]
+  MinAT: string[]
+  WeatherDescription: string[]
   Wx: string[]
-  UVI: string
+  UVI: string[]
+}
+
+export interface IWeekItem {
+  day: string
+  [key: string]: string | string[]
 }
