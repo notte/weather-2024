@@ -28,9 +28,9 @@ export interface ICityDay {
   MaxAT: string[]
   MinT: string[]
   MinAT: string[]
-  WeatherDescription: string[]
   Wx: string[]
   UVI: string[]
+  WeatherDescription?: string[]
 }
 
 export interface IWeekItem {

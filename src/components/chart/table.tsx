@@ -3,103 +3,42 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  Column,
 } from '@tanstack/react-table'
-import { CityWeek } from '../../types/response/weather-week'
 import * as type from '../../types/table'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { getWeatherWeek } from '../../utils/helpers'
+import { map } from 'lodash'
 
 const table = (prop: any) => {
   const columnHelper = createColumnHelper()
   const [data, setData] = useState<type.IWeekItem[]>()
-
-  const columns = [
-    columnHelper.accessor('AT', {
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('T', {
-      cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Last Name</span>,
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('AT', {
-      header: () => 'Age',
-      cell: (info) => info.renderValue(),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('Wx', {
-      header: () => <span>Visits</span>,
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('UVI', {
-      header: 'Status',
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('WeatherDescription', {
-      header: 'Profile Progress',
-      footer: (info) => info.column.id,
-    }),
-  ]
-
-  // const table = useReactTable({
-  //   data,
-  //   columns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // })
 
   useEffect(() => {
     setData(() => getWeatherWeek(prop))
   }, [prop])
 
   useEffect(() => {
-    console.log(data)
+    if (data && data?.length > 0) {
+      const columns: any = useMemo(() => {
+        return map(data, (key) => {
+          console.log(key)
+          return {
+            Header: key,
+            accessor: key,
+          }
+        })
+      }, [JSON.stringify(data)])
+
+      const table = useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+      })
+    }
   }, [JSON.stringify(data)])
 
-  return (
-    <>
-      {/* <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => {
-            return (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table> */}
-    </>
-  )
+  return <></>
 }
 
 export default table

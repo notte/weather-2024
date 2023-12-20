@@ -92,7 +92,7 @@ function setWeatherWeek() {
     if (!array) return
     let days = [
       ...new Set(map(array[0].time, (item) => item.startTime.substring(0, 10))),
-    ].splice(1)
+    ].splice(0)
 
     for (let i = 0; i < days.length; i++) {
       week[i].day = days[i]
