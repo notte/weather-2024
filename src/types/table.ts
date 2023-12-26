@@ -4,12 +4,5 @@ export interface IWeekItem {
 }
 
 export interface IWeatherWeekData {
-  day: string
-  locationName: string
-  MaxAT: string[][]
-  MinAT: string[][]
-  MaxT: string[][]
-  MinT: string[][]
-  Wx: string[][]
-  UVI: string[]
+  [key: string]: { [key: string]: string[] }
 }

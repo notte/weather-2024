@@ -82,23 +82,24 @@ function setAir() {
 */
 
 function setWeatherWeekData() {
-  return (prop: CityWeek): IWeatherWeekData[] | undefined => {
-    let result: { [key: string]: string[] | string[][] } = {}
+  return (prop: CityWeek): IWeatherWeekData | undefined => {
+    let result: IWeatherWeekData = {}
     const array: WeatherElement[] = prop.weatherElement
     if (array) {
       for (let i = 0; i < array.length; i++) {
         if (array[i].elementName === 'WeatherDescription') continue
         if (array[i].elementName === 'PoP12h') continue
-        const data = map(array[i].time, (item) => {
+
+        forEach(array[i].time, (item) => {
           const key = item.startTime.substring(0, 10)
-          return {
-            [key]: item.elementValue[0].value,
-          }
+          const elementName = array[i].elementName
+          if (!result[key]) result[key] = {}
+          if (!result[key][elementName]) result[key][elementName] = []
+          result[key][elementName].push(item.elementValue[0].value)
         })
-        console.log(data)
       }
     }
-    return undefined
+    return result
   }
 }
 
