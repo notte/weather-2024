@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import mapboxgl, { Map } from 'mapbox-gl'
-import * as type from '../types/interface.ts'
+import * as type from '../types/common.ts'
 import data from '../assets/twCounty2010.geo.json'
 import {
   getWeatherIcon,

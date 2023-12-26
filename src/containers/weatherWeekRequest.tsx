@@ -5,7 +5,7 @@ import { CityWeek } from '../types/response/weather-week'
 import { fetchWeatherWeek } from '../redux/thunks'
 import Line from '../components/chart/line'
 import Table from '../components/chart/table'
-import * as type from '../types/interface'
+import * as type from '../types/common'
 
 const weatherWeekRequest = () => {
   const dispatch = useDispatch()

@@ -3,7 +3,7 @@ import { IWeatherNowResponse } from '../types/response/weather-now'
 import { IWeather36hrsResponse } from '../types/response/weather-36hrs'
 import { IWeatherWeekResponse } from '../types/response/weather-week'
 import { IAirNowResponse } from '../types/response/air-now'
-import * as type from '../types/interface'
+import * as type from '../types/common'
 import * as status from '../types/enum'
 
 const air = status.APIStatus.air

@@ -10,7 +10,7 @@ import {
 } from './thunks'
 import { find } from 'lodash'
 import produce from 'immer'
-import * as type from '../types/interface'
+import * as type from '../types/common'
 import EventBus from '../utils/event-bus'
 
 export const nowSlice = createSlice({

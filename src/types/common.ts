@@ -1,4 +1,4 @@
-import * as status from '../types/enum'
+import * as status from './enum'
 import { AxiosRequestConfig } from 'axios'
 
 export interface IRequestConfig {

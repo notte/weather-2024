@@ -1,5 +1,5 @@
 import { Line } from 'react-chartjs-2'
-import * as type from '../../types/interface'
+import * as type from '../../types/common'
 import {
   Chart as ChartJS,
   CategoryScale,

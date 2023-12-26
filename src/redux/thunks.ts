@@ -6,7 +6,7 @@ import { Record } from '../types/response/air-now'
 import { Location } from '../types/response/weather-36hrs'
 import { CityWeek } from '../types/response/weather-week'
 import { allCity } from '../assets/data'
-import * as type from '../types/interface'
+import * as type from '../types/common'
 import api from '../services/api'
 
 const setWeatherData = (arr: type.INowData[], obj: Station) => {

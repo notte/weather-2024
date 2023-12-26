@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { requestFail, responseFail } from './error-handler'
 import * as status from '../types/enum'
-import * as type from '../types/interface'
+import * as type from '../types/common'
 
 const weatherToken = 'CWA-E05A3C78-2C28-4258-9FDD-137E9CCC104F'
 const weatherURL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/'
