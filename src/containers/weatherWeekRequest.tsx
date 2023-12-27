@@ -84,7 +84,7 @@ const weatherWeekRequest = () => {
       <div className="city-container">
         <h3>{weatherCityWeek.locationName}</h3>
         <Table
-          {...(getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[])}
+          weekData={getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[]}
         />
         <Line {...dataT} />
       </div>
