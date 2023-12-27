@@ -4,7 +4,7 @@ export interface IWeekItem {
 }
 
 export interface IWorkData {
-  [key: string]: { [key: string]: string[] }
+  [key: string]: string[]
 }
 
 export interface IWeatherWeekData {

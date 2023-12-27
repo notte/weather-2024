@@ -6,7 +6,7 @@ import { fetchWeatherWeek } from '../redux/thunks'
 import { getWeatherWeekData } from '../utils/helpers'
 import Line from '../components/chart/line'
 import Table from '../components/chart/table'
-import { IWeatherWeekData } from '../types/table'
+import { IWorkData } from '../types/table'
 
 import * as type from '../types/common'
 
@@ -83,9 +83,7 @@ const weatherWeekRequest = () => {
     <>
       <div className="city-container">
         <h3>{weatherCityWeek.locationName}</h3>
-        <Table
-          {...(getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[])}
-        />
+        <Table {...(getWeatherWeekData(weatherCityWeek) as IWorkData[])} />
         <Line {...dataT} />
       </div>
     </>
