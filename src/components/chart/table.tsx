@@ -1,44 +1,73 @@
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
-  Column,
+  flexRender,
+  Table,
 } from '@tanstack/react-table'
-import * as type from '../../types/table'
-import { useEffect, useState, useMemo } from 'react'
-import { getWeatherWeekData } from '../../utils/helpers'
-import { CityWeek } from '../../types/response/weather-week'
+import { useMemo } from 'react'
 import { IWeatherWeekData } from '../../types/table'
 import { map } from 'lodash'
 
-const table = (prop: CityWeek) => {
-  const columnHelper = createColumnHelper()
-  const [data, setData] = useState<IWeatherWeekData>()
+const table = (prop: IWeatherWeekData[]) => {
+  const columnHelper = createColumnHelper<IWeatherWeekData>()
+  let tableData: Table<IWeatherWeekData> | undefined
+  const columns = useMemo(() => {
+    if (prop) {
+      return Object.keys(prop).map((date) => {
+        return columnHelper.accessor((row) => row[date], {
+          header: date,
+          cell: (info) => info.getValue(),
+        })
+      })
+    }
+    return []
+  }, [columnHelper, prop])
 
-  useEffect(() => {
-    setData(() => getWeatherWeekData(prop))
-  }, [JSON.stringify(prop)])
+  if (prop && prop?.length > 0) {
+    tableData = useReactTable({
+      data: prop,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+    })
+  }
 
-  useEffect(() => {
-    if (data) console.log(data)
-    // const columns: any = useMemo(() => {
-    //   return map(data, (key) => {
-    //     console.log(key)
-    //     return {
-    //       Header: key,
-    //       accessor: key,
-    //     }
-    //   })
-    // }, [JSON.stringify(data)])
-    // const table = useReactTable({
-    //   data,
-    //   columns,
-    //   getCoreRowModel: getCoreRowModel(),
-    // })
-  }, [data])
-
-  return <></>
+  return (
+    <>
+      <h3>title</h3>
+      {tableData && (
+        <table>
+          <thead>
+            {map(tableData.getHeaderGroups(), (headerGroup) => (
+              <tr key={headerGroup.id}>
+                {map(headerGroup.headers, (column) => (
+                  <th key={column.id}>
+                    {column.isPlaceholder
+                      ? null
+                      : flexRender(
+                          column.column.columnDef.header,
+                          column.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {map(tableData.getRowModel().rows, (row) => (
+              <tr key={row.id}>
+                {map(row.getVisibleCells(), (cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </>
+  )
 }
 
 export default table

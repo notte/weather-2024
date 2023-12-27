@@ -1,7 +1,6 @@
 import { replace, reduce, indexOf, forEach } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
-import { IWeatherWeekData } from '../types/table'
-import { map } from 'lodash'
+import { IWeatherWeekData, IWorkData } from '../types/table'
 
 function setWeather() {
   const weatherMap: { [key: string]: string } = {
@@ -71,19 +70,9 @@ function setAir() {
   }
 }
 
-/* 
-  day: string
-  locationName: string
-  MaxAT: string[]
-  MinAT: string[]
-  MaxT: string[]
-  MinT: string[]
-  Wx: string[]
-*/
-
 function setWeatherWeekData() {
-  return (prop: CityWeek): IWeatherWeekData | undefined => {
-    let result: IWeatherWeekData = {}
+  return (prop: CityWeek): IWeatherWeekData[] | undefined => {
+    let result: IWorkData = {}
     const array: WeatherElement[] = prop.weatherElement
     if (array) {
       for (let i = 0; i < array.length; i++) {
@@ -99,7 +88,10 @@ function setWeatherWeekData() {
         })
       }
     }
-    return result
+    return Object.entries(result as IWorkData).map(([date, data]) => ({
+      date,
+      ...data,
+    }))
   }
 }
 

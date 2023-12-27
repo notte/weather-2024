@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { map } from 'lodash'
 import { CityWeek } from '../types/response/weather-week'
 import { fetchWeatherWeek } from '../redux/thunks'
+import { getWeatherWeekData } from '../utils/helpers'
 import Line from '../components/chart/line'
 import Table from '../components/chart/table'
+import { IWeatherWeekData } from '../types/table'
+
 import * as type from '../types/common'
 
 const weatherWeekRequest = () => {
@@ -80,7 +83,9 @@ const weatherWeekRequest = () => {
     <>
       <div className="city-container">
         <h3>{weatherCityWeek.locationName}</h3>
-        <Table {...weatherCityWeek} />
+        <Table
+          {...(getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[])}
+        />
         <Line {...dataT} />
       </div>
     </>
