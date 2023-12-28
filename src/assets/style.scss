@@ -65,7 +65,7 @@ body {
         }
 
         .city-container {
-          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10;
+          @apply absolute w-full px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
@@ -153,6 +153,33 @@ body {
           .city-week {
             h3 {
               color: #000;
+            }
+          }
+
+          /* 表格 */
+          table {
+            @apply w-full text-base whitespace-nowrap;
+
+            th,
+            td {
+              @apply p-2;
+            }
+
+            thead {
+              background: #97c0c9;
+              color: #25606d;
+            }
+
+            tbody {
+              @apply text-center;
+
+              tr {
+                border-bottom: 1px dashed #617b81;
+              }
+
+              tr:last-child {
+                border-bottom: none;
+              }
             }
           }
         }

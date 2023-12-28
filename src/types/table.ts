@@ -4,9 +4,13 @@ export interface IWeekItem {
 }
 
 export interface IWorkData {
-  [key: string]: string[] | string
+  [key: string]: { [key: string]: string[] | string }
 }
 
 export interface IWeatherWeekData {
   [key: string]: { [key: string]: string[] } | string
+}
+
+export interface ITemperature {
+  [key: string]: string[]
 }

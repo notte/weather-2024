@@ -1,6 +1,6 @@
-import { replace, reduce, indexOf, forEach } from 'lodash'
+import { replace, reduce, indexOf, forEach, map } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
-import { IWorkData } from '../types/table'
+import { IWorkData, IWeatherWeekData, ITemperature } from '../types/table'
 
 function setWeather() {
   const weatherMap: { [key: string]: string } = {
@@ -79,19 +79,46 @@ function setWeatherWeekData() {
       for (let i = 0; i < array.length; i++) {
         if (array[i].elementName === 'WeatherDescription') continue
         if (array[i].elementName === 'PoP12h') continue
+        const elementName = array[i].elementName
         obj = {}
         forEach(array[i].time, (item) => {
           const day = item.startTime.substring(0, 10)
 
-          if (!obj[day]) {
-            obj[day] = []
-          }
-          ;(obj[day] as string[]).push(item.elementValue[0].value)
+          if (!obj[elementName]) obj[elementName] = {}
+          if (!obj[elementName][day]) obj[elementName][day] = []
+          ;(obj[elementName][day] as string[]).push(item.elementValue[0].value)
         })
-        obj.elementName = array[i].elementName
         result.push(obj)
       }
       return result
+    }
+  }
+}
+
+function setTemperature() {
+  return (
+    min: IWeatherWeekData,
+    max: IWeatherWeekData
+  ): ITemperature | undefined => {
+    const obj: { [key: string]: string[] } = {}
+    let minArr
+    let maxArr
+    if (min.MinT && max.MaxT) {
+      minArr = Object.entries(min.MinT)
+      maxArr = Object.entries(max.MaxT)
+    }
+    if (min.MinAT && max.MaxAT) {
+      minArr = Object.entries(min.MinAT)
+      maxArr = Object.entries(max.MaxAT)
+    }
+    if (minArr && maxArr) {
+      for (let i = 0; i < minArr.length; i++) {
+        if (!obj[minArr[i][0]]) obj[minArr[i][0]] = []
+        const day = `${minArr[i][1][0]}°C - ${maxArr[i][1][0]}°C`
+        const night = `${minArr[i][1][1]}°C - ${maxArr[i][1][1]}°C`
+        obj[minArr[i][0]].push(day, night)
+      }
+      return obj
     }
   }
 }
@@ -100,3 +127,4 @@ export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
 export const getAirClassName = setAir()
 export const getWeatherWeekData = setWeatherWeekData()
+export const getTemperature = setTemperature()
