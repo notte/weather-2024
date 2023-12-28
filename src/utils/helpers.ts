@@ -86,8 +86,9 @@ function setWeatherWeekData() {
           if (!obj[day]) {
             obj[day] = []
           }
-          obj[day].push(item.elementValue[0].value)
+          ;(obj[day] as string[]).push(item.elementValue[0].value)
         })
+        obj.elementName = array[i].elementName
         result.push(obj)
       }
       return result

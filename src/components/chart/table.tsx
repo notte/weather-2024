@@ -5,14 +5,8 @@ import { map } from 'lodash'
 const table = (prop: { weekData: IWeatherWeekData[] }) => {
   let keys
   useEffect(() => {
-    if (prop.weekData.length > 0) {
-      keys = Object.keys(prop.weekData[0])
-      // console.log(prop.weekData)
-      map(prop.weekData, (item) => {
-        // console.log(item[keys[0]])
-      })
-    }
-  }, [JSON.stringify(prop.weekData)])
+    console.log(prop.weekData)
+  }, [JSON.stringify(prop)])
   return (
     <>
       {prop.weekData && prop.weekData.length > 0 && (
