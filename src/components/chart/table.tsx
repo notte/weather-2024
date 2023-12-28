@@ -1,69 +1,28 @@
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-  flexRender,
-  Table,
-} from '@tanstack/react-table'
-import { useMemo } from 'react'
+import { useEffect } from 'react'
 import { IWeatherWeekData } from '../../types/table'
 import { map } from 'lodash'
 
-const table = (prop: IWeatherWeekData[]) => {
-  const columnHelper = createColumnHelper<IWeatherWeekData>()
-  let tableData: Table<IWeatherWeekData> | undefined
-  const columns = useMemo(() => {
-    if (prop) {
-      return Object.keys(prop).map((date) => {
-        return columnHelper.accessor((row) => row[date], {
-          header: date,
-          cell: (info) => info.getValue(),
-        })
+const table = (prop: { weekData: IWeatherWeekData[] }) => {
+  let keys
+  useEffect(() => {
+    if (prop.weekData.length > 0) {
+      keys = Object.keys(prop.weekData[0])
+      // console.log(prop.weekData)
+      map(prop.weekData, (item) => {
+        // console.log(item[keys[0]])
       })
     }
-    return []
-  }, [columnHelper, prop])
-
-  if (prop && prop?.length > 0) {
-    tableData = useReactTable({
-      data: prop,
-      columns,
-      getCoreRowModel: getCoreRowModel(),
-    })
-  }
-
+  }, [JSON.stringify(prop.weekData)])
   return (
     <>
-      <h3>title</h3>
-      {tableData && (
+      {prop.weekData && prop.weekData.length > 0 && (
         <table>
           <thead>
-            {map(tableData.getHeaderGroups(), (headerGroup) => (
-              <tr key={headerGroup.id}>
-                {map(headerGroup.headers, (column) => (
-                  <th key={column.id}>
-                    {column.isPlaceholder
-                      ? null
-                      : flexRender(
-                          column.column.columnDef.header,
-                          column.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
+            <tr>
+              {keys &&
+                map(keys, (header: string) => <th key={header}>{header}</th>)}
+            </tr>
           </thead>
-          <tbody>
-            {map(tableData.getRowModel().rows, (row) => (
-              <tr key={row.id}>
-                {map(row.getVisibleCells(), (cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
         </table>
       )}
     </>
