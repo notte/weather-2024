@@ -1,6 +1,15 @@
-import { replace, reduce, indexOf, forEach, map } from 'lodash'
+import {
+  replace,
+  reduce,
+  indexOf,
+  forEach,
+  map,
+  includes,
+  entries,
+} from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
-import { IWorkData, IWeatherWeekData, ITemperature } from '../types/table'
+import { IWorkData, IWeatherWeekData, ITemperature, IWx } from '../types/table'
+import * as type from '../types/common'
 
 function setWeather() {
   const weatherMap: { [key: string]: string } = {
@@ -25,29 +34,31 @@ function setWeather() {
     '冰雹',
     '多雲',
   ]
-  return (weather: string): string => {
-    const regExp = new RegExp(`(${priorityWeather.join('|')})`, 'g')
-    const weatherArr = weather.match(regExp)
+  return (weather: string): string | undefined => {
+    if (weather) {
+      const regExp = new RegExp(`(${priorityWeather.join('|')})`, 'g')
+      const weatherArr = weather.match(regExp)
 
-    let checkWeather = ''
-    if (weatherArr) {
-      weatherArr!.length > 1 && weather.includes('雨')
-        ? (checkWeather = '雨')
-        : (checkWeather =
-            priorityWeather[
-              reduce(
-                weatherArr,
-                (prev, work) => {
-                  const index = indexOf(priorityWeather, work)
-                  if (index > prev) return index
-                  return prev
-                },
-                0
-              )
-            ])
+      let checkWeather = ''
+      if (weatherArr) {
+        weatherArr!.length > 1 && weather.includes('雨')
+          ? (checkWeather = '雨')
+          : (checkWeather =
+              priorityWeather[
+                reduce(
+                  weatherArr,
+                  (prev, work) => {
+                    const index = indexOf(priorityWeather, work)
+                    if (index > prev) return index
+                    return prev
+                  },
+                  0
+                )
+              ])
+      }
+
+      return weatherMap[checkWeather]
     }
-
-    return weatherMap[checkWeather]
   }
 }
 
@@ -79,14 +90,16 @@ function setWeatherWeekData() {
       for (let i = 0; i < array.length; i++) {
         if (array[i].elementName === 'WeatherDescription') continue
         if (array[i].elementName === 'PoP12h') continue
+
         const elementName = array[i].elementName
         obj = {}
         forEach(array[i].time, (item) => {
-          const day = item.startTime.substring(0, 10)
+          const day = item.startTime.substring(0, 16)
 
           if (!obj[elementName]) obj[elementName] = {}
-          if (!obj[elementName][day]) obj[elementName][day] = []
-          ;(obj[elementName][day] as string[]).push(item.elementValue[0].value)
+          if (!obj[elementName][day]) {
+            obj[elementName][day] = item.elementValue[0].value
+          }
         })
         result.push(obj)
       }
@@ -100,31 +113,121 @@ function setTemperature() {
     min: IWeatherWeekData,
     max: IWeatherWeekData
   ): ITemperature | undefined => {
-    const obj: { [key: string]: string[] } = {}
+    const obj: { [key: string]: { [key: string]: string } } = {}
     let minArr
     let maxArr
     if (min.MinT && max.MaxT) {
-      minArr = Object.entries(min.MinT)
-      maxArr = Object.entries(max.MaxT)
+      minArr = entries(min.MinT as Object)
+      maxArr = entries(max.MaxT as Object)
     }
     if (min.MinAT && max.MaxAT) {
-      minArr = Object.entries(min.MinAT)
-      maxArr = Object.entries(max.MaxAT)
+      minArr = entries(min.MinAT as Object)
+      maxArr = entries(max.MaxAT as Object)
     }
     if (minArr && maxArr) {
       for (let i = 0; i < minArr.length; i++) {
-        if (!obj[minArr[i][0]]) obj[minArr[i][0]] = []
-        const day = `${minArr[i][1][0]}°C - ${maxArr[i][1][0]}°C`
-        const night = `${minArr[i][1][1]}°C - ${maxArr[i][1][1]}°C`
-        obj[minArr[i][0]].push(day, night)
+        const sameDay = minArr[i][0].substring(0, 10)
+        const isDay =
+          includes(minArr[i][0], '06:00') || includes(minArr[i][0], '12:00')
+        const time = isDay ? 'day' : 'night'
+
+        if (!obj[sameDay]) obj[sameDay] = {}
+        obj[sameDay][time] = `${minArr[i][1]}°C - ${maxArr[i][1]}°C`
       }
       return obj
     }
   }
 }
 
+function setWx() {
+  return (Wx: Object): IWx | undefined => {
+    const array = entries(Wx as Object)
+    const obj: IWx = {}
+    map(array, (item) => {
+      const sameDay = item[0].substring(0, 10)
+      const isDay = includes(item[0], '06:00') || includes(item[0], '12:00')
+      const time = isDay ? 'day' : 'night'
+      if (!obj[sameDay]) obj[sameDay] = {}
+      obj[sameDay][time] = item[1]
+    })
+    return obj
+  }
+}
+
+function setWeatherLine() {
+  return (low: WeatherElement, high: WeatherElement): type.ILineProps => {
+    const label = map(
+      map(low.time, (item) => item.startTime + ' - ' + item.endTime),
+      (item) => {
+        let array = item.split(' - ')
+        if (includes(array[0], '06:00:00') || includes(array[0], '12:00:00')) {
+          return array[0].substring(5, 10) + ' 白天'
+        } else {
+          return '晚上'
+        }
+      }
+    )
+
+    const lowTemps = map(low.time, (item) => item.elementValue[0].value)
+    const highTemps = map(high.time, (item) => item.elementValue[0].value)
+
+    return {
+      labels: label,
+      datasets: [
+        {
+          label: '最低溫度',
+          data: lowTemps,
+          borderColor: '#1ce1da',
+        },
+        {
+          label: '最高溫度',
+          data: highTemps,
+          borderColor: '#e98337',
+        },
+      ],
+    }
+  }
+}
+// function setWeatherLine() {
+//   return (weather: WeatherElement[]): type.ILineProps => {
+//     const label = map(
+//       map(weather[0].time, (item) => item.startTime + ' - ' + item.endTime),
+//       (item) => {
+//         let array = item.split(' - ')
+//         if (includes(array[0], '06:00:00') || includes(array[0], '12:00:00')) {
+//           return array[0].substring(5, 10) + ' 白天'
+//         } else {
+//           return '晚上'
+//         }
+//       }
+//     )
+//     console.log(weather)
+
+//     const lowTemps = map(weather[3].time, (item) => item.elementValue[0].value)
+//     const highTemps = map(weather[7].time, (item) => item.elementValue[0].value)
+
+//     return {
+//       labels: label,
+//       datasets: [
+//         {
+//           label: '最低溫度',
+//           data: lowTemps,
+//           borderColor: '#1ce1da',
+//         },
+//         {
+//           label: '最高溫度',
+//           data: highTemps,
+//           borderColor: '#e98337',
+//         },
+//       ],
+//     }
+//   }
+// }
+
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
 export const getAirClassName = setAir()
 export const getWeatherWeekData = setWeatherWeekData()
 export const getTemperature = setTemperature()
+export const geWx = setWx()
+export const getWeatherLine = setWeatherLine()

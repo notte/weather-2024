@@ -12,5 +12,9 @@ export interface IWeatherWeekData {
 }
 
 export interface ITemperature {
-  [key: string]: string[]
+  [key: string]: { [key: string]: string }
+}
+
+export interface IWx {
+  [key: string]: { [key: string]: string }
 }

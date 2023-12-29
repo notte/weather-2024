@@ -1,27 +1,26 @@
 import { useState, useEffect } from 'react'
-import { IWeatherWeekData, ITemperature } from '../../types/table'
-import { map } from 'lodash'
-import { getTemperature } from '../../utils/helpers'
+import { IWeatherWeekData, ITemperature, IWx } from '../../types/table'
+import { map, keys } from 'lodash'
+import { getTemperature, geWx, getWeatherIcon } from '../../utils/helpers'
 
 const table = (prop: { weekData: IWeatherWeekData[] }) => {
   const [T, setT] = useState<ITemperature>()
   const [AT, setAT] = useState<ITemperature>()
   const [time, setTime] = useState<string[]>()
-  const [Wx, setWx] = useState()
-  const [UVI, setUVI] = useState()
+  const [Wx, setWx] = useState<IWx>()
+  const [UVI, setUVI] = useState<{}>()
 
   useEffect(() => {
     if (prop.weekData) {
       const [MaxAT, Wx, MinT, UVI, MinAT, MaxT] = prop.weekData
+
       setT(() => getTemperature(MinT, MaxT))
       setAT(() => getTemperature(MinAT, MaxAT))
-      setTime(() => map(Object.keys(UVI.UVI), (item) => item))
+      setTime(() => map(keys(UVI.UVI), (item) => item.substring(0, 10)))
+      setWx(() => geWx(Wx.Wx as Object))
+      setUVI(() => UVI.UVI)
     }
   }, [JSON.stringify(prop)])
-
-  useEffect(() => {
-    console.log(time)
-  }, [T, AT, time])
 
   return (
     <>
@@ -35,17 +34,54 @@ const table = (prop: { weekData: IWeatherWeekData[] }) => {
         </thead>
         <tbody>
           <tr>
-            <td>溫度</td>
-            {time &&
-              map(T, (column: string, index: number) => (
-                <td key={column[0] + index}>{column[0]}</td>
+            <td>白天</td>
+            {T &&
+              Wx &&
+              map(T, (column: { [key: string]: string }, index: number) => (
+                <td key={column[0] + index}>
+                  <div
+                    className={`${getWeatherIcon(Wx[index].day)} weather-icon`}
+                  />
+                  {/* <p>{Wx[index].day}</p> */}
+                  <p>{column.day}</p>
+                </td>
               ))}
           </tr>
           <tr>
-            <td>體感溫度</td>
-            {time &&
-              map(T, (column: string, index: number) => (
-                <td key={column[1] + index}>{column[1]}</td>
+            <td>晚上</td>
+            {T &&
+              Wx &&
+              map(T, (column: { [key: string]: string }, index: number) => (
+                <td key={column[1] + index}>
+                  <div
+                    className={`${getWeatherIcon(
+                      Wx[index].night
+                    )} weather-icon`}
+                  />
+                  {/* <p>{Wx[index].night}</p> */}
+                  <p>{column.night}</p>
+                </td>
+              ))}
+          </tr>
+          <tr>
+            <td>白天體感</td>
+            {AT &&
+              map(AT, (column: { [key: string]: string }, index: number) => (
+                <td key={column[1] + index}>{column.day}</td>
+              ))}
+          </tr>
+          <tr>
+            <td>晚上體感</td>
+            {AT &&
+              map(AT, (column: { [key: string]: string }, index: number) => (
+                <td key={column[1] + index}>{column.night}</td>
+              ))}
+          </tr>
+          <tr>
+            <td>紫外線</td>
+            {UVI &&
+              map(UVI, (column: string, index: number) => (
+                <td key={column[1] + index}>{column}</td>
               ))}
           </tr>
         </tbody>
