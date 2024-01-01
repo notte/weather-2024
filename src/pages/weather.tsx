@@ -7,6 +7,7 @@ import * as type from '../types/common'
 
 const weather = () => {
   const weatherNow = useSelector((state: { now: type.INowData[] }) => state.now)
+
   return (
     <>
       <WeatherNowRequest />

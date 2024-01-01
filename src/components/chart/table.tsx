@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { IWeatherWeekData, ITemperature, IWx } from '../../types/table'
 import { map, keys } from 'lodash'
-import { getTemperature, geWx, getWeatherIcon } from '../../utils/helpers'
+import {
+  getTemperature,
+  geWx,
+  getWeatherIcon,
+  getUVIClass,
+} from '../../utils/helpers'
 
 const table = (prop: { weekData: IWeatherWeekData[] }) => {
   const [T, setT] = useState<ITemperature>()
@@ -40,9 +45,12 @@ const table = (prop: { weekData: IWeatherWeekData[] }) => {
               map(T, (column: { [key: string]: string }, index: number) => (
                 <td key={column[0] + index}>
                   <div
-                    className={`${getWeatherIcon(Wx[index].day)} weather-icon`}
-                  />
-                  {/* <p>{Wx[index].day}</p> */}
+                    className={`${getWeatherIcon(
+                      Wx[index].day
+                    )} weather-table-icon`}
+                  >
+                    <p className="hover">{Wx[index].day}</p>
+                  </div>
                   <p>{column.day}</p>
                 </td>
               ))}
@@ -56,9 +64,11 @@ const table = (prop: { weekData: IWeatherWeekData[] }) => {
                   <div
                     className={`${getWeatherIcon(
                       Wx[index].night
-                    )} weather-icon`}
-                  />
-                  {/* <p>{Wx[index].night}</p> */}
+                    )} weather-table-icon`}
+                  >
+                    <p className="hover">{Wx[index].night}</p>
+                  </div>
+
                   <p>{column.night}</p>
                 </td>
               ))}
@@ -81,7 +91,9 @@ const table = (prop: { weekData: IWeatherWeekData[] }) => {
             <td>紫外線</td>
             {UVI &&
               map(UVI, (column: string, index: number) => (
-                <td key={column[1] + index}>{column}</td>
+                <td key={column[1] + index}>
+                  <span className={`${getUVIClass(column)} uvi`}>{column}</span>
+                </td>
               ))}
           </tr>
         </tbody>

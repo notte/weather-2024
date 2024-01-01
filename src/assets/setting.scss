@@ -4,19 +4,25 @@
   @apply w-11 h-11 bg-no-repeat bg-center cursor-pointer rounded-full;
 
   background-color: #f5f5f5f1;
-  box-shadow: 0 0 5px 5px #11171954;
+  box-shadow: 0 0 5px 5px #11171930;
   background-size: 60%;
   pointer-events: auto;
 }
 
-.weather-icon {
-  @apply w-16 h-16 bg-no-repeat bg-center cursor-pointer rounded-full z-10;
+.weather-table-icon {
+  @apply w-16 h-16 bg-no-repeat bg-center rounded-full z-10;
 
   background-color: #f5f5f5f1;
-  box-shadow: 0 0 5px 5px #90e5ff54;
-  background-size: 70%;
+  border: 2px solid #90e5ff;
+  background-size: 65%;
   pointer-events: auto;
   margin: 10px auto;
+}
+
+.weather-table-icon:hover {
+  p.hover {
+    display: block !important;
+  }
 }
 
 .clouds-icon {
@@ -74,4 +80,31 @@
 
 .hazardous {
   color: #3b0b0b;
+}
+
+/* 紫外線等級 */
+.uvi {
+  @apply text-white rounded-full text-sm;
+
+  padding: 4px 10px;
+}
+
+.v1 {
+  background: #26a974;
+}
+
+.v2 {
+  background: #ffc02d;
+}
+
+.v3 {
+  background: #ef692a;
+}
+
+.v4 {
+  background: #d41717;
+}
+
+.v5 {
+  background: #5e28b5;
 }

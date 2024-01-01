@@ -7,41 +7,49 @@ import { fetchWeather36hrs } from '../redux/thunks'
 import EventBus from '../utils/event-bus'
 
 const weather36hrsRequest = () => {
-  const [cityclick, setCityClick] = useState<boolean>(false)
+  const [city, setCity] = useState<string | null>(null)
   const dispatch = useDispatch()
-  const [single_city, setSingle] = useState<Location>()
-
+  const [single_city, setSingle] = useState<Location | null>()
   const weatherHours = useSelector(
     (state: { hours: Location[] }) => state.hours
   )
 
-  useEffect(() => {
-    dispatch(fetchWeather36hrs() as never)
-    const intervalId = setInterval(
-      () => {
-        dispatch(fetchWeather36hrs() as never)
-      },
-      6 * 60 * 60 * 1000
-    )
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [])
+  const [status, setStatus] = useState<boolean>(false)
 
   useEffect(() => {
-    const subscriptionClick = EventBus.on('city-click', (data) => {
-      let cityData = filter(weatherHours, (item) => item.locationName === data)
-      setSingle(() => cityData[0] as Location)
-      setCityClick(true)
-    })
-    return () => {
-      subscriptionClick.off('city-click')
+    if (city) {
+      dispatch(fetchWeather36hrs(city as string) as never)
+      const intervalId = setInterval(
+        () => {
+          dispatch(fetchWeather36hrs(city as string) as never)
+        },
+        6 * 60 * 60 * 1000
+      )
+      return () => {
+        clearInterval(intervalId)
+      }
     }
-  }, [weatherHours])
+  }, [city])
+
+  useEffect(() => {
+    const subscriptionClick = EventBus.on('city-status', (data) => {
+      setCity(() => data)
+    })
+    const subscriptionHoursStatus = EventBus.on('36hours-status', (data) => {
+      setStatus(() => data)
+    })
+    if (weatherHours) setSingle(() => weatherHours[0] as Location)
+    if (weatherHours) setStatus(() => true)
+
+    return () => {
+      subscriptionClick.off('city-status')
+      subscriptionHoursStatus.off('36hours-status')
+    }
+  }, [weatherHours, single_city])
 
   return (
     <>
-      {cityclick && (
+      {status && single_city && (
         <div className="city-container">
           <div className="hours36">
             <h1>{single_city?.locationName}</h1>
@@ -167,16 +175,26 @@ const weather36hrsRequest = () => {
                 </p>
               </div>
             </div>
-            <button>縣市預報</button>
-            <button
-              className="close"
-              onClick={() => {
-                setCityClick(false)
-                EventBus.emit('city-close')
-              }}
-            >
-              關閉
-            </button>
+            <div className="button-warp">
+              {' '}
+              <button
+                className="default"
+                onClick={() => {
+                  EventBus.emit('forecast-status', true)
+                  setStatus(() => false)
+                }}
+              >
+                縣市預報
+              </button>
+              <button
+                className="default close"
+                onClick={() => {
+                  setStatus(() => false)
+                }}
+              >
+                關閉
+              </button>
+            </div>
           </div>
         </div>
       )}

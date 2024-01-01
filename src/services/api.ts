@@ -22,12 +22,13 @@ export default {
     const result = await APIhandler(config)
     return <IWeatherNowResponse>result.data
   },
-  async getWeather36hrs(): Promise<IWeather36hrsResponse> {
+  async getWeather36hrs(city: string): Promise<IWeather36hrsResponse> {
     const config: type.IRequestConfig = {
       url: 'F-C0032-001',
       type: weather,
       params: {
         sort: 'time',
+        locationName: city,
       },
     }
     const result = await APIhandler(config)

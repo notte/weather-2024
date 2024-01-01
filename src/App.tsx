@@ -10,13 +10,13 @@ const App = () => {
 
   useEffect(() => {
     EventBus.on('loading-change', (data) => {
-      setLoading(data)
+      setLoading(() => data)
     })
   }, [loading])
 
   return (
     <>
-      {/* {loading && <Loading />} */}
+      {loading && <Loading />}
       <Routes>
         <Route path="/" element={<Navigate to="weather" />} />
         <Route path="/" element={<Layout />}>

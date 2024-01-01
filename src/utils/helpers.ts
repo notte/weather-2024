@@ -93,7 +93,8 @@ function setWeatherWeekData() {
 
         const elementName = array[i].elementName
         obj = {}
-        forEach(array[i].time, (item) => {
+        forEach(array[i].time, (item, index) => {
+          if (index === 0 && includes(item.startTime, '18:00')) return
           const day = item.startTime.substring(0, 16)
 
           if (!obj[elementName]) obj[elementName] = {}
@@ -188,41 +189,16 @@ function setWeatherLine() {
     }
   }
 }
-// function setWeatherLine() {
-//   return (weather: WeatherElement[]): type.ILineProps => {
-//     const label = map(
-//       map(weather[0].time, (item) => item.startTime + ' - ' + item.endTime),
-//       (item) => {
-//         let array = item.split(' - ')
-//         if (includes(array[0], '06:00:00') || includes(array[0], '12:00:00')) {
-//           return array[0].substring(5, 10) + ' 白天'
-//         } else {
-//           return '晚上'
-//         }
-//       }
-//     )
-//     console.log(weather)
 
-//     const lowTemps = map(weather[3].time, (item) => item.elementValue[0].value)
-//     const highTemps = map(weather[7].time, (item) => item.elementValue[0].value)
-
-//     return {
-//       labels: label,
-//       datasets: [
-//         {
-//           label: '最低溫度',
-//           data: lowTemps,
-//           borderColor: '#1ce1da',
-//         },
-//         {
-//           label: '最高溫度',
-//           data: highTemps,
-//           borderColor: '#e98337',
-//         },
-//       ],
-//     }
-//   }
-// }
+function setUVI() {
+  return (uvi: string): string => {
+    if (+uvi < 3) return 'v1'
+    if (+uvi > 2 && +uvi < 6) return 'v2'
+    if (+uvi > 5 && +uvi < 8) return 'v3'
+    if (+uvi > 7 && +uvi < 11) return 'v4'
+    return 'v5'
+  }
+}
 
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
@@ -231,3 +207,4 @@ export const getWeatherWeekData = setWeatherWeekData()
 export const getTemperature = setTemperature()
 export const geWx = setWx()
 export const getWeatherLine = setWeatherLine()
+export const getUVIClass = setUVI()

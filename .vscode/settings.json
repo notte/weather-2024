@@ -6,5 +6,6 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["scss", "css"],
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "cSpell.words": ["COUNTYNAME", "eaap"]
 }
