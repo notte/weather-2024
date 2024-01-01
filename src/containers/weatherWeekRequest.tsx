@@ -103,55 +103,61 @@ const weatherWeekRequest = () => {
   return (
     <>
       {status && single_city && (
-        <div className="city-container">
-          <div className="city-week">
-            {' '}
-            <h1>{single_city.locationName}</h1>
-            <div className="tab-warp">
-              <button onClick={handler} data-type="forecast">
-                一週預報
-              </button>
-              <button onClick={handler} data-type="TLine">
-                一週溫度曲線
-              </button>
-              <button onClick={handler} data-type="ATLine">
-                一週體感曲線
-              </button>
-            </div>
-            {forecast && (
-              <Table
-                weekData={getWeatherWeekData(single_city) as IWeatherWeekData[]}
-              />
-            )}
-            {TLine && (
-              <div className="chart">
-                <Line {...dataT} />
-              </div>
-            )}
-            {ATLine && (
-              <div className="chart">
-                <Line {...dataAT} />
-              </div>
-            )}
-            <div className="button-warp">
+        <div className="dark">
+          {' '}
+          <div className="city-container">
+            <div className="city-week">
               {' '}
-              <button
-                className="default"
-                onClick={() => {
-                  EventBus.emit('36hours-status', true)
-                  setStatus(() => false)
-                }}
-              >
-                返回兩日預報
-              </button>
-              <button
-                className="default close"
-                onClick={() => {
-                  setStatus(() => false)
-                }}
-              >
-                關閉
-              </button>
+              <h1>{single_city.locationName}</h1>
+              <div className="tab-warp">
+                <button onClick={handler} data-type="forecast">
+                  一週預報
+                </button>
+                <button onClick={handler} data-type="TLine">
+                  一週溫度曲線
+                </button>
+                <button onClick={handler} data-type="ATLine">
+                  一週體感曲線
+                </button>
+              </div>
+              {forecast && (
+                <Table
+                  weekData={
+                    getWeatherWeekData(single_city) as IWeatherWeekData[]
+                  }
+                />
+              )}
+              {TLine && (
+                <div className="chart">
+                  <Line {...dataT} />
+                </div>
+              )}
+              {ATLine && (
+                <div className="chart">
+                  <Line {...dataAT} />
+                </div>
+              )}
+              <div className="button-warp">
+                {' '}
+                <button
+                  className="default"
+                  onClick={() => {
+                    EventBus.emit('36hours-status', true)
+                    setStatus(() => false)
+                  }}
+                >
+                  返回兩日預報
+                </button>
+                <button
+                  className="default close"
+                  onClick={() => {
+                    setStatus(() => false)
+                    EventBus.emit('city-close')
+                  }}
+                >
+                  關閉
+                </button>
+              </div>
             </div>
           </div>
         </div>

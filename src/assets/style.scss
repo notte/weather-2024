@@ -64,13 +64,21 @@ body {
           @apply w-full h-full absolute;
         }
 
+        /* 黑色遮罩 */
+        .dark {
+          @apply fixed  w-full h-full z-10;
+
+          background: #0b1a3252;
+        }
+
         .city-container {
-          @apply absolute w-2/3 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10;
+          @apply absolute w-2/3 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10 top-1/2;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
           background: linear-gradient(to bottom, #effbfde6 0%, white 100%);
           max-height: 70%;
+          transform: translateY(-50%);
 
           &::-webkit-scrollbar {
             width: 8px;
