@@ -6,10 +6,7 @@ const layout = () => {
     <>
       <div className="layout">
         <header>
-          <div className="container">
-            <div className="warn">
-              <button>警告訊息</button>
-            </div>
+          <div className="opition-warp">
             <Opitions />
           </div>
         </header>
