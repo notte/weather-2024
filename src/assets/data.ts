@@ -2,7 +2,7 @@ export const allCity = [
   {
     COUNTYNAME: '新北市',
     coordinates: [121.3010761718761, 25.629588592125955],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwa833f000o01raac9b7axj',
     children: [
       '板橋區',
       '新莊區',
@@ -26,7 +26,7 @@ export const allCity = [
   {
     COUNTYNAME: '臺北市',
     coordinates: [121.83940625000065, 25.58996052100295],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcyutn005o01pm8nly0x6w',
     children: [
       '中正區',
       '大同區',
@@ -45,7 +45,7 @@ export const allCity = [
   {
     COUNTYNAME: '基隆市',
     coordinates: [122.23491406250025, 25.212841045367327],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwd7x73000s01rahomm7dbr',
     children: [
       '仁愛區',
       '信義區',
@@ -59,7 +59,7 @@ export const allCity = [
   {
     COUNTYNAME: '宜蘭縣',
     coordinates: [122.14702343750037, 24.53507815367678],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwco18e005l01pmf5p677iw',
     children: [
       '宜蘭市',
       '羅東鎮',
@@ -78,7 +78,7 @@ export const allCity = [
   {
     COUNTYNAME: '桃園市',
     coordinates: [120.96050000000014, 25.35191687036115],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqw1lxf5000l01rac48r53l6',
     children: [
       '桃園區',
       '中壢區',
@@ -98,13 +98,13 @@ export const allCity = [
   {
     COUNTYNAME: '新竹市',
     coordinates: [120.67485546875037, 25.053702431179147],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwdas7a000t01ra9t38haty',
     children: ['東區', '北區', '香山區'],
   },
   {
     COUNTYNAME: '新竹縣',
     coordinates: [121.26811718750116, 24.585039911089595],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwc5plk00dx01rjcq7q2ufm',
     children: [
       '竹北市',
       '湖口鄉',
@@ -124,7 +124,7 @@ export const allCity = [
   {
     COUNTYNAME: '苗栗縣',
     coordinates: [120.42216992187565, 24.73480551588132],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcp3y300dy01rj5sxmf4ca',
     children: [
       '苗栗市',
       '頭份市',
@@ -149,7 +149,7 @@ export const allCity = [
   {
     COUNTYNAME: '臺中市',
     coordinates: [120.21342968750076, 24.425092301008064],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwa6aid00dv01rjbxpd24ej',
     children: [
       '中區',
       '東區',
@@ -185,7 +185,7 @@ export const allCity = [
   {
     COUNTYNAME: '彰化縣',
     coordinates: [120.00468945312599, 24.054437462726355],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwct7cb00el01ob3m0xbct6',
     children: [
       '彰化市',
       '員林市',
@@ -218,7 +218,7 @@ export const allCity = [
   {
     COUNTYNAME: '雲林縣',
     coordinates: [119.83989453125116, 23.642458614982942],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcv01r00dn01rdb1he1v92',
     children: [
       '斗六市',
       '斗南鎮',
@@ -245,13 +245,13 @@ export const allCity = [
   {
     COUNTYNAME: '嘉義市',
     coordinates: [119.80693554687616, 23.299830169901185],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwd32jz00ds01pp1kf18y5r',
     children: ['東區', '西區'],
   },
   {
     COUNTYNAME: '嘉義縣',
     coordinates: [120.70781445312537, 23.380528588177825],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcwrma00di01po60kldmtc',
     children: [
       '太保市',
       '朴子市',
@@ -276,7 +276,7 @@ export const allCity = [
   {
     COUNTYNAME: '臺南市',
     coordinates: [119.74101757812622, 22.85511688627483],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwa3adb00dm01ppedsv7s1b',
     children: [
       '中西區',
       '東區',
@@ -320,7 +320,7 @@ export const allCity = [
   {
     COUNTYNAME: '高雄市',
     coordinates: [119.96074414062605, 22.500324261311945],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwb4qdt00ek01ob1hnu9xpx',
     children: [
       '新興區',
       '前金區',
@@ -365,7 +365,7 @@ export const allCity = [
   {
     COUNTYNAME: '屏東縣',
     coordinates: [120.25737500000076, 21.991897787346687],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwc4vt100el01r826ahftbt',
     children: [
       '屏東市',
       '潮州鎮',
@@ -395,7 +395,7 @@ export const allCity = [
   {
     COUNTYNAME: '臺東縣',
     coordinates: [121.48784375000093, 22.45971822609765],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwb6jqs000501rc8fw69v1r',
     children: [
       '台東市',
       '成功鎮',
@@ -414,7 +414,7 @@ export const allCity = [
   {
     COUNTYNAME: '南投縣',
     coordinates: [121.03740429687633, 23.94403521974256],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwc28do00do01pp2nek2ohh',
     children: [
       '南投市',
       '埔里鎮',
@@ -434,7 +434,7 @@ export const allCity = [
   {
     COUNTYNAME: '花蓮縣',
     coordinates: [121.9163105468756, 23.592127949047708],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcxug000dr01pp7vghhxj2',
     children: [
       '花蓮市',
       '鳳林鎮',
@@ -454,19 +454,19 @@ export const allCity = [
   {
     COUNTYNAME: '澎湖縣',
     coordinates: [119.33011053197657, 23.65851486248023],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwd1duo000q01rah0643t4u',
     children: ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
   },
   {
     COUNTYNAME: '金門縣',
     coordinates: [118.526741673591, 24.124645450276688],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcqnr4005n01pm10a59495',
     children: ['金沙鎮', '金湖鎮', '金寧鄉', '金城鎮', '烈嶼鄉', '烏坵鄉'],
   },
   {
     COUNTYNAME: '連江縣',
     coordinates: [120.2542596880221, 26.0717207660021],
-    style: '',
+    style: 'mapbox://styles/yoyo2023/clqwcs0uc00dh01poh4wa6qa8',
     children: ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉'],
   },
 ]

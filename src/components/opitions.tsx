@@ -24,23 +24,25 @@ const opitions = () => {
 
   return (
     <>
-      <div className="opitions">
-        <p>選擇鄉鎮預報</p>
-        <select
-          id="dropdown"
-          onChange={handleOptionChange}
-          value={selectedOption || ''}
-        >
-          <option value="" disabled>
-            請選擇
-          </option>
-          {map(options, (option, index) => (
-            <option key={index} value={option}>
-              {option}
+      {city && (
+        <div className="opitions">
+          <p>選擇鄉鎮預報</p>
+          <select
+            id="dropdown"
+            onChange={handleOptionChange}
+            value={selectedOption || ''}
+          >
+            <option value="" disabled>
+              請選擇
             </option>
-          ))}
-        </select>
-      </div>
+            {map(options, (option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </>
   )
 }
