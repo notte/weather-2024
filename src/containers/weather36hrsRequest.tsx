@@ -10,6 +10,7 @@ const weather36hrsRequest = () => {
   const [temp, setTemp] = useState<string | null>(null)
 
   const dispatch = useDispatch()
+
   const weatherHours = useSelector(
     (state: { hours: Location[] }) => state.hours
   )
@@ -28,14 +29,16 @@ const weather36hrsRequest = () => {
   )
 
   useEffect(() => {
-    const subscriptionClick = EventBus.on('city-status', handleGetCity)
+    EventBus.on('city-status', handleGetCity)
+  })
+
+  useEffect(() => {
     const subscriptionHoursStatus = EventBus.on('36hours-status', handleBack)
 
     return () => {
-      subscriptionClick.off('city-status')
       subscriptionHoursStatus.off('36hours-status')
     }
-  }, [city, weatherHours, handleGetCity, handleBack])
+  }, [city, weatherHours, handleBack])
 
   useEffect(() => {
     if (temp === city) return

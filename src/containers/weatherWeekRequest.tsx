@@ -35,29 +35,42 @@ const weatherWeekRequest = () => {
   const TLineBtn = useRef<HTMLButtonElement | null>(null)
   const ATLineBtn = useRef<HTMLButtonElement | null>(null)
 
-  const handlerButton = useCallback((event: MouseEvent): void => {
-    event.preventDefault()
-    setForecast(() => false)
-    setTLine(() => false)
-    setATLine(() => false)
+  const handlerButton = useCallback(
+    (event: MouseEvent): void => {
+      event.preventDefault()
+      setForecast(() => false)
+      setTLine(() => false)
+      setATLine(() => false)
 
-    forecastBtn.current!.className = ''
-    TLineBtn.current!.className = ''
-    ATLineBtn.current!.className = ''
-    event.currentTarget.className = 'active'
+      forecastBtn.current!.className = ''
+      TLineBtn.current!.className = ''
+      ATLineBtn.current!.className = ''
+      event.currentTarget.className = 'active'
 
-    switch (event.currentTarget.getAttribute('data-type')) {
-      case 'forecast':
-        setForecast(() => true)
-        break
-      case 'TLine':
-        setTLine(() => true)
-        break
-      case 'ATLine':
-        setATLine(() => true)
-        break
-    }
-  }, [])
+      switch (event.currentTarget.getAttribute('data-type')) {
+        case 'forecast':
+          setForecast(() => true)
+          break
+        case 'TLine':
+          setTLine(() => true)
+          break
+        case 'ATLine':
+          setATLine(() => true)
+          break
+      }
+    },
+    [
+      setForecast,
+      setTLine,
+      setATLine,
+      forecastBtn.current,
+      TLineBtn.current,
+      ATLineBtn.current,
+      forecast,
+      TLine,
+      ATLine,
+    ]
+  )
 
   const handleGetCity = useCallback((data: string) => {
     setCity(() => data)
