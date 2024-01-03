@@ -1,26 +1,42 @@
 import { useState, useCallback, useEffect } from 'react'
-import { map } from 'lodash'
+import { map, find } from 'lodash'
 import { allCity } from '../assets/data'
 import EventBus from '../utils/event-bus'
 
 const opitions = () => {
   const [city, setCity] = useState<string>()
-  const options = ['選項一', '選項二', '選項三', '選項四']
+  const [options, setOptions] = useState<string[] | null>()
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value)
   }
 
-  useEffect(() => {
-    const subscriptionClick = EventBus.on('city-status', (data) => {
+  const handleGetCity = useCallback(
+    (data: string) => {
       setCity(() => data)
-    })
+      const cityObj = find(allCity, (item: any) => {
+        return item.COUNTYNAME === data
+      })
+      setOptions(() => cityObj?.children)
+    },
+    [setCity, setOptions]
+  )
+
+  const handleCleanCity = useCallback(() => {
+    setCity(() => '')
+  }, [setCity])
+
+  useEffect(() => {
+    const subscriptionClick = EventBus.on('city-status', handleGetCity)
+    const subscriptionClose = EventBus.on('city-close', handleCleanCity)
 
     return () => {
       subscriptionClick.off('city-status')
+      subscriptionClose.off('city-close')
+      setSelectedOption(() => null)
     }
-  }, [])
+  }, [city])
 
   return (
     <>
