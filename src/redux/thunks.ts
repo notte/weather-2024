@@ -69,7 +69,6 @@ export const fetchWeatherWeek = createAsyncThunk(
   async (city: string): Promise<CityWeek[]> => {
     try {
       const res = await api.getWeatherWeek(city)
-      console.log(res.records.locations[0].location)
       return res.records.locations[0].location as unknown as CityWeek[]
     } catch (error) {
       console.error('Error fetching data:', error)

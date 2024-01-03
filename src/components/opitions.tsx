@@ -14,7 +14,6 @@ const opitions = () => {
 
   const handleGetCity = useCallback(
     (data: string) => {
-      console.log(data)
       setCity(() => data)
       const cityObj = find(allCity, (item: any) => {
         return item.COUNTYNAME === data

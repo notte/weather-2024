@@ -13,7 +13,7 @@ import EventBus from '../utils/event-bus'
 const weatherWeekRequest = () => {
   const [city, setCity] = useState<string | null>(null)
   const dispatch = useDispatch()
-  // const [status, setStatus] = useState<boolean>(false)
+  const [status, setStatus] = useState<boolean>(false)
   const weatherCityWeek = useSelector(
     (state: { cityWeek: CityWeek }) => state.cityWeek
   )
@@ -25,55 +25,48 @@ const weatherWeekRequest = () => {
     labels: [],
     datasets: [],
   })
-  // const [forecast, setForecast] = useState<boolean>(true)
-  // const [TLine, setTLine] = useState<boolean>(false)
-  // const [ATLine, setATLine] = useState<boolean>(false)
+  const [forecast, setForecast] = useState<boolean>(true)
+  const [TLine, setTLine] = useState<boolean>(false)
+  const [ATLine, setATLine] = useState<boolean>(false)
 
-  // const forecastBtn = useRef<HTMLButtonElement | null>(null)
-  // const TLineBtn = useRef<HTMLButtonElement | null>(null)
-  // const ATLineBtn = useRef<HTMLButtonElement | null>(null)
+  const forecastBtn = useRef<HTMLButtonElement | null>(null)
+  const TLineBtn = useRef<HTMLButtonElement | null>(null)
+  const ATLineBtn = useRef<HTMLButtonElement | null>(null)
 
-  // const handlerButton = useCallback(
-  //   (event: MouseEvent): void => {
-  //     event.preventDefault()
-  //     setForecast(() => false)
-  //     setTLine(() => false)
-  //     setATLine(() => false)
+  const handlerButton = useCallback((event: MouseEvent): void => {
+    event.preventDefault()
+    setForecast(() => false)
+    setTLine(() => false)
+    setATLine(() => false)
 
-  //     forecastBtn.current!.className = ''
-  //     TLineBtn.current!.className = ''
-  //     ATLineBtn.current!.className = ''
-  //     event.currentTarget.className = 'active'
+    forecastBtn.current!.className = ''
+    TLineBtn.current!.className = ''
+    ATLineBtn.current!.className = ''
+    event.currentTarget.className = 'active'
 
-  //     switch (event.currentTarget.getAttribute('data-type')) {
-  //       case 'forecast':
-  //         setForecast(() => true)
-  //         break
-  //       case 'TLine':
-  //         setTLine(() => true)
-  //         break
-  //       case 'ATLine':
-  //         setATLine(() => true)
-  //         break
-  //     }
-  //   },
-  //   [event]
-  // )
+    switch (event.currentTarget.getAttribute('data-type')) {
+      case 'forecast':
+        setForecast(() => true)
+        break
+      case 'TLine':
+        setTLine(() => true)
+        break
+      case 'ATLine':
+        setATLine(() => true)
+        break
+    }
+  }, [])
 
-  const handleGetCity = useCallback(
-    (data: string) => {
-      console.log(data)
-      setCity(() => data)
+  const handleGetCity = useCallback((data: string) => {
+    setCity(() => data)
+  }, [])
+
+  const handleForecastStatus = useCallback(
+    (data: boolean) => {
+      setStatus(() => data)
     },
-    [city, setCity]
+    [setStatus, status]
   )
-
-  // const handleForecastStatus = useCallback(
-  //   (data: boolean) => {
-  //     setStatus(() => data)
-  //   },
-  //   [setStatus, status]
-  // )
 
   const handleGetData = useCallback(() => {
     const [MinT] = filter(
@@ -97,27 +90,19 @@ const weatherWeekRequest = () => {
   }, [weatherCityWeek, setDataT, setDataAT])
 
   useEffect(() => {
-    const subscriptionClick = EventBus.on('city-status', handleGetCity)
-    return () => {
-      subscriptionClick.off('city-status')
-    }
+    EventBus.on('city-status', handleGetCity)
   })
 
   useEffect(() => {
-    console.log(weatherCityWeek)
-    if (weatherCityWeek) {
+    if (weatherCityWeek.locationName) {
       handleGetData()
     }
-    // const subscriptionWeekStatus = EventBus.on(
-    //   'forecast-status',
-    //   handleForecastStatus
-    // )
-    // if (weatherCityWeek.locationName) {
-    //   handleGetData()
-    // }
-
+    const subscriptionWeekStatus = EventBus.on(
+      'forecast-status',
+      handleForecastStatus
+    )
     return () => {
-      // subscriptionWeekStatus.off('forecast-status')
+      subscriptionWeekStatus.off('forecast-status')
     }
   }, [city, weatherCityWeek, handleGetData])
 
@@ -136,11 +121,9 @@ const weatherWeekRequest = () => {
     }
   }, [city])
 
-  // useEffect(() => {}, [city, weatherCityWeek])
-
   return (
     <>
-      {/* {status && weatherCityWeek.locationName && (
+      {status && weatherCityWeek.locationName && (
         <div className="dark">
           <div className="city-container">
             <div className="city-week">
@@ -149,6 +132,7 @@ const weatherWeekRequest = () => {
                 <button
                   onClick={handlerButton}
                   data-type="forecast"
+                  className="active"
                   ref={forecastBtn}
                 >
                   一週預報
@@ -209,7 +193,7 @@ const weatherWeekRequest = () => {
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </>
   )
 }
