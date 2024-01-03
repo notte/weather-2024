@@ -6,24 +6,22 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Tooltip,
 } from 'chart.js'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
+ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip)
 
 const line = (props: type.ILineProps) => {
   return (
     <>
       {props && props.labels.length > 0 && (
-        <div className="line-chart">
-          <h3>{props.datasets[0].label}</h3>
-          <Line
-            options={{
-              responsive: true,
-              plugins: {},
-            }}
-            data={props}
-          />
-        </div>
+        <Line
+          options={{
+            responsive: true,
+            plugins: {},
+          }}
+          data={props}
+        />
       )}
     </>
   )

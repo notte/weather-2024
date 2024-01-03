@@ -162,9 +162,9 @@ function setWeatherLine() {
       (item) => {
         let array = item.split(' - ')
         if (includes(array[0], '06:00:00') || includes(array[0], '12:00:00')) {
-          return array[0].substring(5, 10) + ' 白天'
+          return `${array[0].substring(5, 10)} 白天`
         } else {
-          return '晚上'
+          return `${array[0].substring(5, 10)} 晚上`
         }
       }
     )

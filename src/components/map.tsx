@@ -39,47 +39,47 @@ const map = (_props: type.INowData[]) => {
   }, [JSON.stringify(_props)])
 
   // 建立 markers 實體
-  // useEffect(() => {
-  //   if (!Object.keys(_props[0]).includes('aqi')) return
+  useEffect(() => {
+    if (!Object.keys(_props[0]).includes('aqi')) return
 
-  //   const resource = { ..._props }
+    const resource = { ..._props }
 
-  //   for (const key in resource) {
-  //     const className = getWeatherIcon(resource[key].Weather as string)
-  //     const customMarkerElement = document.createElement('div')
-  //     customMarkerElement.className = className as string
-  //     customMarkerElement.setAttribute('city', resource[key].COUNTYNAME)
-  //     const marker = new mapboxgl.Marker({ element: customMarkerElement })
-  //       .setLngLat([resource[key].coordinates[0], resource[key].coordinates[1]])
-  //       .setPopup(
-  //         new mapboxgl.Popup({
-  //           closeOnClick: true,
-  //           closeButton: false,
-  //           closeOnMove: true,
-  //           offset: 2,
-  //           className: 'marker-city-popup',
-  //         }).setHTML(
-  //           `<h3>${resource[key].COUNTYNAME}</h3><p>${
-  //             resource[key].Weather
-  //           }</p><p>${
-  //             resource[key].AirTemperature
-  //           }°C</p><p class="${getAirClassName(
-  //             resource[key].aqi as number
-  //           )}"}>空氣品質<br>${resource[key].status}</p>`
-  //         )
-  //       )
-  //     setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
-  //   }
-  // }, [JSON.stringify(_props)])
+    for (const key in resource) {
+      const className = getWeatherIcon(resource[key].Weather as string)
+      const customMarkerElement = document.createElement('div')
+      customMarkerElement.className = className as string
+      customMarkerElement.setAttribute('city', resource[key].COUNTYNAME)
+      const marker = new mapboxgl.Marker({ element: customMarkerElement })
+        .setLngLat([resource[key].coordinates[0], resource[key].coordinates[1]])
+        .setPopup(
+          new mapboxgl.Popup({
+            closeOnClick: true,
+            closeButton: false,
+            closeOnMove: true,
+            offset: 2,
+            className: 'marker-city-popup',
+          }).setHTML(
+            `<h3>${resource[key].COUNTYNAME}</h3><p>${
+              resource[key].Weather
+            }</p><p>${
+              resource[key].AirTemperature
+            }°C</p><p class="${getAirClassName(
+              resource[key].aqi as number
+            )}"}>空氣品質<br>${resource[key].status}</p>`
+          )
+        )
+      setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
+    }
+  }, [JSON.stringify(_props)])
 
   // 渲染 marker 到 map 實體
-  // useEffect(() => {
-  //   if (markers.length > 0) {
-  //     forEach(markers, (mark) => {
-  //       mark.addTo(map.current as Map)
-  //     })
-  //   }
-  // }, [markers])
+  useEffect(() => {
+    if (markers.length > 0) {
+      forEach(markers, (mark) => {
+        mark.addTo(map.current as Map)
+      })
+    }
+  }, [markers])
 
   // load 事件
   useEffect(() => {

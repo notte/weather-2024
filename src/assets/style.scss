@@ -25,9 +25,8 @@ body {
       @apply w-full h-full flex items-center flex-col;
 
       header {
-        @apply w-full flex justify-center items-center absolute;
+        @apply w-full flex justify-center items-center absolute z-20;
 
-        z-index: 1;
         height: 8%;
         background: linear-gradient(to bottom, #1117198c 0%, #11171936 100%);
 
@@ -212,7 +211,7 @@ body {
 
             /* 圖表 */
             .chart {
-              @apply my-5 w-4/5;
+              @apply my-5 w-full;
             }
 
             /* 按鈕們 */
