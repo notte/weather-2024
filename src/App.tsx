@@ -9,9 +9,21 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    EventBus.on('loading-change', (data) => {
+    const subscriptionCity = EventBus.on('loading-change', (data) => {
+      if (data === false) {
+        const id = setInterval(() => {
+          setLoading(() => data)
+        }, 2000)
+        return () => {
+          clearInterval(id)
+        }
+      }
       setLoading(() => data)
     })
+
+    return () => {
+      subscriptionCity.off('loading-change')
+    }
   }, [loading])
 
   return (

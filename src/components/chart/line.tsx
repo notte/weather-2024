@@ -14,13 +14,16 @@ const line = (props: type.ILineProps) => {
   return (
     <>
       {props && props.labels.length > 0 && (
-        <Line
-          options={{
-            responsive: true,
-            plugins: {},
-          }}
-          data={props}
-        />
+        <div className="line-chart">
+          <h3>{props.datasets[0].label}</h3>
+          <Line
+            options={{
+              responsive: true,
+              plugins: {},
+            }}
+            data={props}
+          />
+        </div>
       )}
     </>
   )

@@ -165,7 +165,8 @@ body {
                 border: 1px solid #caf5fe;
               }
 
-              button:hover {
+              button:hover,
+              button.active {
                 color: #fff;
                 background: #0089a7;
               }

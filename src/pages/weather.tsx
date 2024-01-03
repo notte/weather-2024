@@ -10,10 +10,10 @@ const weather = () => {
 
   return (
     <>
-      {/* <WeatherNowRequest />
+      <WeatherNowRequest />
       <Weather36hrsRequest />
       <WeatherWeekRequest />
-      <Map {...weatherNow} /> */}
+      <Map {...weatherNow} />
     </>
   )
 }

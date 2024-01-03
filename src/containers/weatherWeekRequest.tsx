@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent } from 'react'
+import { useEffect, useState, MouseEvent, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { map, includes, filter } from 'lodash'
 import { CityWeek } from '../types/response/weather-week'
@@ -29,6 +29,10 @@ const weatherWeekRequest = () => {
   const [TLine, setTLine] = useState<boolean>(false)
   const [ATLine, setATLine] = useState<boolean>(false)
 
+  const forecastBtn = useRef<HTMLButtonElement | null>(null)
+  const TLineBtn = useRef<HTMLButtonElement | null>(null)
+  const ATLineBtn = useRef<HTMLButtonElement | null>(null)
+
   const [status, setStatus] = useState<boolean>(false)
 
   const handler = (event: MouseEvent): void => {
@@ -36,6 +40,11 @@ const weatherWeekRequest = () => {
     setForecast(() => false)
     setTLine(() => false)
     setATLine(() => false)
+
+    forecastBtn.current!.className = ''
+    TLineBtn.current!.className = ''
+    ATLineBtn.current!.className = ''
+    event.currentTarget.className = 'active'
 
     switch (event.currentTarget.getAttribute('data-type')) {
       case 'forecast':
@@ -110,13 +119,17 @@ const weatherWeekRequest = () => {
               {' '}
               <h1>{single_city.locationName}</h1>
               <div className="tab-warp">
-                <button onClick={handler} data-type="forecast">
+                <button
+                  onClick={handler}
+                  data-type="forecast"
+                  ref={forecastBtn}
+                >
                   一週預報
                 </button>
-                <button onClick={handler} data-type="TLine">
+                <button onClick={handler} data-type="TLine" ref={TLineBtn}>
                   一週溫度曲線
                 </button>
-                <button onClick={handler} data-type="ATLine">
+                <button onClick={handler} data-type="ATLine" ref={ATLineBtn}>
                   一週體感曲線
                 </button>
               </div>

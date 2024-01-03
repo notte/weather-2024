@@ -34,6 +34,7 @@ const weather36hrsRequest = () => {
   useEffect(() => {
     const subscriptionClick = EventBus.on('city-status', (data) => {
       setCity(() => data)
+      setStatus(() => data)
     })
     const subscriptionHoursStatus = EventBus.on('36hours-status', (data) => {
       setStatus(() => data)

@@ -176,12 +176,12 @@ function setWeatherLine() {
       labels: label,
       datasets: [
         {
-          label: '最低溫度',
+          label: low.description,
           data: lowTemps,
           borderColor: '#1ce1da',
         },
         {
-          label: '最高溫度',
+          label: high.description,
           data: highTemps,
           borderColor: '#e98337',
         },
