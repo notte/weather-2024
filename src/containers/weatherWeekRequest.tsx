@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent, useRef } from 'react'
+import { useEffect, useState, MouseEvent, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { map, includes, filter } from 'lodash'
 import { CityWeek } from '../types/response/weather-week'
@@ -11,12 +11,12 @@ import * as type from '../types/common'
 import EventBus from '../utils/event-bus'
 
 const weatherWeekRequest = () => {
-  const dispatch = useDispatch()
   const [city, setCity] = useState<string | null>(null)
+  const dispatch = useDispatch()
+  // const [status, setStatus] = useState<boolean>(false)
   const weatherCityWeek = useSelector(
     (state: { cityWeek: CityWeek }) => state.cityWeek
   )
-  const [single_city, setSingle] = useState<CityWeek | null>(null)
   const [dataT, setDataT] = useState<type.ILineProps>({
     labels: [],
     datasets: [],
@@ -25,39 +25,101 @@ const weatherWeekRequest = () => {
     labels: [],
     datasets: [],
   })
-  const [forecast, setForecast] = useState<boolean>(true)
-  const [TLine, setTLine] = useState<boolean>(false)
-  const [ATLine, setATLine] = useState<boolean>(false)
+  // const [forecast, setForecast] = useState<boolean>(true)
+  // const [TLine, setTLine] = useState<boolean>(false)
+  // const [ATLine, setATLine] = useState<boolean>(false)
 
-  const forecastBtn = useRef<HTMLButtonElement | null>(null)
-  const TLineBtn = useRef<HTMLButtonElement | null>(null)
-  const ATLineBtn = useRef<HTMLButtonElement | null>(null)
+  // const forecastBtn = useRef<HTMLButtonElement | null>(null)
+  // const TLineBtn = useRef<HTMLButtonElement | null>(null)
+  // const ATLineBtn = useRef<HTMLButtonElement | null>(null)
 
-  const [status, setStatus] = useState<boolean>(false)
+  // const handlerButton = useCallback(
+  //   (event: MouseEvent): void => {
+  //     event.preventDefault()
+  //     setForecast(() => false)
+  //     setTLine(() => false)
+  //     setATLine(() => false)
 
-  const handler = (event: MouseEvent): void => {
-    event.preventDefault()
-    setForecast(() => false)
-    setTLine(() => false)
-    setATLine(() => false)
+  //     forecastBtn.current!.className = ''
+  //     TLineBtn.current!.className = ''
+  //     ATLineBtn.current!.className = ''
+  //     event.currentTarget.className = 'active'
 
-    forecastBtn.current!.className = ''
-    TLineBtn.current!.className = ''
-    ATLineBtn.current!.className = ''
-    event.currentTarget.className = 'active'
+  //     switch (event.currentTarget.getAttribute('data-type')) {
+  //       case 'forecast':
+  //         setForecast(() => true)
+  //         break
+  //       case 'TLine':
+  //         setTLine(() => true)
+  //         break
+  //       case 'ATLine':
+  //         setATLine(() => true)
+  //         break
+  //     }
+  //   },
+  //   [event]
+  // )
 
-    switch (event.currentTarget.getAttribute('data-type')) {
-      case 'forecast':
-        setForecast(() => true)
-        break
-      case 'TLine':
-        setTLine(() => true)
-        break
-      case 'ATLine':
-        setATLine(() => true)
-        break
+  const handleGetCity = useCallback(
+    (data: string) => {
+      console.log(data)
+      setCity(() => data)
+    },
+    [city, setCity]
+  )
+
+  // const handleForecastStatus = useCallback(
+  //   (data: boolean) => {
+  //     setStatus(() => data)
+  //   },
+  //   [setStatus, status]
+  // )
+
+  const handleGetData = useCallback(() => {
+    const [MinT] = filter(
+      { ...weatherCityWeek.weatherElement },
+      (item) => item.elementName === 'MinT'
+    )
+    const [MaxT] = filter(
+      { ...weatherCityWeek.weatherElement },
+      (item) => item.elementName === 'MaxT'
+    )
+    const [MinAT] = filter(
+      { ...weatherCityWeek.weatherElement },
+      (item) => item.elementName === 'MinAT'
+    )
+    const [MaxAT] = filter(
+      { ...weatherCityWeek.weatherElement },
+      (item) => item.elementName === 'MaxAT'
+    )
+    setDataT(() => getWeatherLine(MinT, MaxT))
+    setDataAT(() => getWeatherLine(MinAT, MaxAT))
+  }, [weatherCityWeek, setDataT, setDataAT])
+
+  useEffect(() => {
+    const subscriptionClick = EventBus.on('city-status', handleGetCity)
+    return () => {
+      subscriptionClick.off('city-status')
     }
-  }
+  })
+
+  useEffect(() => {
+    console.log(weatherCityWeek)
+    if (weatherCityWeek) {
+      handleGetData()
+    }
+    // const subscriptionWeekStatus = EventBus.on(
+    //   'forecast-status',
+    //   handleForecastStatus
+    // )
+    // if (weatherCityWeek.locationName) {
+    //   handleGetData()
+    // }
+
+    return () => {
+      // subscriptionWeekStatus.off('forecast-status')
+    }
+  }, [city, weatherCityWeek, handleGetData])
 
   useEffect(() => {
     if (city) {
@@ -74,69 +136,42 @@ const weatherWeekRequest = () => {
     }
   }, [city])
 
-  useEffect(() => {
-    const subscriptionClick = EventBus.on('city-status', (data) => {
-      setCity(() => data)
-    })
-    const subscriptionWeekStatus = EventBus.on('forecast-status', (data) => {
-      setStatus(() => data)
-    })
-    if (weatherCityWeek.locationName) {
-      setSingle(() => weatherCityWeek)
-      const [MinT] = filter(
-        { ...weatherCityWeek.weatherElement },
-        (item) => item.elementName === 'MinT'
-      )
-      const [MaxT] = filter(
-        { ...weatherCityWeek.weatherElement },
-        (item) => item.elementName === 'MaxT'
-      )
-      const [MinAT] = filter(
-        { ...weatherCityWeek.weatherElement },
-        (item) => item.elementName === 'MinAT'
-      )
-      const [MaxAT] = filter(
-        { ...weatherCityWeek.weatherElement },
-        (item) => item.elementName === 'MaxAT'
-      )
-      setDataT(() => getWeatherLine(MinT, MaxT))
-      setDataAT(() => getWeatherLine(MinAT, MaxAT))
-    }
-
-    return () => {
-      subscriptionClick.off('city-status')
-      subscriptionWeekStatus.off('forecast-status')
-    }
-  }, [weatherCityWeek, single_city])
+  // useEffect(() => {}, [city, weatherCityWeek])
 
   return (
     <>
-      {status && single_city && (
+      {/* {status && weatherCityWeek.locationName && (
         <div className="dark">
-          {' '}
           <div className="city-container">
             <div className="city-week">
-              {' '}
-              <h1>{single_city.locationName}</h1>
+              <h1>{weatherCityWeek.locationName}</h1>
               <div className="tab-warp">
                 <button
-                  onClick={handler}
+                  onClick={handlerButton}
                   data-type="forecast"
                   ref={forecastBtn}
                 >
                   一週預報
                 </button>
-                <button onClick={handler} data-type="TLine" ref={TLineBtn}>
+                <button
+                  onClick={handlerButton}
+                  data-type="TLine"
+                  ref={TLineBtn}
+                >
                   一週溫度曲線
                 </button>
-                <button onClick={handler} data-type="ATLine" ref={ATLineBtn}>
+                <button
+                  onClick={handlerButton}
+                  data-type="ATLine"
+                  ref={ATLineBtn}
+                >
                   一週體感曲線
                 </button>
               </div>
               {forecast && (
                 <Table
                   weekData={
-                    getWeatherWeekData(single_city) as IWeatherWeekData[]
+                    getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[]
                   }
                 />
               )}
@@ -174,7 +209,7 @@ const weatherWeekRequest = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   )
 }

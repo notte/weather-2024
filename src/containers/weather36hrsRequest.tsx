@@ -17,7 +17,7 @@ const weather36hrsRequest = () => {
     (data: string) => {
       setCity(() => data)
     },
-    [city, setCity, weatherHours]
+    [city, setCity]
   )
   const handleBack = useCallback(
     (data: string) => {
