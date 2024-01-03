@@ -7,6 +7,7 @@ import EventBus from '../utils/event-bus'
 
 const weather36hrsRequest = () => {
   const [city, setCity] = useState<string | null>(null)
+  const [temp, setTemp] = useState<string | null>(null)
 
   const dispatch = useDispatch()
   const weatherHours = useSelector(
@@ -37,21 +38,24 @@ const weather36hrsRequest = () => {
   }, [city, weatherHours, handleGetCity, handleBack])
 
   useEffect(() => {
-    dispatch(fetchWeather36hrs(city as string) as never)
-    const intervalId = setInterval(
-      () => {
-        dispatch(fetchWeather36hrs(city as string) as never)
-      },
-      6 * 60 * 60 * 1000
-    )
-    return () => {
-      clearInterval(intervalId)
+    if (temp === city) return
+    if (city) {
+      dispatch(fetchWeather36hrs(city as string) as never)
+      const intervalId = setInterval(
+        () => {
+          dispatch(fetchWeather36hrs(city as string) as never)
+        },
+        6 * 60 * 60 * 1000
+      )
+      return () => {
+        clearInterval(intervalId)
+      }
     }
   }, [city])
 
   return (
     <>
-      {city && (
+      {city && weatherHours.length === 1 && (
         <div className="dark">
           <div className="city-container">
             <div className="hours36">
@@ -182,7 +186,8 @@ const weather36hrsRequest = () => {
                 <button
                   className="default"
                   onClick={() => {
-                    EventBus.emit('forecast-status', true)
+                    EventBus.emit('forecast-status', city)
+                    setTemp(() => city)
                     setCity(() => '')
                   }}
                 >

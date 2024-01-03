@@ -12,6 +12,8 @@ import EventBus from '../utils/event-bus'
 
 const weatherWeekRequest = () => {
   const [city, setCity] = useState<string | null>(null)
+  const [temp, setTemp] = useState<string | null>(null)
+
   const dispatch = useDispatch()
   const [status, setStatus] = useState<boolean>(false)
   const weatherCityWeek = useSelector(
@@ -62,10 +64,11 @@ const weatherWeekRequest = () => {
   }, [])
 
   const handleForecastStatus = useCallback(
-    (data: boolean) => {
-      setStatus(() => data)
+    (data: string) => {
+      setCity(() => data)
+      setStatus(() => true)
     },
-    [setStatus, status]
+    [setCity, city]
   )
 
   const handleGetData = useCallback(() => {
@@ -107,6 +110,7 @@ const weatherWeekRequest = () => {
   }, [city, weatherCityWeek, handleGetData])
 
   useEffect(() => {
+    if (temp === city) return
     if (city) {
       dispatch(fetchWeatherWeek(city) as never)
       const intervalId = setInterval(
@@ -123,7 +127,7 @@ const weatherWeekRequest = () => {
 
   return (
     <>
-      {status && weatherCityWeek.locationName && (
+      {status && city && weatherCityWeek.locationName && (
         <div className="dark">
           <div className="city-container">
             <div className="city-week">
@@ -170,11 +174,11 @@ const weatherWeekRequest = () => {
                 </div>
               )}
               <div className="button-warp">
-                {' '}
                 <button
                   className="default"
                   onClick={() => {
-                    EventBus.emit('36hours-status', true)
+                    EventBus.emit('36hours-status', city)
+                    setTemp(() => city)
                     setStatus(() => false)
                   }}
                 >
