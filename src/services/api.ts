@@ -2,6 +2,7 @@ import APIhandler from '../utils/api-handler'
 import { IWeatherNowResponse } from '../types/response/weather-now'
 import { IWeather36hrsResponse } from '../types/response/weather-36hrs'
 import { IWeatherWeekResponse } from '../types/response/weather-week'
+import { IWeatherTownResponse } from '../types/response/weather-town'
 import { IAirNowResponse } from '../types/response/air-now'
 import * as type from '../types/common'
 import * as status from '../types/enum'
@@ -54,5 +55,22 @@ export default {
     }
     const result = await APIhandler(config)
     return <IAirNowResponse>result.data
+  },
+  async getTownWeather(
+    cityId: string,
+    townName: string
+  ): Promise<IWeatherTownResponse> {
+    const config: type.IRequestConfig = {
+      url: 'F-D0047-093',
+      type: weather,
+      params: {
+        locationId: cityId,
+        locationName: townName,
+        sort: 'time',
+        elementName: 'PoP6h,T,AT,Wx,CI',
+      },
+    }
+    const result = await APIhandler(config)
+    return <IWeatherTownResponse>result.data
   },
 }

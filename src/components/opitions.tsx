@@ -9,7 +9,7 @@ const opitions = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value)
+    setSelectedOption(() => event.target.value)
   }
 
   const handleGetCity = useCallback(
@@ -23,6 +23,10 @@ const opitions = () => {
     },
     [setCity, setOptions]
   )
+
+  const handleSubmit = () => {
+    console.log(selectedOption, city)
+  }
 
   const handleCleanCity = useCallback(() => {
     setCity(() => null)
@@ -44,11 +48,7 @@ const opitions = () => {
       {city && (
         <div className="opitions">
           <p>選擇鄉鎮預報</p>
-          <select
-            id="dropdown"
-            onChange={handleOptionChange}
-            value={selectedOption || ''}
-          >
+          <select onChange={handleOptionChange} value={selectedOption || ''}>
             <option value="" disabled>
               請選擇
             </option>
@@ -58,6 +58,9 @@ const opitions = () => {
               </option>
             ))}
           </select>
+          <button className="submit" onClick={handleSubmit}>
+            確定
+          </button>
         </div>
       )}
     </>

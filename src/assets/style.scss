@@ -40,7 +40,6 @@ body {
               @apply text-sm text-white mr-2;
             }
 
-            button,
             select,
             option,
             select:focus-visible {
@@ -49,6 +48,12 @@ body {
               outline: none;
               color: #111719;
               background: #e8edee;
+            }
+
+            button.submit {
+              @apply text-white rounded-md;
+
+              background: #054d5e;
             }
           }
         }

@@ -1,12 +1,14 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 import { Location } from '../types/response/weather-36hrs'
 import { CityWeek } from '../types/response/weather-week'
+import { LocationTown } from '../types/response/weather-town'
 import { allCity } from '../assets/data'
 import {
   fetchWeatherNow,
   fetchAirNow,
   fetchWeather36hrs,
   fetchWeatherWeek,
+  fetchTownWeather,
 } from './thunks'
 import { find } from 'lodash'
 import produce from 'immer'
@@ -104,10 +106,30 @@ export const cityWeekSlice = createSlice({
   },
 })
 
+export const townSlice = createSlice({
+  name: 'townSlice',
+  initialState: {} as LocationTown,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTownWeather.pending, () => {
+        EventBus.emit('loading-change', true)
+      })
+      .addCase(fetchTownWeather.fulfilled, (_state, action) => {
+        EventBus.emit('loading-change', false)
+        return action.payload as LocationTown
+      })
+      .addCase(fetchTownWeather.rejected, () => {
+        EventBus.emit('loading-change', false)
+      })
+  },
+})
+
 export const store = configureStore({
   reducer: {
     hours: hoursSlice.reducer,
     now: nowSlice.reducer,
     cityWeek: cityWeekSlice.reducer,
+    town: townSlice.reducer,
   },
 })

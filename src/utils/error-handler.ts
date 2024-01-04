@@ -1,6 +1,6 @@
 export function requestFail(error: Error) {
-  console.log(error)
+  console.error(error)
 }
 export function responseFail(error: Error) {
-  console.log(error)
+  console.error(error)
 }

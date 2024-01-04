@@ -5,6 +5,7 @@ import { Station } from '../types/response/weather-now'
 import { Record } from '../types/response/air-now'
 import { Location } from '../types/response/weather-36hrs'
 import { CityWeek } from '../types/response/weather-week'
+import { LocationTown } from '../types/response/weather-town'
 import { allCity } from '../assets/data'
 import * as type from '../types/common'
 import api from '../services/api'
@@ -88,6 +89,19 @@ export const fetchAirNow = createAsyncThunk(
       return map(filter_data, (item) => {
         return setAirData(allCity, item)
       }) as unknown as type.INowData[]
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      throw error
+    }
+  }
+)
+
+export const fetchTownWeather = createAsyncThunk(
+  'fetchTownWeather',
+  async (parms: { cityid: string; town: string }): Promise<LocationTown> => {
+    try {
+      const res = await api.getTownWeather(parms.cityid, parms.town)
+      return res.records.locations[0].location[0]
     } catch (error) {
       console.error('Error fetching data:', error)
       throw error
