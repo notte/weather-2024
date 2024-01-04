@@ -19,7 +19,7 @@ const weather36hrsRequest = () => {
     (data: string) => {
       setCity(() => data)
     },
-    [city, setCity]
+    [setCity]
   )
   const handleBack = useCallback(
     (data: string) => {
@@ -29,16 +29,14 @@ const weather36hrsRequest = () => {
   )
 
   useEffect(() => {
-    EventBus.on('city-status', handleGetCity)
-  })
-
-  useEffect(() => {
+    const subscriptionClick = EventBus.on('city-status', handleGetCity)
     const subscriptionHoursStatus = EventBus.on('36hours-status', handleBack)
 
     return () => {
+      subscriptionClick.off('city-status')
       subscriptionHoursStatus.off('36hours-status')
     }
-  }, [city, weatherHours, handleBack])
+  }, [])
 
   useEffect(() => {
     if (temp === city) return

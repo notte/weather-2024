@@ -36,7 +36,7 @@ const map = (_props: type.INowData[]) => {
       maxZoom: 9,
       minZoom: 5.5,
     })
-  }, [JSON.stringify(_props)])
+  }, [_props, map.current])
 
   // 建立 markers 實體
   useEffect(() => {
@@ -122,7 +122,6 @@ const map = (_props: type.INowData[]) => {
           filter: ['==', 'COUNTYNAME', ''],
         })
       }
-
       if (map.current?.getLayer('country-fills')) {
         map.current?.on('mousemove', (e) => {
           const features = map.current?.queryRenderedFeatures(e.point, {
@@ -175,7 +174,7 @@ const map = (_props: type.INowData[]) => {
         })
       }
     })
-  }, [])
+  }, [map.current])
 
   useEffect(() => {
     const subscriptionClose = EventBus.on('city-close', () => {
@@ -188,7 +187,7 @@ const map = (_props: type.INowData[]) => {
     return () => {
       subscriptionClose.off('city-close')
     }
-  })
+  }, [])
 
   return (
     <>

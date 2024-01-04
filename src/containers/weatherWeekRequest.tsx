@@ -59,68 +59,58 @@ const weatherWeekRequest = () => {
           break
       }
     },
-    [
-      setForecast,
-      setTLine,
-      setATLine,
-      forecastBtn.current,
-      TLineBtn.current,
-      ATLineBtn.current,
-      forecast,
-      TLine,
-      ATLine,
-    ]
+    [setForecast, setTLine, setATLine]
   )
 
-  const handleGetCity = useCallback((data: string) => {
-    setCity(() => data)
-  }, [])
+  const handleGetCity = useCallback(
+    (data: string) => {
+      setCity(() => data)
+    },
+    [setCity]
+  )
 
   const handleForecastStatus = useCallback(
     (data: string) => {
       setCity(() => data)
       setStatus(() => true)
     },
-    [setCity, city]
+    [setCity, setStatus]
   )
 
-  const handleGetData = useCallback(() => {
-    const [MinT] = filter(
-      { ...weatherCityWeek.weatherElement },
-      (item) => item.elementName === 'MinT'
-    )
-    const [MaxT] = filter(
-      { ...weatherCityWeek.weatherElement },
-      (item) => item.elementName === 'MaxT'
-    )
-    const [MinAT] = filter(
-      { ...weatherCityWeek.weatherElement },
-      (item) => item.elementName === 'MinAT'
-    )
-    const [MaxAT] = filter(
-      { ...weatherCityWeek.weatherElement },
-      (item) => item.elementName === 'MaxAT'
-    )
-    setDataT(() => getWeatherLine(MinT, MaxT))
-    setDataAT(() => getWeatherLine(MinAT, MaxAT))
-  }, [weatherCityWeek, setDataT, setDataAT])
-
   useEffect(() => {
-    EventBus.on('city-status', handleGetCity)
-  })
-
-  useEffect(() => {
-    if (weatherCityWeek.locationName) {
-      handleGetData()
-    }
+    const subscriptionClick = EventBus.on('city-status', handleGetCity)
     const subscriptionWeekStatus = EventBus.on(
       'forecast-status',
       handleForecastStatus
     )
     return () => {
+      subscriptionClick.off('city-status')
       subscriptionWeekStatus.off('forecast-status')
     }
-  }, [city, weatherCityWeek, handleGetData])
+  }, [])
+
+  useEffect(() => {
+    if (weatherCityWeek.locationName) {
+      const [MinT] = filter(
+        { ...weatherCityWeek.weatherElement },
+        (item) => item.elementName === 'MinT'
+      )
+      const [MaxT] = filter(
+        { ...weatherCityWeek.weatherElement },
+        (item) => item.elementName === 'MaxT'
+      )
+      const [MinAT] = filter(
+        { ...weatherCityWeek.weatherElement },
+        (item) => item.elementName === 'MinAT'
+      )
+      const [MaxAT] = filter(
+        { ...weatherCityWeek.weatherElement },
+        (item) => item.elementName === 'MaxAT'
+      )
+      setDataT(() => getWeatherLine(MinT, MaxT))
+      setDataAT(() => getWeatherLine(MinAT, MaxAT))
+    }
+  }, [weatherCityWeek])
 
   useEffect(() => {
     if (temp === city) return

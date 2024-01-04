@@ -14,6 +14,7 @@ const opitions = () => {
 
   const handleGetCity = useCallback(
     (data: string) => {
+      setSelectedOption(() => null)
       setCity(() => data)
       const cityObj = find(allCity, (item: any) => {
         return item.COUNTYNAME === data
@@ -36,7 +37,7 @@ const opitions = () => {
       subscriptionClose.off('city-close')
       setSelectedOption(() => null)
     }
-  })
+  }, [])
 
   return (
     <>

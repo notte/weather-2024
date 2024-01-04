@@ -24,7 +24,7 @@ const App = () => {
     return () => {
       subscriptionCity.off('loading-change')
     }
-  }, [loading])
+  }, [])
 
   return (
     <>

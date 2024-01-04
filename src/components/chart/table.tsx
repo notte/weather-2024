@@ -25,7 +25,7 @@ const table = (prop: { weekData: IWeatherWeekData[] }) => {
       setWx(() => geWx(Wx.Wx as Object))
       setUVI(() => UVI.UVI)
     }
-  }, [JSON.stringify(prop)])
+  }, [prop])
 
   return (
     <>
