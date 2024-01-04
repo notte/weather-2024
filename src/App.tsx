@@ -6,18 +6,18 @@ import Loading from './components/loading'
 import EventBus from './utils/event-bus'
 
 const App = () => {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const subscriptionCity = EventBus.on('loading-change', (data) => {
-      // if (data === false) {
-      //   const id = setInterval(() => {
-      //     setLoading(() => data)
-      //   }, 2000)
-      //   return () => {
-      //     clearInterval(id)
-      //   }
-      // }
+      if (data === false) {
+        const id = setInterval(() => {
+          setLoading(() => data)
+        }, 1000)
+        return () => {
+          clearInterval(id)
+        }
+      }
       setLoading(() => data)
     })
 

@@ -84,6 +84,7 @@ const map = (_props: type.INowData[]) => {
   // load 事件
   useEffect(() => {
     map.current!.on('load', () => {
+      EventBus.emit('loading-change', false)
       if (!map.current?.getSource('countries')) {
         map.current?.addSource('countries', {
           type: 'geojson',
@@ -174,7 +175,9 @@ const map = (_props: type.INowData[]) => {
         })
       }
     })
+  }, [])
 
+  useEffect(() => {
     const subscriptionClose = EventBus.on('city-close', () => {
       map.current?.scrollZoom.enable()
       map.current?.dragPan.enable()
@@ -185,7 +188,7 @@ const map = (_props: type.INowData[]) => {
     return () => {
       subscriptionClose.off('city-close')
     }
-  }, [])
+  })
 
   return (
     <>
