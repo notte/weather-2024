@@ -64,17 +64,23 @@ const weatherWeekRequest = () => {
 
   const handleGetCity = useCallback(
     (data: string) => {
+      setForecast(() => true)
+      setTLine(() => false)
+      setATLine(() => false)
       setCity(() => data)
     },
-    [setCity]
+    [setCity, setForecast, setTLine, setATLine]
   )
 
   const handleForecastStatus = useCallback(
     (data: string) => {
+      setForecast(() => true)
+      setTLine(() => false)
+      setATLine(() => false)
       setCity(() => data)
       setStatus(() => true)
     },
-    [setCity, setStatus]
+    [setCity, setStatus, setForecast, setTLine, setATLine]
   )
 
   useEffect(() => {
