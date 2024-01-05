@@ -7,6 +7,15 @@ export interface IRequestConfig {
   params?: AxiosRequestConfig['params']
 }
 
+// AllCity 預設資料
+export interface ICityItem {
+  COUNTYNAME: string
+  id: string
+  coordinates: number[]
+  style: string
+  children: string[]
+}
+
 // 被處理過的資料
 export interface INowData {
   COUNTYNAME: string

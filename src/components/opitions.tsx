@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { map, find } from 'lodash'
 import { allCity } from '../assets/data'
+import * as type from '../types/common'
 import EventBus from '../utils/event-bus'
 
 const opitions = () => {
@@ -16,7 +17,7 @@ const opitions = () => {
     (data: string) => {
       setSelectedOption(() => null)
       setCity(() => data)
-      const cityObj = find(allCity, (item: any) => {
+      const cityObj = find(allCity, (item: type.ICityItem) => {
         return item.COUNTYNAME === data
       })
       setOptions(() => cityObj?.children)
@@ -25,7 +26,10 @@ const opitions = () => {
   )
 
   const handleSubmit = () => {
-    console.log(selectedOption, city)
+    const cityObj = find(allCity, (item: type.ICityItem) => {
+      return item.COUNTYNAME === city
+    })
+    EventBus.emit('getTown-status', { id: cityObj?.id, town: selectedOption })
   }
 
   const handleCleanCity = useCallback(() => {

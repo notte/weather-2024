@@ -98,9 +98,9 @@ export const fetchAirNow = createAsyncThunk(
 
 export const fetchTownWeather = createAsyncThunk(
   'fetchTownWeather',
-  async (parms: { cityid: string; town: string }): Promise<LocationTown> => {
+  async (params: { cityid: string; town: string }): Promise<LocationTown> => {
     try {
-      const res = await api.getTownWeather(parms.cityid, parms.town)
+      const res = await api.getTownWeather(params.cityid, params.town)
       return res.records.locations[0].location[0]
     } catch (error) {
       console.error('Error fetching data:', error)

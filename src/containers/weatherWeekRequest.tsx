@@ -73,14 +73,20 @@ const weatherWeekRequest = () => {
   )
 
   const handleForecastStatus = useCallback(
-    (data: string) => {
+    (data: string | boolean) => {
+      if (typeof data === 'string') {
+        setCity(() => data)
+        setStatus(() => true)
+      }
+      if (typeof data === 'boolean') {
+        setTemp(() => city)
+        setStatus(() => data)
+      }
       setForecast(() => true)
       setTLine(() => false)
       setATLine(() => false)
-      setCity(() => data)
-      setStatus(() => true)
     },
-    [setCity, setStatus, setForecast, setTLine, setATLine]
+    [setCity, setTemp, setStatus, setForecast, setTLine, setATLine]
   )
 
   useEffect(() => {

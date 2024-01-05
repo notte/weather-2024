@@ -31,7 +31,9 @@ body {
         background: linear-gradient(to bottom, #1117198c 0%, #11171936 100%);
 
         .opition-warp {
-          @apply w-3/4 flex justify-end;
+          @apply flex justify-end;
+
+          width: 95%;
 
           .opitions {
             @apply flex justify-center items-center;
@@ -51,7 +53,7 @@ body {
             }
 
             button.submit {
-              @apply text-white rounded-md;
+              @apply text-white font-semibold  text-sm rounded-md ml-2 px-2 py-1;
 
               background: #054d5e;
             }
