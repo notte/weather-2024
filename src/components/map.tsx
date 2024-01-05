@@ -1,4 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
+import { allCity } from '../assets/data'
 import mapboxgl, { Map } from 'mapbox-gl'
 import * as type from '../types/common.ts'
 import data from '../assets/twCounty2010.geo.json'
@@ -7,7 +8,7 @@ import {
   getCityName,
   getAirClassName,
 } from '../utils/helpers.ts'
-import { forEach } from 'lodash'
+import { forEach, find } from 'lodash'
 import EventBus from '../utils/event-bus'
 
 mapboxgl.accessToken =
@@ -153,6 +154,7 @@ const map = (_props: type.INowData[]) => {
         })
 
         map.current!.on('click', (e) => {
+          console.log(e.lngLat)
           const features = map.current?.queryRenderedFeatures(e.point, {
             layers: ['country-fills'],
           })
@@ -176,6 +178,19 @@ const map = (_props: type.INowData[]) => {
     })
   }, [map.current])
 
+  const handleGetTown = useCallback((data: { id: string; town: string }) => {
+    const cityObj = find(allCity, (item: type.ICityItem) => {
+      return item.id === data.id
+    })
+    if (cityObj) {
+      map.current?.flyTo({
+        center: [cityObj.center[0], cityObj.center[1]],
+        zoom: 20,
+      })
+      map.current?.setStyle(cityObj?.style)
+    }
+  }, [])
+
   useEffect(() => {
     const subscriptionClose = EventBus.on('city-close', () => {
       map.current?.scrollZoom.enable()
@@ -184,8 +199,11 @@ const map = (_props: type.INowData[]) => {
       map.current?.keyboard.enable()
       map.current?.touchZoomRotate.enable()
     })
+
+    const subscriptionTownClick = EventBus.on('getTown-status', handleGetTown)
     return () => {
       subscriptionClose.off('city-close')
+      subscriptionTownClick.off('getTown-status')
     }
   }, [])
 

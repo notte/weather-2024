@@ -12,6 +12,7 @@ export interface ICityItem {
   COUNTYNAME: string
   id: string
   coordinates: number[]
+  center: number[]
   style: string
   children: string[]
 }

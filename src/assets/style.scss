@@ -70,7 +70,7 @@ body {
 
         /* 黑色遮罩 */
         .dark {
-          @apply fixed  w-full h-full z-10;
+          /* @apply fixed  w-full h-full z-10; */
 
           background: #0b1a3252;
         }

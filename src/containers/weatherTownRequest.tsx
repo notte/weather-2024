@@ -5,6 +5,7 @@ import EventBus from '../utils/event-bus'
 
 const weatherTownRequest = () => {
   const [cityId, setCityId] = useState<string | null>(null)
+  const [status, setStatus] = useState<boolean>(false)
   const [town, setTown] = useState<string | null>(null)
   const dispatch = useDispatch()
   const weatherTown = useSelector((state: { town: unknown }) => state.town)
@@ -17,7 +18,9 @@ const weatherTownRequest = () => {
 
   useEffect(() => {
     if (cityId && town) {
-      getData()
+      getData().then(() => {
+        setStatus(() => true)
+      })
     }
     const intervalWeather = setInterval(
       () => {
@@ -53,9 +56,32 @@ const weatherTownRequest = () => {
     }
   }, [])
 
-  useEffect(() => {}, [weatherTown])
+  useEffect(() => {
+    // console.log(weatherTown)
+  }, [weatherTown])
 
-  return <></>
+  return (
+    <>
+      {status && (
+        <div className="dark">
+          <div className="city-container">
+            <div className="city-week">
+              <h1></h1>
+              <div className="tab-warp"></div>
+              <div className="button-warp">
+                <button className="default" onClick={() => {}}>
+                  返回縣市預報
+                </button>
+                <button className="default close" onClick={() => {}}>
+                  關閉
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
 }
 
 export default weatherTownRequest
