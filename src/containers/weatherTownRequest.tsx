@@ -64,7 +64,7 @@ const weatherTownRequest = () => {
     <>
       {status && (
         <div className="dark">
-          <div className="city-container">
+          <div className="town-container">
             <div className="city-week">
               <h1></h1>
               <div className="tab-warp"></div>
