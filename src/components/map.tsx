@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { allCity } from '../assets/data'
 import mapboxgl, { Map, MapMouseEvent } from 'mapbox-gl'
 import * as type from '../types/common.ts'
@@ -8,7 +8,7 @@ import {
   getCityName,
   getAirClassName,
 } from '../utils/helpers.ts'
-import { forEach, find } from 'lodash'
+import { find } from 'lodash'
 import EventBus from '../utils/event-bus'
 
 mapboxgl.accessToken =
@@ -25,6 +25,7 @@ const map = (_props: type.INowData[]) => {
     'mapbox://styles/yoyo2023/clq357vee000i01r4a67eaap1'
   )
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
+  const [reload, setReload] = useState<boolean>(true)
 
   // 建立地圖實體
   useEffect(() => {
@@ -80,22 +81,29 @@ const map = (_props: type.INowData[]) => {
 
   // 移除 marker DOM
   const handleRemoveMarkerDOM = () => {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].remove()
+    if (markers) {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].remove()
+      }
     }
+    setReload(false)
   }
 
   // 建立 marker DOM
   const handleCreateMarkerDOM = () => {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].addTo(map.current as Map)
+    if (markers) {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].addTo(map.current as Map)
+      }
     }
+    setReload(true)
   }
 
   // 渲染 marker 到 map 實體
   useEffect(() => {
-    handleCreateMarkerDOM()
-  }, [markers])
+    if (reload === true) handleCreateMarkerDOM()
+    if (reload === false) handleRemoveMarkerDOM()
+  }, [markers, reload])
 
   // load 事件
   const handleMousemove = (e: MapMouseEvent) => {
@@ -138,6 +146,7 @@ const map = (_props: type.INowData[]) => {
         map.current?.dragRotate.disable()
         map.current?.keyboard.disable()
         map.current?.touchZoomRotate.disable()
+        setReload(false)
       }
     }
   }
@@ -218,7 +227,7 @@ const map = (_props: type.INowData[]) => {
       map.current?.dragRotate.enable()
       map.current?.keyboard.enable()
       map.current?.touchZoomRotate.enable()
-      handleCreateMarkerDOM()
+      setReload(true)
     })
 
     const subscriptionTownClose = EventBus.on('town-close', () => {
@@ -229,7 +238,7 @@ const map = (_props: type.INowData[]) => {
       map.current?.touchZoomRotate.enable()
       map.current?.flyTo({ center: [lng, lat], zoom: zoom })
       map.current?.setStyle(style)
-      handleCreateMarkerDOM()
+      setReload(true)
     })
 
     const subscriptionTownClick = EventBus.on('getTown-status', handleGetTown)

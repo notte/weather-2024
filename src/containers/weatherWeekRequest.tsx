@@ -1,6 +1,6 @@
 import { useEffect, useState, MouseEvent, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { map, includes, filter } from 'lodash'
+import { filter } from 'lodash'
 import { CityWeek } from '../types/response/weather-week'
 import { fetchWeatherWeek } from '../redux/thunks'
 import { getWeatherWeekData, getWeatherLine } from '../utils/helpers'
