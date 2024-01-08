@@ -38,11 +38,13 @@ const opitions = () => {
 
   useEffect(() => {
     const subscriptionClick = EventBus.on('city-status', handleGetCity)
-    const subscriptionClose = EventBus.on('city-close', handleCleanCity)
+    const subscriptionCityClose = EventBus.on('city-close', handleCleanCity)
+    const subscriptionTownClose = EventBus.on('town-close', handleCleanCity)
 
     return () => {
       subscriptionClick.off('city-status')
-      subscriptionClose.off('city-close')
+      subscriptionCityClose.off('city-close')
+      subscriptionTownClose.off('city-close')
       setSelectedOption(() => null)
     }
   }, [])

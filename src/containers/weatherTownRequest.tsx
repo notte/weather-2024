@@ -56,6 +56,10 @@ const weatherTownRequest = () => {
     }
   }, [])
 
+  useEffect(() => {
+    console.log(weatherTown)
+  }, [weatherTown])
+
   return (
     <>
       {status && (
@@ -65,10 +69,12 @@ const weatherTownRequest = () => {
               <h1></h1>
               <div className="tab-warp"></div>
               <div className="button-warp">
-                <button className="default" onClick={() => {}}>
-                  返回縣市預報
-                </button>
-                <button className="default close" onClick={() => {}}>
+                <button
+                  className="default close"
+                  onClick={() => {
+                    EventBus.emit('town-close')
+                  }}
+                >
                   關閉
                 </button>
               </div>

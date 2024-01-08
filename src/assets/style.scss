@@ -70,7 +70,7 @@ body {
 
         /* 黑色遮罩 */
         .dark {
-          /* @apply fixed  w-full h-full z-10; */
+          @apply fixed  w-full h-full z-10;
 
           background: #0b1a3252;
         }
@@ -230,13 +230,28 @@ body {
         }
 
         .town-container {
-          @apply absolute w-2/3 px-5 py-8 left-1/2 overflow-y-auto overflow-hidden z-10 bottom-0;
+          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10 top-1/2;
 
+          border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
-          transform: translateX(-50%);
           background: linear-gradient(to bottom, #effbfde6 0%, white 100%);
           max-height: 70%;
+          transform: translateY(-50%);
+
+          .button-warp {
+            @apply mt-5;
+          }
+
+          button.default {
+            @apply font-bold text-sm px-6 py-1 rounded-2xl mx-2;
+
+            background: #0089a7;
+            color: #fff;
+          }
+
+          button.default.close {
+            background: #054d5e;
+          }
         }
       }
     }
