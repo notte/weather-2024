@@ -56,10 +56,6 @@ const weatherTownRequest = () => {
     }
   }, [])
 
-  useEffect(() => {
-    // console.log(weatherTown)
-  }, [weatherTown])
-
   return (
     <>
       {status && (

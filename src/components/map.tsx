@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { allCity } from '../assets/data'
-import mapboxgl, { Map } from 'mapbox-gl'
+import mapboxgl, { Map, MapMouseEvent } from 'mapbox-gl'
 import * as type from '../types/common.ts'
 import data from '../assets/twCounty2010.geo.json'
 import {
@@ -21,6 +21,9 @@ const map = (_props: type.INowData[]) => {
   const [lng] = useState<number>(123.3)
   const [lat] = useState<number>(23.8835)
   const [zoom] = useState<number>(6.6)
+  const [style] = useState<string>(
+    'mapbox://styles/yoyo2023/clq357vee000i01r4a67eaap1'
+  )
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([])
 
   // 建立地圖實體
@@ -31,7 +34,7 @@ const map = (_props: type.INowData[]) => {
     }
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLElement,
-      style: 'mapbox://styles/yoyo2023/clq357vee000i01r4a67eaap1',
+      style: style,
       center: [lng, lat],
       zoom: zoom,
       maxZoom: 9,
@@ -40,11 +43,8 @@ const map = (_props: type.INowData[]) => {
   }, [_props, map.current])
 
   // 建立 markers 實體
-  useEffect(() => {
-    if (!Object.keys(_props[0]).includes('aqi')) return
-
+  const handleSetMarker = () => {
     const resource = { ..._props }
-
     for (const key in resource) {
       const className = getWeatherIcon(resource[key].Weather as string)
       const customMarkerElement = document.createElement('div')
@@ -71,18 +71,77 @@ const map = (_props: type.INowData[]) => {
         )
       setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
     }
+  }
+
+  useEffect(() => {
+    if (!Object.keys(_props[0]).includes('aqi')) return
+    handleSetMarker()
   }, [JSON.stringify(_props)])
+
+  // 移除 marker DOM
+  const handleRemoveMarkerDOM = () => {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].remove()
+    }
+  }
+
+  // 建立 marker DOM
+  const handleCreateMarkerDOM = () => {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].addTo(map.current as Map)
+    }
+  }
 
   // 渲染 marker 到 map 實體
   useEffect(() => {
-    if (markers.length > 0) {
-      forEach(markers, (mark) => {
-        mark.addTo(map.current as Map)
-      })
-    }
+    handleCreateMarkerDOM()
   }, [markers])
 
   // load 事件
+  const handleMousemove = (e: MapMouseEvent) => {
+    const features = map.current?.queryRenderedFeatures(e.point, {
+      layers: ['country-fills'],
+    })
+
+    if (features!.length > 0) {
+      map.current!.getCanvas().style.cursor = 'pointer'
+      map.current?.setFilter('country-fills-hover', [
+        '==',
+        'COUNTYNAME',
+        features![0].properties?.COUNTYNAME,
+      ])
+      map.current?.setFilter('country-borders', [
+        '==',
+        'COUNTYNAME',
+        features![0].properties?.COUNTYNAME,
+      ])
+    }
+  }
+  const handleMouseOut = () => {
+    map.current?.setFilter('country-fills-hover', ['==', 'COUNTYNAME', ''])
+    map.current?.setFilter('country-borders', ['==', 'COUNTYNAME', ''])
+  }
+  const handleClick = (e: MapMouseEvent) => {
+    const features = map.current?.queryRenderedFeatures(e.point, {
+      layers: ['country-fills'],
+    })
+    if (features!.length > 0) {
+      try {
+        const clickedFeature = features![0].properties
+        let selectCity = clickedFeature!.COUNTYNAME
+        selectCity = getCityName(selectCity)
+        map.current?.flyTo({ center: [lng, lat], zoom: zoom })
+        EventBus.emit('city-status', selectCity)
+      } finally {
+        map.current?.scrollZoom.disable()
+        map.current?.dragPan.disable()
+        map.current?.dragRotate.disable()
+        map.current?.keyboard.disable()
+        map.current?.touchZoomRotate.disable()
+      }
+    }
+  }
+
   useEffect(() => {
     map.current!.on('load', () => {
       EventBus.emit('loading-change', false)
@@ -123,86 +182,61 @@ const map = (_props: type.INowData[]) => {
           filter: ['==', 'COUNTYNAME', ''],
         })
       }
+
       if (map.current?.getLayer('country-fills')) {
-        map.current?.on('mousemove', (e) => {
-          const features = map.current?.queryRenderedFeatures(e.point, {
-            layers: ['country-fills'],
-          })
-
-          if (features!.length > 0) {
-            map.current!.getCanvas().style.cursor = 'pointer'
-            map.current?.setFilter('country-fills-hover', [
-              '==',
-              'COUNTYNAME',
-              features![0].properties?.COUNTYNAME,
-            ])
-            map.current?.setFilter('country-borders', [
-              '==',
-              'COUNTYNAME',
-              features![0].properties?.COUNTYNAME,
-            ])
-          }
-        })
-
-        map.current!.on('mouseout', () => {
-          map.current?.setFilter('country-fills-hover', [
-            '==',
-            'COUNTYNAME',
-            '',
-          ])
-          map.current?.setFilter('country-borders', ['==', 'COUNTYNAME', ''])
-        })
-
-        map.current!.on('click', (e) => {
-          console.log(e.lngLat)
-          const features = map.current?.queryRenderedFeatures(e.point, {
-            layers: ['country-fills'],
-          })
-          if (features!.length > 0) {
-            try {
-              const clickedFeature = features![0].properties
-              let selectCity = clickedFeature!.COUNTYNAME
-              selectCity = getCityName(selectCity)
-              map.current?.flyTo({ center: [lng, lat], zoom: zoom })
-              EventBus.emit('city-status', selectCity)
-            } finally {
-              map.current?.scrollZoom.disable()
-              map.current?.dragPan.disable()
-              map.current?.dragRotate.disable()
-              map.current?.keyboard.disable()
-              map.current?.touchZoomRotate.disable()
-            }
-          }
-        })
+        map.current?.on('mousemove', handleMousemove)
+        map.current!.on('mouseout', handleMouseOut)
+        map.current!.on('click', handleClick)
       }
     })
-  }, [map.current])
 
-  const handleGetTown = useCallback((data: { id: string; town: string }) => {
+    return () => {
+      map.current?.off('mousemove', handleMousemove)
+      map.current?.off('mouseout', handleMouseOut)
+      map.current?.off('click', handleClick)
+    }
+  }, [map.current, markers])
+
+  // 接收事件
+  const handleGetTown = (data: { id: string; town: string }) => {
     const cityObj = find(allCity, (item: type.ICityItem) => {
       return item.id === data.id
     })
     if (cityObj) {
       map.current?.flyTo({
         center: [cityObj.center[0], cityObj.center[1]],
-        zoom: 20,
+        zoom: cityObj.zoom,
       })
       map.current?.setStyle(cityObj?.style)
     }
-  }, [])
+  }
 
   useEffect(() => {
-    const subscriptionClose = EventBus.on('city-close', () => {
+    const subscriptionCityClose = EventBus.on('city-close', () => {
       map.current?.scrollZoom.enable()
       map.current?.dragPan.enable()
       map.current?.dragRotate.enable()
       map.current?.keyboard.enable()
       map.current?.touchZoomRotate.enable()
+      handleCreateMarkerDOM()
+    })
+
+    const subscriptionTownClose = EventBus.on('town-close', () => {
+      map.current?.scrollZoom.enable()
+      map.current?.dragPan.enable()
+      map.current?.dragRotate.enable()
+      map.current?.keyboard.enable()
+      map.current?.touchZoomRotate.enable()
+      map.current?.flyTo({ center: [lng, lat], zoom: zoom })
+      map.current?.setStyle(style)
+      handleCreateMarkerDOM()
     })
 
     const subscriptionTownClick = EventBus.on('getTown-status', handleGetTown)
+
     return () => {
-      subscriptionClose.off('city-close')
+      subscriptionCityClose.off('city-close')
+      subscriptionTownClose.off('town-close')
       subscriptionTownClick.off('getTown-status')
     }
   }, [])
