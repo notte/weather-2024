@@ -113,6 +113,33 @@ function setWeatherWeekData() {
   }
 }
 
+function setTowntWeather() {
+  return (weather: WeatherElementTown[]): IWorkData[] | undefined => {
+    let result: IWorkData[] = []
+    let obj: IWorkData = {}
+    const array: WeatherElementTown[] = weather
+    if (array) {
+      for (let i = 0; i < array.length; i++) {
+        obj = {}
+        const elementName = array[i].elementName
+        forEach(array[i].time, (item) => {
+          const day = item.startTime
+            ? item.startTime.substring(0, 16)
+            : item.dataTime
+              ? item.dataTime.substring(0, 16)
+              : null
+
+          if (!obj[elementName]) obj[elementName] = {}
+          if (day && !obj[elementName][day]) {
+            obj[elementName][day] = item.elementValue[0].value
+          }
+        })
+        result.push(obj)
+      }
+      return result
+    }
+  }
+}
 function setTemperature() {
   return (
     min: IWeatherWeekData,
@@ -201,34 +228,6 @@ function setUVI() {
     if (+uvi > 5 && +uvi < 8) return 'v3'
     if (+uvi > 7 && +uvi < 11) return 'v4'
     return 'v5'
-  }
-}
-
-function setTowntWeather() {
-  let result: IWorkData[] = []
-  let obj: IWorkData = {}
-  return (weather: WeatherElementTown[]): IWorkData[] | undefined => {
-    if (weather) {
-      for (let i = 0; i < weather.length; i++) {
-        // console.log(weather[i])
-        obj = {}
-        const elementName = weather[i].elementName
-        forEach(weather[i].time, (item) => {
-          const day = item.startTime
-            ? item.startTime.substring(0, 16)
-            : item.dataTime
-              ? item.dataTime.substring(0, 16)
-              : null
-
-          if (!obj[elementName]) obj[elementName] = {}
-          if (day && !obj[elementName][day]) {
-            obj[elementName][day] = item.elementValue[0].value
-          }
-        })
-        result.push(obj)
-      }
-      return result
-    }
   }
 }
 

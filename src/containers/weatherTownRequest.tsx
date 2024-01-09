@@ -4,63 +4,52 @@ import { fetchTownWeather } from '../redux/thunks'
 import { getTowntWeather } from '../utils/helpers'
 import { LocationTown } from '../types/response/weather-town'
 import { IWorkData } from '../types/table'
+import Table from '../components/chart/townTable'
 import EventBus from '../utils/event-bus'
 
 const weatherTownRequest = () => {
   const [cityId, setCityId] = useState<string | null>(null)
-  const [status, setStatus] = useState<boolean>(false)
   const [town, setTown] = useState<string | null>(null)
-  const [townData, setTownData] = useState<IWorkData[] | null>()
+  const [status, setStatus] = useState<boolean>(false)
   const dispatch = useDispatch()
   const weatherTown = useSelector((state: { town: LocationTown }) => state.town)
 
-  const getData = async () => {
-    if (cityId && town) {
+  const getData = useCallback(
+    async (cityId: string, town: string) => {
       dispatch(fetchTownWeather({ cityid: cityId, town: town }) as never)
-    }
-  }
-
-  useEffect(() => {
-    if (cityId && town) {
-      getData().then(() => {
-        setStatus(() => true)
-      })
-    }
-    const intervalWeather = setInterval(
-      () => {
-        getData()
-      },
-      15 * 60 * 1000
-    )
-
-    EventBus.emit('loading-change', false)
-
-    return () => {
-      clearInterval(intervalWeather)
-    }
-  }, [cityId, town])
+    },
+    [fetchTownWeather]
+  )
 
   const handleGetTown = useCallback(
     (data: { id: string; town: string }) => {
-      setCityId(() => data.id)
-      setTown(() => data.town)
-      EventBus.emit('36hours-status', false)
-      EventBus.emit('forecast-status', false)
+      getData(data.id, data.town).then(() => {
+        EventBus.emit('36hours-status', false)
+        EventBus.emit('forecast-status', false)
+        setStatus(true)
+        setCityId(() => data.id)
+        setTown(() => data.town)
+      })
     },
-    [setCityId, setTown]
+    [setStatus, setCityId, setTown]
   )
 
   useEffect(() => {
     const subscriptionTownClick = EventBus.on('getTown-status', handleGetTown)
+    const intervalWeather = setInterval(
+      () => {
+        if (cityId && town) {
+          getData(cityId, town)
+        }
+      },
+      15 * 60 * 1000
+    )
 
     return () => {
+      clearInterval(intervalWeather)
       subscriptionTownClick.off('getTown-status')
     }
   }, [])
-
-  useEffect(() => {
-    setTownData(() => getTowntWeather(weatherTown.weatherElement))
-  }, [weatherTown])
 
   return (
     <>
@@ -81,6 +70,11 @@ const weatherTownRequest = () => {
                   關閉
                 </button>
               </div>
+              <Table
+                townData={
+                  getTowntWeather(weatherTown.weatherElement) as IWorkData[]
+                }
+              />
             </div>
           </div>
         </div>
