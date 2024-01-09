@@ -29,19 +29,20 @@ export interface LocationTown {
   geocode: string
   lat: string
   lon: string
-  weatherElement: WeatherElement[]
+  weatherElement: WeatherElementTown[]
 }
 
-export interface WeatherElement {
+export interface WeatherElementTown {
   elementName: string
   description: string
   time: Time[]
 }
 
 export interface Time {
-  startTime: string
   endTime: string
   elementValue: ElementValue[]
+  startTime?: string
+  dataTime?: string
 }
 
 export interface ElementValue {

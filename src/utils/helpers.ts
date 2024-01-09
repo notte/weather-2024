@@ -8,6 +8,10 @@ import {
   entries,
 } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
+import {
+  LocationTown,
+  WeatherElementTown,
+} from '../types/response/weather-town'
 import { IWorkData, IWeatherWeekData, ITemperature, IWx } from '../types/table'
 import * as type from '../types/common'
 
@@ -200,6 +204,34 @@ function setUVI() {
   }
 }
 
+function setTowntWeather() {
+  let result: IWorkData[] = []
+  let obj: IWorkData = {}
+  return (weather: WeatherElementTown[]): IWorkData[] | undefined => {
+    if (weather) {
+      for (let i = 0; i < weather.length; i++) {
+        // console.log(weather[i])
+        obj = {}
+        const elementName = weather[i].elementName
+        forEach(weather[i].time, (item) => {
+          const day = item.startTime
+            ? item.startTime.substring(0, 16)
+            : item.dataTime
+              ? item.dataTime.substring(0, 16)
+              : null
+
+          if (!obj[elementName]) obj[elementName] = {}
+          if (day && !obj[elementName][day]) {
+            obj[elementName][day] = item.elementValue[0].value
+          }
+        })
+        result.push(obj)
+      }
+      return result
+    }
+  }
+}
+
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
 export const getAirClassName = setAir()
@@ -208,3 +240,4 @@ export const getTemperature = setTemperature()
 export const geWx = setWx()
 export const getWeatherLine = setWeatherLine()
 export const getUVIClass = setUVI()
+export const getTowntWeather = setTowntWeather()

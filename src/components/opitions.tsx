@@ -44,7 +44,7 @@ const opitions = () => {
     return () => {
       subscriptionClick.off('city-status')
       subscriptionCityClose.off('city-close')
-      subscriptionTownClose.off('city-close')
+      subscriptionTownClose.off('town-close')
       setSelectedOption(() => null)
     }
   }, [])

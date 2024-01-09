@@ -73,7 +73,6 @@ const map = (_props: type.INowData[]) => {
       setMarkers((oldMarker) => [...oldMarker, marker as mapboxgl.Marker])
     }
   }
-
   useEffect(() => {
     if (!Object.keys(_props[0]).includes('aqi')) return
     handleSetMarker()
@@ -88,7 +87,6 @@ const map = (_props: type.INowData[]) => {
     }
     setReload(false)
   }
-
   // 建立 marker DOM
   const handleCreateMarkerDOM = () => {
     if (markers) {
@@ -98,14 +96,50 @@ const map = (_props: type.INowData[]) => {
     }
     setReload(true)
   }
-
-  // 渲染 marker 到 map 實體
+  // 渲染 or 移除 marker
   useEffect(() => {
     if (reload === true) handleCreateMarkerDOM()
     if (reload === false) handleRemoveMarkerDOM()
   }, [markers, reload])
 
   // load 事件
+  const handleSetMapData = () => {
+    map.current?.addSource('countries', {
+      type: 'geojson',
+      data: data as GeoJSON.FeatureCollection,
+    })
+    map.current?.addLayer({
+      id: 'country-fills',
+      type: 'fill',
+      source: 'countries',
+      paint: {
+        'fill-color': 'transparent',
+      },
+    })
+    map.current?.addLayer({
+      id: 'country-fills-hover',
+      type: 'fill',
+      source: 'countries',
+      layout: {},
+      paint: {
+        'fill-color': '#0F2D33',
+        'fill-opacity': 0.4,
+      },
+      filter: ['==', 'COUNTYNAME', ''],
+    })
+
+    map.current?.addLayer({
+      id: 'country-borders',
+      type: 'line',
+      source: 'countries',
+      layout: {},
+      paint: {
+        'line-color': '#111719',
+        'line-width': 1,
+      },
+      filter: ['==', 'COUNTYNAME', ''],
+    })
+  }
   const handleMousemove = (e: MapMouseEvent) => {
     const features = map.current?.queryRenderedFeatures(e.point, {
       layers: ['country-fills'],
@@ -152,50 +186,18 @@ const map = (_props: type.INowData[]) => {
   }
 
   useEffect(() => {
-    map.current!.on('load', () => {
+    map.current?.on('style.load', () => {
       EventBus.emit('loading-change', false)
-      if (!map.current?.getSource('countries')) {
-        map.current?.addSource('countries', {
-          type: 'geojson',
-          data: data as GeoJSON.FeatureCollection,
-        })
-        map.current?.addLayer({
-          id: 'country-fills',
-          type: 'fill',
-          source: 'countries',
-          paint: {
-            'fill-color': 'transparent',
-          },
-        })
-        map.current?.addLayer({
-          id: 'country-fills-hover',
-          type: 'fill',
-          source: 'countries',
-          layout: {},
-          paint: {
-            'fill-color': '#0F2D33',
-            'fill-opacity': 0.4,
-          },
-          filter: ['==', 'COUNTYNAME', ''],
-        })
+      if (map.current?.getStyle().name === 'Monochrome-copy-copy') {
+        if (!map.current?.getSource('countries')) {
+          handleSetMapData()
+        }
 
-        map.current?.addLayer({
-          id: 'country-borders',
-          type: 'line',
-          source: 'countries',
-          layout: {},
-          paint: {
-            'line-color': '#111719',
-            'line-width': 1,
-          },
-          filter: ['==', 'COUNTYNAME', ''],
-        })
-      }
-
-      if (map.current?.getLayer('country-fills')) {
-        map.current?.on('mousemove', handleMousemove)
-        map.current!.on('mouseout', handleMouseOut)
-        map.current!.on('click', handleClick)
+        if (map.current?.getLayer('country-fills')) {
+          map.current?.on('mousemove', handleMousemove)
+          map.current!.on('mouseout', handleMouseOut)
+          map.current!.on('click', handleClick)
+        }
       }
     })
 
@@ -204,9 +206,9 @@ const map = (_props: type.INowData[]) => {
       map.current?.off('mouseout', handleMouseOut)
       map.current?.off('click', handleClick)
     }
-  }, [map.current, markers])
+  }, [map.current])
 
-  // 接收事件
+  // 接收 town 事件
   const handleGetTown = (data: { id: string; town: string }) => {
     const cityObj = find(allCity, (item: type.ICityItem) => {
       return item.id === data.id

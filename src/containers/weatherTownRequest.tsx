@@ -1,14 +1,18 @@
 import { useEffect, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTownWeather } from '../redux/thunks'
+import { getTowntWeather } from '../utils/helpers'
+import { LocationTown } from '../types/response/weather-town'
+import { IWorkData } from '../types/table'
 import EventBus from '../utils/event-bus'
 
 const weatherTownRequest = () => {
   const [cityId, setCityId] = useState<string | null>(null)
   const [status, setStatus] = useState<boolean>(false)
   const [town, setTown] = useState<string | null>(null)
+  const [townData, setTownData] = useState<IWorkData[] | null>()
   const dispatch = useDispatch()
-  const weatherTown = useSelector((state: { town: unknown }) => state.town)
+  const weatherTown = useSelector((state: { town: LocationTown }) => state.town)
 
   const getData = async () => {
     if (cityId && town) {
@@ -48,16 +52,14 @@ const weatherTownRequest = () => {
 
   useEffect(() => {
     const subscriptionTownClick = EventBus.on('getTown-status', handleGetTown)
-    // const subscriptionTownStatus = EventBus.on('town-status', handleBack)
 
     return () => {
       subscriptionTownClick.off('getTown-status')
-      // subscriptionTownStatus.off('town-status')
     }
   }, [])
 
   useEffect(() => {
-    console.log(weatherTown)
+    setTownData(() => getTowntWeather(weatherTown.weatherElement))
   }, [weatherTown])
 
   return (
@@ -73,6 +75,7 @@ const weatherTownRequest = () => {
                   className="default close"
                   onClick={() => {
                     EventBus.emit('town-close')
+                    setStatus(false)
                   }}
                 >
                   關閉
