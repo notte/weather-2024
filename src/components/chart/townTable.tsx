@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { IWorkData } from '../../types/table'
 import { map, keys } from 'lodash'
+import { getColspan, getWeatherIcon } from '../../utils/helpers'
 
 const townTable = (prop: { townData: IWorkData[] }) => {
   const [T, setT] = useState<any>()
   const [AT, setAT] = useState<any>()
   const [day, setDay] = useState<string[]>()
-  const [time, setTime] = useState<string[]>()
+  const [allDay, setAllDay] = useState<string[]>()
   const [Wx, setWx] = useState<any>()
   const [CI, setCI] = useState<{}>()
   const [PoP6h, setPoP6h] = useState<{}>()
+
   useEffect(() => {
     if (prop.townData) {
       const [Wx, AT, T, CI, PoP6h] = prop.townData
@@ -17,32 +19,81 @@ const townTable = (prop: { townData: IWorkData[] }) => {
       setDay(() =>
         Array.from(new Set(map(keys(T.T), (item) => item.substring(0, 10))))
       )
+      setAllDay(() => map(keys(T.T), (item) => item))
+
+      setT(() => T.T)
+      setAT(() => AT.AT)
+      setWx(() => Wx.Wx)
+      setCI(() => CI.CI)
+      setPoP6h(() => PoP6h.PoP6h)
     }
   }, [prop])
 
-  useEffect(() => {
-    console.log(time)
-  }, [Wx, AT, T, CI, PoP6h, time, day])
   return (
     <>
       <table>
         <thead>
-          {/* <tr>
+          <tr>
             <th>日期</th>
-            {time &&
-              map(time, (header: string) => <th key={header}>{header}</th>)}
-          </tr> */}
+            {day &&
+              allDay &&
+              map(day, (header: string) => (
+                <th key={header} colSpan={getColspan(header, allDay)}>
+                  {header}
+                </th>
+              ))}
+          </tr>
+          <tr>
+            <th>時間</th>
+            {allDay &&
+              map(allDay, (header: string) => (
+                <th key={header}>{header.substring(11, 16)}</th>
+              ))}
+          </tr>
         </thead>
         <tbody>
-          {/* <tr>
-            <td>紫外線</td>
-            {UVI &&
-              map(UVI, (column: string, index: number) => (
+          <tr>
+            <td>天氣</td>
+            {Wx &&
+              map(Wx, (column: string, index: number) => (
                 <td key={column[1] + index}>
-                  <span className={`${getUVIClass(column)} uvi`}>{column}</span>
+                  <div
+                    className={`${getWeatherIcon(column)} weather-table-icon`}
+                  ></div>
+                  <p>{column}</p>
                 </td>
               ))}
-          </tr> */}
+          </tr>
+          <tr>
+            <td>溫度</td>
+            {T &&
+              map(T, (column: string, index: number) => (
+                <td key={column[1] + index}>{column}°C</td>
+              ))}
+          </tr>
+          <tr>
+            <td>體感溫度</td>
+            {AT &&
+              map(AT, (column: string, index: number) => (
+                <td key={column[1] + index}>{column}°C</td>
+              ))}
+          </tr>
+          <tr>
+            <td>舒適度</td>
+            {CI &&
+              map(CI, (column: string, index: number) => (
+                <td key={column[1] + index}>{column}</td>
+              ))}
+          </tr>
+          <tr>
+            <td>降雨機率</td>
+            {PoP6h &&
+              map(PoP6h, (column: string, index: number) => (
+                <td colSpan={2} key={column[1] + index}>
+                  {column}
+                </td>
+              ))}
+          </tr>
         </tbody>
       </table>
     </>

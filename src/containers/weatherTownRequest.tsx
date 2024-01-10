@@ -10,6 +10,7 @@ import EventBus from '../utils/event-bus'
 const weatherTownRequest = () => {
   const [cityId, setCityId] = useState<string | null>(null)
   const [town, setTown] = useState<string | null>(null)
+  const [townName, setTownName] = useState<string | null>(null)
   const [status, setStatus] = useState<boolean>(false)
   const dispatch = useDispatch()
   const weatherTown = useSelector((state: { town: LocationTown }) => state.town)
@@ -56,25 +57,29 @@ const weatherTownRequest = () => {
       {status && (
         <div className="dark">
           <div className="town-container">
-            <div className="city-week">
-              <h1></h1>
-              <div className="tab-warp"></div>
-              <div className="button-warp">
-                <button
-                  className="default close"
-                  onClick={() => {
-                    EventBus.emit('town-close')
-                    setStatus(false)
-                  }}
-                >
-                  關閉
-                </button>
-              </div>
+            <h1>{town}</h1>
+            <div className="tab-warp">
+              <button>逐三小時預報</button>
+              <button>溫度曲線</button>
+              <button>體感溫度曲線</button>
+            </div>
+            <div className="table-warp">
               <Table
                 townData={
                   getTowntWeather(weatherTown.weatherElement) as IWorkData[]
                 }
               />
+            </div>
+            <div className="button-warp">
+              <button
+                className="default close"
+                onClick={() => {
+                  EventBus.emit('town-close')
+                  setStatus(false)
+                }}
+              >
+                關閉
+              </button>
             </div>
           </div>
         </div>

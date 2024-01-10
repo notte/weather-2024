@@ -6,12 +6,10 @@ import {
   map,
   includes,
   entries,
+  filter,
 } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
-import {
-  LocationTown,
-  WeatherElementTown,
-} from '../types/response/weather-town'
+import { WeatherElementTown } from '../types/response/weather-town'
 import { IWorkData, IWeatherWeekData, ITemperature, IWx } from '../types/table'
 import * as type from '../types/common'
 
@@ -130,6 +128,9 @@ function setTowntWeather() {
               : null
 
           if (!obj[elementName]) obj[elementName] = {}
+          if (day && !obj[elementName][day] && elementName === 'CI') {
+            obj[elementName][day] = item.elementValue[1].value
+          }
           if (day && !obj[elementName][day]) {
             obj[elementName][day] = item.elementValue[0].value
           }
@@ -231,6 +232,17 @@ function setUVI() {
   }
 }
 
+function setTownTableColspan() {
+  return (col: string, data: string[]) => {
+    let time = 0
+    const str = col.substring(0, 10)
+    for (let i = 0; i < data.length; i++) {
+      if (includes(data[i], str)) time++
+    }
+    return time
+  }
+}
+
 export const getWeatherIcon = setWeather()
 export const getCityName = setCityName()
 export const getAirClassName = setAir()
@@ -240,3 +252,4 @@ export const geWx = setWx()
 export const getWeatherLine = setWeatherLine()
 export const getUVIClass = setUVI()
 export const getTowntWeather = setTowntWeather()
+export const getColspan = setTownTableColspan()
