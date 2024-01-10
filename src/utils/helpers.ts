@@ -9,7 +9,7 @@ import {
   filter,
 } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
-import { WeatherElementTown } from '../types/response/weather-town'
+import { WeatherElementTown, Time } from '../types/response/weather-town'
 import { IWorkData, IWeatherWeekData, ITemperature, IWx } from '../types/table'
 import * as type from '../types/common'
 
@@ -188,36 +188,73 @@ function setWx() {
 }
 
 function setWeatherLine() {
-  return (low: WeatherElement, high: WeatherElement): type.ILineProps => {
-    const label = map(
-      map(low.time, (item) => item.startTime + ' - ' + item.endTime),
-      (item) => {
-        let array = item.split(' - ')
-        if (includes(array[0], '06:00:00') || includes(array[0], '12:00:00')) {
-          return `${array[0].substring(5, 10)} 白天`
-        } else {
-          return `${array[0].substring(5, 10)} 晚上`
+  return (
+    low: WeatherElement | WeatherElementTown,
+    high: WeatherElement | WeatherElementTown
+  ): type.ILineProps => {
+    if (includes(low.description, '最') || includes(high.description, '最')) {
+      const label = map(
+        map(low.time, (item: Time) => item.startTime + ' - ' + item.endTime),
+        (item) => {
+          let array = item.split(' - ')
+          if (
+            includes(array[0], '06:00:00') ||
+            includes(array[0], '12:00:00')
+          ) {
+            return `${array[0].substring(5, 10)} 白天`
+          } else {
+            return `${array[0].substring(5, 10)} 晚上`
+          }
         }
+      )
+
+      const lowTemps = map(low.time, (item: Time) => item.elementValue[0].value)
+      const highTemps = map(
+        high.time,
+        (item: Time) => item.elementValue[0].value
+      )
+
+      return {
+        labels: label,
+        datasets: [
+          {
+            label: low.description,
+            data: lowTemps,
+            borderColor: '#1ce1da',
+          },
+          {
+            label: high.description,
+            data: highTemps,
+            borderColor: '#e98337',
+          },
+        ],
       }
-    )
+    } else {
+      const label = map(low.time, (item: Time) => {
+        return item.dataTime?.substring(5, 16)
+      })
 
-    const lowTemps = map(low.time, (item) => item.elementValue[0].value)
-    const highTemps = map(high.time, (item) => item.elementValue[0].value)
+      const lowTemps = map(low.time, (item: Time) => item.elementValue[0].value)
+      const highTemps = map(
+        high.time,
+        (item: Time) => item.elementValue[0].value
+      )
 
-    return {
-      labels: label,
-      datasets: [
-        {
-          label: low.description,
-          data: lowTemps,
-          borderColor: '#1ce1da',
-        },
-        {
-          label: high.description,
-          data: highTemps,
-          borderColor: '#e98337',
-        },
-      ],
+      return {
+        labels: label as string[],
+        datasets: [
+          {
+            label: low.description,
+            data: lowTemps,
+            borderColor: '#1ce1da',
+          },
+          {
+            label: high.description,
+            data: highTemps,
+            borderColor: '#e98337',
+          },
+        ],
+      }
     }
   }
 }

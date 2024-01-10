@@ -331,6 +331,11 @@ body {
               }
             }
           }
+
+          /* 圖表 */
+          .chart {
+            @apply my-5 w-full;
+          }
         }
       }
     }

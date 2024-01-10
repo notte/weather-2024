@@ -18,7 +18,6 @@ const line = (props: type.ILineProps) => {
         <Line
           options={{
             responsive: true,
-            plugins: {},
           }}
           data={props}
         />

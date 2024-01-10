@@ -90,7 +90,7 @@ const townTable = (prop: { townData: IWorkData[] }) => {
             {PoP6h &&
               map(PoP6h, (column: string, index: number) => (
                 <td colSpan={2} key={column[1] + index}>
-                  {column}
+                  {column}%
                 </td>
               ))}
           </tr>

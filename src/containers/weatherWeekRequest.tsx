@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { filter } from 'lodash'
 import { CityWeek } from '../types/response/weather-week'
@@ -36,7 +36,7 @@ const weatherWeekRequest = () => {
   const ATLineBtn = useRef<HTMLButtonElement | null>(null)
 
   const handlerButton = useCallback(
-    (event: MouseEvent): void => {
+    (event: React.MouseEvent<HTMLButtonElement>): void => {
       event.preventDefault()
       setForecast(() => false)
       setTLine(() => false)
