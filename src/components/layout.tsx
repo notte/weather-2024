@@ -5,11 +5,7 @@ const layout = () => {
   return (
     <>
       <div className="layout">
-        <header>
-          <div className="opition-warp">
-            <Opitions />
-          </div>
-        </header>
+        <Opitions />
         <main>
           <Outlet />
         </main>

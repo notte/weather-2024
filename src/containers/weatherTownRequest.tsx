@@ -62,6 +62,8 @@ const weatherTownRequest = () => {
         setStatus(true)
         setCityId(() => data.id)
         setTown(() => data.town)
+        setThreeforecast(() => true)
+        setTLine(() => false)
       })
     },
     [setStatus, setCityId, setTown]

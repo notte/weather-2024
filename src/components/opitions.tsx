@@ -52,22 +52,29 @@ const opitions = () => {
   return (
     <>
       {city && (
-        <div className="opitions">
-          <p>選擇鄉鎮預報</p>
-          <select onChange={handleOptionChange} value={selectedOption || ''}>
-            <option value="" disabled>
-              請選擇
-            </option>
-            {map(options, (option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <button className="submit" onClick={handleSubmit}>
-            確定
-          </button>
-        </div>
+        <header>
+          <div className="opition-warp">
+            <div className="opitions">
+              <p>選擇鄉鎮預報</p>
+              <select
+                onChange={handleOptionChange}
+                value={selectedOption || ''}
+              >
+                <option value="" disabled>
+                  請選擇
+                </option>
+                {map(options, (option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <button className="submit" onClick={handleSubmit}>
+                確定
+              </button>
+            </div>
+          </div>
+        </header>
       )}
     </>
   )
