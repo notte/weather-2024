@@ -6,7 +6,6 @@ import {
   map,
   includes,
   entries,
-  filter,
 } from 'lodash'
 import { CityWeek, WeatherElement } from '../types/response/weather-week'
 import { WeatherElementTown, Time } from '../types/response/weather-town'

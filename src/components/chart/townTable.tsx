@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { IWorkData, IWx } from '../../types/table'
+import { IWorkData } from '../../types/table'
 import { map, keys } from 'lodash'
 import { getColspan, getWeatherIcon } from '../../utils/helpers'
 

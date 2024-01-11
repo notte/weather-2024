@@ -172,11 +172,13 @@ const weatherWeekRequest = () => {
                 </button>
               </div>
               {forecast && (
-                <Table
-                  weekData={
-                    getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[]
-                  }
-                />
+                <div className="table-warp">
+                  <Table
+                    weekData={
+                      getWeatherWeekData(weatherCityWeek) as IWeatherWeekData[]
+                    }
+                  />
+                </div>
               )}
               {TLine && (
                 <div className="chart">

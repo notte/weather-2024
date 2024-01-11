@@ -186,16 +186,19 @@ const map = (_props: type.INowData[]) => {
 
   useEffect(() => {
     map.current?.on('style.load', () => {
-      EventBus.emit('loading-change', false)
       if (map.current?.getStyle().name === 'Monochrome-copy-copy') {
-        if (!map.current?.getSource('countries')) {
-          handleSetMapData()
-        }
+        try {
+          if (!map.current?.getSource('countries')) {
+            handleSetMapData()
+          }
 
-        if (map.current?.getLayer('country-fills')) {
-          map.current?.on('mousemove', handleMousemove)
-          map.current!.on('mouseout', handleMouseOut)
-          map.current!.on('click', handleClick)
+          if (map.current?.getLayer('country-fills')) {
+            map.current?.on('mousemove', handleMousemove)
+            map.current!.on('mouseout', handleMouseOut)
+            map.current!.on('click', handleClick)
+          }
+        } finally {
+          EventBus.emit('loading-change', false)
         }
       }
     })
@@ -212,12 +215,16 @@ const map = (_props: type.INowData[]) => {
     const cityObj = find(allCity, (item: type.ICityItem) => {
       return item.id === data.id
     })
-    if (cityObj) {
-      map.current?.flyTo({
-        center: [cityObj.center[0], cityObj.center[1]],
-        zoom: cityObj.zoom,
-      })
-      map.current?.setStyle(cityObj?.style)
+    try {
+      if (cityObj) {
+        map.current?.flyTo({
+          center: [cityObj.center[0], cityObj.center[1]],
+          zoom: cityObj.zoom,
+        })
+        map.current?.setStyle(cityObj?.style)
+      }
+    } finally {
+      EventBus.emit('loading-change', false)
     }
   }
 

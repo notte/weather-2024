@@ -17,6 +17,7 @@ body {
 
   font-family: 'Noto Sans TC', sans-serif;
   background: #111719;
+  color: #333;
 
   #root {
     @apply w-full h-full;
@@ -75,8 +76,9 @@ body {
           background: #0b1a3252;
         }
 
-        .city-container {
-          @apply absolute w-2/3 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10 top-1/2;
+        .city-container,
+        .town-container {
+          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10 top-1/2 text-center;
 
           border-bottom-left-radius: 5px;
           border-top-left-radius: 5px;
@@ -97,23 +99,6 @@ body {
           &::-webkit-scrollbar-thumb {
             border-radius: 8px;
             background-color: #525151;
-          }
-
-          h1 {
-            @apply text-2xl font-extrabold;
-
-            color: #0089a7;
-          }
-
-          button.default {
-            @apply font-bold text-sm px-6 py-1 rounded-2xl mx-2;
-
-            background: #0089a7;
-            color: #fff;
-          }
-
-          button.default.close {
-            background: #054d5e;
           }
 
           /* 36 小時預報 */
@@ -158,184 +143,97 @@ body {
           /* 縣市一週預報 */
           .city-week {
             @apply text-center;
+          }
+        }
 
-            /* 切換按鈕 */
-            .tab-warp {
-              @apply my-3 flex justify-between;
+        button.default {
+          @apply font-bold text-sm px-6 py-1 rounded-2xl mx-2;
 
-              button {
-                @apply bg-slate-400 w-full h-14 font-bold;
+          background: #0089a7;
+          color: #fff;
+        }
 
-                color: #0089a7;
-                background: #a5d8e3;
-                border: 1px solid #caf5fe;
-              }
+        button.default.close {
+          background: #054d5e;
+        }
 
-              button:hover,
-              button.active {
-                color: #fff;
-                background: #0089a7;
-              }
+        /* 大標 */
+        h1 {
+          @apply text-2xl font-extrabold;
+
+          color: #0089a7;
+        }
+
+        /* 切換按鈕 */
+        .tab-warp {
+          @apply my-3 flex justify-between;
+
+          button {
+            @apply bg-slate-400 w-full h-14 font-bold;
+
+            color: #0089a7;
+            background: #a5d8e3;
+            border: 1px solid #caf5fe;
+          }
+
+          button:hover,
+          button.active {
+            color: #fff;
+            background: #0089a7;
+          }
+        }
+
+        /* 表格 */
+        .table-warp {
+          @apply w-full overflow-x-auto h-auto;
+        }
+
+        table {
+          @apply w-full text-sm whitespace-nowrap;
+
+          th,
+          td {
+            @apply px-3 py-1;
+          }
+
+          td {
+            @apply py-4 relative;
+
+            p.hover {
+              @apply text-white absolute top-2 left-1/2 text-xs p-1 rounded hidden;
+
+              transform: translateX(-50%);
+              background: #1f7994ae;
+            }
+          }
+
+          thead {
+            background: #97c0c9;
+            color: #25606d;
+          }
+
+          tbody {
+            @apply text-center;
+
+            tr {
+              border-bottom: 1px dashed #8ba8b3;
             }
 
-            /* 表格 */
-            table {
-              @apply w-full text-sm whitespace-nowrap;
-
-              th,
-              td {
-                @apply px-3 py-1;
-              }
-
-              td {
-                @apply py-4 relative;
-
-                p.hover {
-                  @apply text-white absolute top-2 left-1/2 text-xs p-1 rounded hidden;
-
-                  transform: translateX(-50%);
-                  background: #1f7994ae;
-                }
-              }
-
-              thead {
-                background: #97c0c9;
-                color: #25606d;
-              }
-
-              tbody {
-                @apply text-center;
-
-                tr {
-                  border-bottom: 1px dashed #8ba8b3;
-                }
-
-                tr:last-child {
-                  border-bottom: none;
-                }
-              }
-            }
-
-            /* 圖表 */
-            .chart {
-              @apply my-5 w-full;
-            }
-
-            /* 按鈕們 */
-
-            .button-warp {
-              @apply mt-5;
+            tr:last-child {
+              border-bottom: none;
             }
           }
         }
 
-        /* 鄉鎮預報 */
-        .town-container {
-          @apply absolute w-2/4 px-5 py-8 right-0 overflow-y-auto overflow-hidden z-10 top-1/2 text-center;
+        /* 圖表 */
+        .chart {
+          @apply my-5 w-full;
+        }
 
-          border-bottom-left-radius: 5px;
-          border-top-left-radius: 5px;
-          background: linear-gradient(to bottom, #effbfde6 0%, white 100%);
-          max-height: 70%;
-          transform: translateY(-50%);
+        /* 按鈕們 */
 
-          h1 {
-            @apply text-2xl font-extrabold;
-
-            color: #0089a7;
-          }
-
-          .button-warp {
-            @apply mt-5;
-          }
-
-          button.default {
-            @apply font-bold text-sm px-6 py-1 rounded-2xl mx-2;
-
-            background: #0089a7;
-            color: #fff;
-          }
-
-          button.default.close {
-            background: #054d5e;
-          }
-
-          /* 切換按鈕 */
-          .tab-warp {
-            @apply my-3 flex justify-between;
-
-            button {
-              @apply bg-slate-400 w-full h-14 font-bold;
-
-              color: #0089a7;
-              background: #a5d8e3;
-              border: 1px solid #caf5fe;
-            }
-
-            button:hover,
-            button.active {
-              color: #fff;
-              background: #0089a7;
-            }
-          }
-
-          /* 表格 */
-          .table-warp {
-            @apply w-full overflow-x-auto h-auto;
-          }
-
-          table {
-            @apply w-full text-sm whitespace-nowrap;
-
-            th,
-            td {
-              @apply px-3 py-1;
-            }
-
-            td {
-              @apply py-4 relative;
-
-              p.hover {
-                @apply text-white absolute top-2 left-1/2 text-xs p-1 rounded hidden;
-
-                transform: translateX(-50%);
-                background: #1f7994ae;
-              }
-            }
-
-            thead {
-              color: #25606d;
-
-              tr:first-child {
-                background: #97c0c9;
-              }
-
-              tr:nth-child(2) {
-                background: #97c0c971;
-              }
-            }
-
-            tbody {
-              @apply text-center;
-
-              tr {
-                border-bottom: 1px dashed #8ba8b3;
-              }
-
-              td {
-                border-right: 1px dashed #8ba8b3;
-              }
-
-              tr:last-child {
-                border-bottom: none;
-              }
-            }
-          }
-
-          /* 圖表 */
-          .chart {
-            @apply my-5 w-full;
-          }
+        .button-warp {
+          @apply mt-5;
         }
       }
     }

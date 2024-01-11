@@ -26,6 +26,7 @@ const opitions = () => {
   )
 
   const handleSubmit = () => {
+    EventBus.emit('loading-change', true)
     const cityObj = find(allCity, (item: type.ICityItem) => {
       return item.COUNTYNAME === city
     })
