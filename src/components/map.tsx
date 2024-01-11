@@ -38,7 +38,7 @@ const map = (_props: type.INowData[]) => {
       style: style,
       center: [lng, lat],
       zoom: zoom,
-      maxZoom: 9,
+      maxZoom: 11,
       minZoom: 5.5,
     })
   }, [_props, map.current])
