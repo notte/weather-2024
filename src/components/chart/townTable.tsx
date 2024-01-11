@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
-import { IWorkData } from '../../types/table'
+import { IWorkData, IWx } from '../../types/table'
 import { map, keys } from 'lodash'
 import { getColspan, getWeatherIcon } from '../../utils/helpers'
 
 const townTable = (prop: { townData: IWorkData[] }) => {
-  const [T, setT] = useState<any>()
-  const [AT, setAT] = useState<any>()
+  const [T, setT] = useState<{ [key: string]: string | string[] }>()
+  const [AT, setAT] = useState<{ [key: string]: string | string[] }>()
   const [day, setDay] = useState<string[]>()
   const [allDay, setAllDay] = useState<string[]>()
-  const [Wx, setWx] = useState<any>()
-  const [CI, setCI] = useState<{}>()
+  const [Wx, setWx] = useState<{ [key: string]: string | string[] }>()
+  const [CI, setCI] = useState<{ [key: string]: string | string[] }>()
   const [PoP6h, setPoP6h] = useState<{}>()
 
   useEffect(() => {
@@ -20,7 +20,6 @@ const townTable = (prop: { townData: IWorkData[] }) => {
         Array.from(new Set(map(keys(T.T), (item) => item.substring(0, 10))))
       )
       setAllDay(() => map(keys(T.T), (item) => item))
-
       setT(() => T.T)
       setAT(() => AT.AT)
       setWx(() => Wx.Wx)
