@@ -4,6 +4,8 @@ import { fetchTownWeather } from '../redux/thunks'
 import { getTowntWeather, getWeatherLine } from '../utils/helpers'
 import { LocationTown } from '../types/response/weather-town'
 import { IWorkData } from '../types/table'
+import { allCity } from '../assets/data'
+import { find } from 'lodash'
 import Table from '../components/chart/townTable'
 import Line from '../components/chart/line'
 import EventBus from '../utils/event-bus'
@@ -98,7 +100,9 @@ const weatherTownRequest = () => {
       {status && weatherTown.weatherElement && (
         <div className="dark">
           <div className="town-container">
-            <h1>{town}</h1>
+            <h1>{`${find(allCity, (item: type.ICityItem) => item.id === cityId)
+              ?.COUNTYNAME} 
+              ${town}`}</h1>
             <div className="tab-warp">
               <button
                 data-type="threeforecast"

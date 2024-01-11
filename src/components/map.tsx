@@ -30,7 +30,6 @@ const map = (_props: type.INowData[]) => {
   // 建立地圖實體
   useEffect(() => {
     if (map.current) {
-      EventBus.emit('loading-change', false)
       return
     }
     map.current = new mapboxgl.Map({

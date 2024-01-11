@@ -37,7 +37,6 @@ export const nowSlice = createSlice({
             }
           }
         })
-        EventBus.emit('loading-change', false)
         return data
       })
       .addCase(fetchWeatherNow.rejected, () => {
@@ -59,7 +58,6 @@ export const nowSlice = createSlice({
             }
           }
         })
-        EventBus.emit('loading-change', false)
         return data
       })
       .addCase(fetchAirNow.rejected, () => {
@@ -78,7 +76,6 @@ export const hoursSlice = createSlice({
         EventBus.emit('loading-change', true)
       })
       .addCase(fetchWeather36hrs.fulfilled, (_state, action) => {
-        EventBus.emit('loading-change', false)
         return action.payload
       })
       .addCase(fetchWeather36hrs.rejected, () => {
@@ -97,7 +94,6 @@ export const cityWeekSlice = createSlice({
         EventBus.emit('loading-change', true)
       })
       .addCase(fetchWeatherWeek.fulfilled, (_state, action) => {
-        EventBus.emit('loading-change', false)
         return action.payload[0] as CityWeek
       })
       .addCase(fetchWeatherWeek.rejected, () => {
@@ -116,7 +112,6 @@ export const townSlice = createSlice({
         EventBus.emit('loading-change', true)
       })
       .addCase(fetchTownWeather.fulfilled, (_state, action) => {
-        EventBus.emit('loading-change', false)
         return action.payload as LocationTown
       })
       .addCase(fetchTownWeather.rejected, () => {
