@@ -3,21 +3,21 @@ import { requestFail, responseFail } from './error-handler'
 import * as status from '../types/enum'
 import * as type from '../types/common'
 
-const weatherToken = 'CWA-E05A3C78-2C28-4258-9FDD-137E9CCC104F'
-const weatherURL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/'
-
-const airToken = '0c5c6a61-f263-468e-b7d9-85ca9bb8d9b4'
-const airURL = 'https://data.moenv.gov.tw/api/v2/'
-
-let config: AxiosRequestConfig = {
-  responseType: 'json',
-  method: 'GET',
-}
-
-const air = status.APIStatus.air
-const weather = status.APIStatus.weather
-
 function handler() {
+  const weatherToken = 'CWA-E05A3C78-2C28-4258-9FDD-137E9CCC104F'
+  const weatherURL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/'
+
+  const airToken = '0c5c6a61-f263-468e-b7d9-85ca9bb8d9b4'
+  const airURL = 'https://data.moenv.gov.tw/api/v2/'
+
+  let config: AxiosRequestConfig = {
+    responseType: 'json',
+    method: 'GET',
+  }
+
+  const air = status.APIStatus.air
+  const weather = status.APIStatus.weather
+
   return async (requestConfig: type.IRequestConfig): Promise<AxiosResponse> => {
     if (requestConfig.type === air) {
       config = {

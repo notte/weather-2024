@@ -103,41 +103,45 @@ const map = (_props: type.INowData[]) => {
 
   // load 事件
   const handleSetMapData = () => {
-    map.current?.addSource('countries', {
-      type: 'geojson',
-      data: data as GeoJSON.FeatureCollection,
-    })
-    map.current?.addLayer({
-      id: 'country-fills',
-      type: 'fill',
-      source: 'countries',
-      paint: {
-        'fill-color': 'transparent',
-      },
-    })
-    map.current?.addLayer({
-      id: 'country-fills-hover',
-      type: 'fill',
-      source: 'countries',
-      layout: {},
-      paint: {
-        'fill-color': '#0F2D33',
-        'fill-opacity': 0.4,
-      },
-      filter: ['==', 'COUNTYNAME', ''],
-    })
+    try {
+      map.current?.addSource('countries', {
+        type: 'geojson',
+        data: data as GeoJSON.FeatureCollection,
+      })
+      map.current?.addLayer({
+        id: 'country-fills',
+        type: 'fill',
+        source: 'countries',
+        paint: {
+          'fill-color': 'transparent',
+        },
+      })
+      map.current?.addLayer({
+        id: 'country-fills-hover',
+        type: 'fill',
+        source: 'countries',
+        layout: {},
+        paint: {
+          'fill-color': '#0F2D33',
+          'fill-opacity': 0.4,
+        },
+        filter: ['==', 'COUNTYNAME', ''],
+      })
 
-    map.current?.addLayer({
-      id: 'country-borders',
-      type: 'line',
-      source: 'countries',
-      layout: {},
-      paint: {
-        'line-color': '#111719',
-        'line-width': 1,
-      },
-      filter: ['==', 'COUNTYNAME', ''],
-    })
+      map.current?.addLayer({
+        id: 'country-borders',
+        type: 'line',
+        source: 'countries',
+        layout: {},
+        paint: {
+          'line-color': '#111719',
+          'line-width': 1,
+        },
+        filter: ['==', 'COUNTYNAME', ''],
+      })
+    } finally {
+      EventBus.emit('loading-change', false)
+    }
   }
   const handleMousemove = (e: MapMouseEvent) => {
     const features = map.current?.queryRenderedFeatures(e.point, {
@@ -186,19 +190,15 @@ const map = (_props: type.INowData[]) => {
 
   useEffect(() => {
     map.current?.on('style.load', () => {
-      if (map.current?.getStyle().name === 'Monochrome-copy-copy') {
-        try {
-          if (!map.current?.getSource('countries')) {
-            handleSetMapData()
-          }
+      if (map.current?.getStyle().name === 'taiwan-all') {
+        if (!map.current?.getSource('countries')) {
+          handleSetMapData()
+        }
 
-          if (map.current?.getLayer('country-fills')) {
-            map.current?.on('mousemove', handleMousemove)
-            map.current!.on('mouseout', handleMouseOut)
-            map.current!.on('click', handleClick)
-          }
-        } finally {
-          EventBus.emit('loading-change', false)
+        if (map.current?.getLayer('country-fills')) {
+          map.current?.on('mousemove', handleMousemove)
+          map.current!.on('mouseout', handleMouseOut)
+          map.current!.on('click', handleClick)
         }
       }
     })
@@ -224,7 +224,9 @@ const map = (_props: type.INowData[]) => {
         map.current?.setStyle(cityObj?.style)
       }
     } finally {
-      EventBus.emit('loading-change', false)
+      setTimeout(() => {
+        EventBus.emit('loading-change', false)
+      }, 3000)
     }
   }
 
