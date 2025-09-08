@@ -17,7 +17,7 @@ const townTable = (prop: { townData: IWorkData[] }) => {
       const [Wx, AT, T, CI, PoP6h] = prop.townData
 
       setDay(() =>
-        Array.from(new Set(map(keys(T.T), (item) => item.substring(0, 10))))
+        Array.from(new Set(map(keys(T.T), (item: any) => item.substring(0, 10))))
       )
       setAllDay(() => map(keys(T.T), (item) => item))
       setT(() => T.T)
